@@ -1,13 +1,14 @@
 <!DOCTYPE html>
+<!-- 本工作台由婚讼管家 Python 版本地服务（main.py）托管：法律检索 + 自主学习 + LLM 代理 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>婚讼管家 · 离婚诉讼智能顾问</title>
+<title>婚讼管家 · 离婚诉讼智能顾问（Python 版）</title>
 <style>
   :root{
     --primary:#1d4ed8; --primary-soft:#eff6ff; --danger:#dc2626; --danger-soft:#fef2f2;
-    --bg:#f6f7f9; --card:#ffffff; --border:#e5e7eb; --text:#1f2937; --muted:#6b7280;
+    --ok:#059669; --bg:#f6f7f9; --card:#ffffff; --border:#e5e7eb; --text:#1f2937; --muted:#6b7280;
     --radius:14px; --shadow:0 1px 3px rgba(0,0,0,.06);
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -30,7 +31,7 @@
   .logo svg{width:22px;height:22px}
   header h1{font-size:17px;font-weight:600}
   header .sub{font-size:12px;color:var(--muted)}
-  .header-actions{margin-left:auto;display:flex;gap:8px}
+  .header-actions{margin-left:auto;display:flex;gap:8px;align-items:center}
   .icon-btn{
     min-width:44px;min-height:44px;border:1px solid var(--border);border-radius:10px;
     background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;
@@ -38,9 +39,18 @@
   }
   .icon-btn:hover{background:var(--primary-soft);border-color:var(--primary)}
   .icon-btn svg{width:18px;height:18px}
+  /* 状态胶囊 */
+  #statusChip{
+    display:flex;align-items:center;gap:6px;border:1px solid var(--border);border-radius:999px;
+    padding:6px 12px;font-size:12px;color:var(--muted);cursor:pointer;background:var(--card);
+    min-height:32px;
+  }
+  #statusChip:hover{border-color:var(--primary);color:var(--primary)}
+  #statusChip .dot{width:8px;height:8px;border-radius:50%;background:#d1d5db;flex-shrink:0}
+  #statusChip .dot.on{background:var(--ok)}
+  #statusChip .dot.off{background:var(--danger)}
   /* ===== 主区域 ===== */
   main{flex:1;display:flex;min-height:0;max-width:1080px;width:100%;margin:0 auto}
-  /* 侧边栏 */
   aside{
     width:250px;flex-shrink:0;border-right:1px solid var(--border);background:var(--card);
     display:flex;flex-direction:column;padding:12px;gap:8px;
@@ -79,14 +89,12 @@
   .msg.assistant .bubble{line-height:1.7}
   .msg .bubble .cursor{display:inline-block;width:8px;height:16px;background:var(--primary);animation:blink 1s infinite;vertical-align:text-bottom}
   @keyframes blink{50%{opacity:0}}
-  /* 快捷问题 */
   #quickPrompts{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
   .chip{
     border:1px solid var(--border);background:var(--card);border-radius:999px;
     padding:9px 16px;font-size:14px;cursor:pointer;min-height:44px;
   }
   .chip:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-soft)}
-  /* 欢迎卡 */
   .welcome{
     background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
     padding:20px;margin-bottom:8px;
@@ -109,7 +117,6 @@
     font-size:16px;resize:none;max-height:140px;line-height:1.5;font-family:inherit;
   }
   #inputBox:focus{outline:none;border-color:var(--primary)}
-  /* 待发送附件预览条 */
   #pendingBar{display:none;align-items:center;gap:10px;background:var(--primary-soft);
     border:1px solid #bfdbfe;border-radius:10px;padding:6px 10px;font-size:13px}
   #pendingBar.show{display:flex}
@@ -117,33 +124,34 @@
   #pendingBar .pname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}
   #pendingBar .premove{color:var(--muted);cursor:pointer;padding:4px 8px;border-radius:6px;font-size:16px}
   #pendingBar .premove:hover{color:var(--danger);background:var(--danger-soft)}
-  /* 气泡内的附件缩略图 */
-  .bubble img.attach-thumb{max-width:220px;max-height:160px;border-radius:10px;display:block;margin-bottom:8px;cursor:default}
+  .bubble img.attach-thumb{max-width:220px;max-height:160px;border-radius:10px;display:block;margin-bottom:8px}
   .msg.user .bubble .attach-name{font-size:12px;opacity:.85;display:block;margin-bottom:6px}
   #sendBtn{
     min-width:44px;min-height:48px;border:none;border-radius:12px;background:var(--primary);
     color:#fff;font-size:15px;cursor:pointer;padding:0 20px;font-weight:500;
   }
   #sendBtn:disabled{background:#93c5fd;cursor:not-allowed}
-  /* 设置抽屉 */
-  #settingsOverlay{
-    position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:40;display:none;
-  }
-  #settingsOverlay.show{display:block}
-  #settingsPanel{
-    position:fixed;top:0;right:-340px;width:320px;max-width:90vw;height:100%;
+  /* ===== 抽屉（法律库 / 状态） ===== */
+  #drawerOverlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:40;display:none}
+  #drawerOverlay.show{display:block}
+  .drawer{
+    position:fixed;top:0;right:-480px;width:440px;max-width:92vw;height:100%;
     background:var(--card);z-index:50;transition:right .25s ease;
     padding:20px;overflow-y:auto;box-shadow:-2px 0 12px rgba(0,0,0,.08);
   }
-  #settingsPanel.show{right:0}
-  #settingsPanel h2{font-size:17px;margin-bottom:16px}
+  .drawer.show{right:0}
+  .drawer h2{font-size:17px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .drawer .back{
+    border:1px solid var(--border);background:var(--card);border-radius:8px;cursor:pointer;
+    font-size:13px;padding:4px 10px;min-height:32px;
+  }
   .field{margin-bottom:16px}
   .field label{display:block;font-size:14px;font-weight:500;margin-bottom:6px}
   .field input,.field select{
     width:100%;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:16px;
   }
   .field .hint{font-size:12px;color:var(--muted);margin-top:4px}
-  .btn-row{display:flex;gap:8px;margin-top:8px}
+  .btn-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
   .btn{
     min-height:44px;border-radius:10px;border:1px solid var(--border);cursor:pointer;
     padding:0 16px;font-size:14px;background:var(--card);
@@ -151,18 +159,49 @@
   .btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
   .btn.danger{background:var(--danger);color:#fff;border-color:var(--danger)}
   .btn:hover{opacity:.9}
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+  .stat-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px}
+  .stat-card .num{font-size:22px;font-weight:600;color:var(--primary)}
+  .stat-card .lbl{font-size:12px;color:var(--muted)}
+  .kv{display:flex;justify-content:space-between;font-size:14px;padding:8px 0;border-bottom:1px dashed var(--border)}
+  .kv .k{color:var(--muted)}
+  .kv .v.ok{color:var(--ok);font-weight:500}
+  .kv .v.bad{color:var(--danger);font-weight:500}
+  /* 法律库浏览 */
+  #lawSearchRow{display:flex;gap:8px;margin-bottom:12px}
+  #lawSearchInput{flex:1;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:16px}
+  .law-item{
+    border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px;cursor:pointer;
+  }
+  .law-item:hover{border-color:var(--primary);background:var(--primary-soft)}
+  .law-item .lname{font-size:15px;font-weight:500}
+  .law-item .lmeta{font-size:12px;color:var(--muted);margin-top:4px}
+  .art-item{border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px}
+  .art-item .amarker{font-size:14px;font-weight:600;color:var(--primary);margin-bottom:4px}
+  .art-item .alaw{font-size:12px;color:var(--muted);margin-bottom:4px}
+  .art-item .atext{font-size:14px;line-height:1.7;white-space:pre-wrap;word-break:break-word}
+  .src-link{font-size:12px;color:var(--primary);word-break:break-all;text-decoration:none}
+  /* 回答下方的法律依据卡片 */
+  .legal-refs{margin-top:10px;border-top:1px dashed var(--border);padding-top:8px}
+  .legal-refs .lr-title{font-size:12px;color:var(--muted);cursor:pointer;user-select:none}
+  .legal-refs .lr-title:hover{color:var(--primary)}
+  .legal-refs .lr-body{display:none;margin-top:8px}
+  .legal-refs.open .lr-body{display:block}
+  .lr-item{border:1px solid var(--border);border-radius:10px;padding:8px 10px;margin-bottom:6px;background:var(--bg)}
+  .lr-item .lr-law{font-size:12px;font-weight:600;color:var(--primary)}
+  .lr-item .lr-text{font-size:12px;line-height:1.6;white-space:pre-wrap;word-break:break-word;
+    max-height:96px;overflow:hidden}
+  .lr-item .lr-src{font-size:11px;color:var(--muted);margin-top:4px}
+  .lr-item .lr-src a{color:var(--primary);text-decoration:none;word-break:break-all}
   /* 弹窗 */
   #modalOverlay{
     position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:60;display:none;
     align-items:center;justify-content:center;padding:20px;
   }
   #modalOverlay.show{display:flex}
-  .modal{
-    background:var(--card);border-radius:var(--radius);padding:22px;max-width:400px;width:100%;
-  }
+  .modal{background:var(--card);border-radius:var(--radius);padding:22px;max-width:400px;width:100%}
   .modal h3{font-size:16px;margin-bottom:10px}
   .modal p{font-size:14px;color:var(--muted);margin-bottom:16px}
-  /* 错误提示条 */
   #errorBar{
     display:none;background:var(--danger-soft);color:var(--danger);border:1px solid #fecaca;
     margin:0 16px;border-radius:10px;padding:10px 14px;font-size:13px;
@@ -170,15 +209,13 @@
   /* 移动端 */
   @media (max-width:768px){
     aside{display:none}
-    .msg .bubble{max-width:88%}
-    header h1{font-size:15px}
-  }
-  /* 移动端侧边栏改为浮层 */
-  @media (max-width:768px){
     aside.mobile-open{
       display:flex;position:fixed;left:0;top:0;height:100%;z-index:55;
       box-shadow:2px 0 12px rgba(0,0,0,.15);
     }
+    .msg .bubble{max-width:88%}
+    header h1{font-size:15px}
+    #statusChip .txt-long{display:none}
   }
 </style>
 </head>
@@ -195,13 +232,20 @@
   </div>
   <div>
     <h1>婚讼管家</h1>
-    <div class="sub">离婚诉讼全流程智能顾问 · 独立运行版</div>
+    <div class="sub">离婚诉讼全流程智能顾问 · Python 版（法律库 + 自主学习）</div>
   </div>
   <div class="header-actions">
+    <div id="statusChip" title="服务状态">
+      <span class="dot" id="statusDot"></span>
+      <span id="statusText">连接中…</span>
+    </div>
+    <button class="icon-btn" id="lawBtn" title="法律库">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    </button>
     <button class="icon-btn" id="exportBtn" title="导出当前会话">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
     </button>
-    <button class="icon-btn" id="settingsBtn" title="设置">
+    <button class="icon-btn" id="settingsBtn" title="状态与数据">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     </button>
   </div>
@@ -221,10 +265,10 @@
     <div id="errorBar"></div>
     <div id="messages"></div>
     <div id="inputBar">
-      <button class="icon-btn" id="attachBtn" title="上传图片材料（合同/文书/截图照片）">
+      <button class="icon-btn" id="attachBtn" title="上传材料（图片/合同/文书 PDF/Word）">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
       </button>
-      <input type="file" id="fileInput" accept="image/*,.txt,.md,.csv,.json,.log,.pdf,.docx,.doc" style="display:none">
+      <input type="file" id="fileInput" accept="image/*,.txt,.md,.csv,.json,.log,.pdf,.docx" style="display:none">
       <div id="inputCol">
         <div id="pendingBar"></div>
         <textarea id="inputBox" rows="1" placeholder="描述你的情况，或点左侧回形针上传合同/材料照片…（Shift+Enter 换行）"></textarea>
@@ -234,50 +278,59 @@
   </div>
 </main>
 
-<!-- 设置抽屉 -->
-<div id="settingsOverlay"></div>
-<div id="settingsPanel">
-  <h2>设置</h2>
-  <div class="field">
-    <label>DeepSeek API Key</label>
-    <input type="password" id="apiKeyInput" placeholder="sk-...">
-    <div class="hint">仅保存在你的浏览器 localStorage 中，不会上传到任何第三方。可在 platform.deepseek.com 申请。</div>
+<!-- 抽屉遮罩 -->
+<div id="drawerOverlay"></div>
+
+<!-- 法律库抽屉 -->
+<div class="drawer" id="lawPanel">
+  <h2>
+    <button class="back" id="lawBackBtn" style="display:none">‹ 返回</button>
+    <span id="lawPanelTitle">法律库（官方文本）</span>
+  </h2>
+  <div id="lawSearchRow">
+    <input id="lawSearchInput" placeholder="搜索条文关键词或条号，如：抚养费 / 第1079条">
+    <button class="btn primary" id="lawSearchBtn" style="min-height:44px">搜索</button>
+  </div>
+  <div id="lawContent"></div>
+</div>
+
+<!-- 状态与数据抽屉 -->
+<div class="drawer" id="settingsPanel">
+  <h2>服务状态</h2>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="num" id="statLaws">-</div><div class="lbl">法律库（部）</div></div>
+    <div class="stat-card"><div class="num" id="statExp">-</div><div class="lbl">已沉淀经验（条）</div></div>
+  </div>
+  <div class="kv"><span class="k">服务版本</span><span class="v" id="kvVersion">-</span></div>
+  <div class="kv"><span class="k">DeepSeek Key</span><span class="v" id="kvDsKey">-</span></div>
+  <div class="kv"><span class="k">视觉模型 Key</span><span class="v" id="kvViKey">-</span></div>
+  <div class="kv"><span class="k">法律库构建时间</span><span class="v" id="kvLawBuilt">-</span></div>
+  <div class="field" style="margin-top:12px">
+    <div class="hint">API Key 在服务端 python_app/config.json 中配置（不上传 git）。修改后重启服务生效。</div>
   </div>
   <div class="field">
-    <label>模型</label>
+    <label>对话模型</label>
     <select id="modelSelect">
       <option value="deepseek-chat">deepseek-chat（通用，推荐）</option>
       <option value="deepseek-reasoner">deepseek-reasoner（深度推理）</option>
     </select>
   </div>
-  <hr style="margin:18px 0;border:none;border-top:1px solid var(--border)">
-  <h2 style="font-size:15px">图片解析（可选）</h2>
-  <div class="field">
-    <label>视觉模型服务商</label>
-    <select id="visionProviderSelect">
-      <option value="none">关闭（不解析图片）</option>
-      <option value="glm">智谱 GLM-4V-Flash（免费，推荐）</option>
-      <option value="qwen">阿里通义千问 VL</option>
-    </select>
-    <div class="hint">DeepSeek 不支持识图，上传的照片会先由视觉模型提取文字，再交给 DeepSeek 分析。</div>
-  </div>
-  <div class="field">
-    <label>视觉模型 API Key</label>
-    <input type="password" id="visionKeyInput" placeholder="视觉服务商的 API Key">
-    <div class="hint" id="visionKeyHint">智谱：open.bigmodel.cn 注册即得免费 Key；阿里：bailian.console.aliyun.com 开通 DashScope。</div>
-  </div>
   <div class="btn-row">
-    <button class="btn primary" id="saveSettingsBtn">保存</button>
-    <button class="btn" id="testKeyBtn">测试连接</button>
+    <button class="btn" id="updateLawsBtn">立即更新法律库</button>
   </div>
-  <div id="testResult" style="font-size:13px;margin-top:8px"></div>
+  <div class="field" style="margin-top:10px">
+    <div class="hint">法律库超过 7 天会自动后台更新；法律文本全部来自国家法律法规数据库及政府/法院官网。</div>
+  </div>
+  <div class="field">
+    <div class="hint">自主学习：每轮有效对话结束后，服务端会把会话要点脱敏蒸馏为经验存入本地经验库，后续对话自动检索复用；经验仅存本机，不上传。</div>
+  </div>
   <hr style="margin:18px 0;border:none;border-top:1px solid var(--border)">
   <h2>数据管理</h2>
   <div class="btn-row">
     <button class="btn" id="exportAllBtn">导出全部会话 JSON</button>
   </div>
   <div class="btn-row" style="margin-top:8px">
-    <button class="btn danger" id="clearAllBtn">清空全部数据</button>
+    <button class="btn danger" id="clearAllBtn">清空全部会话</button>
   </div>
 </div>
 
@@ -298,23 +351,11 @@
 "use strict";
 
 /* ================= 常量 ================= */
-var LS_PREFIX = "dlc_";
+var LS_PREFIX = "dlc_py_";
 var LS_SESSIONS = LS_PREFIX + "sessions";
 var LS_SETTINGS = LS_PREFIX + "settings";
-var API_URL = "https://api.deepseek.com/chat/completions";
-/* 首次打开时预填的 DeepSeek Key。仓库中为占位符（防泄露），本地分发版本可注入真实 Key */
-var DEFAULT_API_KEY = "";
-/* 首次打开时预填的视觉模型 Key（智谱 GLM-4V）。仓库中为占位符（防泄露），本地分发版本可注入真实 Key */
-var DEFAULT_VISION_KEY = "";
-var DEFAULT_VISION_PROVIDER = "glm";
-
-/* 视觉模型预设（均为 OpenAI 兼容接口，图片走 image_url 格式） */
-var VISION_PRESETS = {
-  glm:  { baseUrl: "https://open.bigmodel.cn/api/paas/v4/chat/completions", model: "glm-4v-flash" },
-  qwen: { baseUrl: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions", model: "qwen-vl-plus" }
-};
-var OCR_PROMPT = "请完整识别并转写这张图片中的所有文字内容（可能是合同、法律文书、聊天记录、票据、证件等）。要求：1) 保持原有结构和条款顺序；2) 不得遗漏金额、日期、姓名、证件号、账号等关键信息；3) 对非文字的重要信息（如签字、手印、盖章位置）简要说明；4) 只输出识别结果，不要评论分析。";
 var MAX_IMAGE_MB = 10;
+var MAX_TEXT_CHARS = 20000;
 
 var QUICK_PROMPTS = [
   "请帮我梳理离婚诉讼的完整流程和时间线，以及现在最该做的三件事",
@@ -349,9 +390,10 @@ var SYSTEM_PROMPT = [
 "",
 "【引用规范（强制）】",
 "- 凡涉及法律规则、程序期限、金额标准、裁判规则的表述，必须注明出处：法律全称+条号，如《中华人民共和国民法典》第1079条。",
-"- 严禁虚构法律名称、条号或条文内容；引用时保持条号、内容与现行官方文本一致，不确定的条文须注明「建议核对官方文本」。",
+"- 系统注入的【法律依据】块中的条文摘自官方发布的现行有效文本，是唯一可信来源，应优先引用并保持条号、内容与原文一致。",
+"- 确需引用注入块之外的条文时，须注明「该条未经本地法律库核验，建议核对官方文本」。",
 "- 每次回答结尾的【法律依据清单】逐项列出本次引用的法律名称+条号；本次未引用法条时写「本次回答未引用具体法条」。",
-"- 没有明确法律依据的问题，明说「该问题暂无明确法律规定」，再讲实务通行做法。",
+"- 严禁虚构法律名称、条号或条文内容；没有明确法律依据的问题，明说「该问题暂无明确法律规定」，再讲实务通行做法。",
 "",
 "【表达规范】",
 "- 使用简体中文，语言克制专业，不评判婚姻对错，不做道德说教。用户情绪激动时先共情一句话再进入分析，不催促做决定。",
@@ -367,10 +409,13 @@ var SYSTEM_PROMPT = [
 
 /* ================= 状态 ================= */
 var state = {
-  sessions: [],          // [{id, title, createdAt, messages:[{role,content}]}]
+  sessions: [],
   currentId: null,
-  settings: { apiKey: "", model: "deepseek-chat" },
-  streaming: false
+  settings: { model: "deepseek-chat" },
+  streaming: false,
+  pendingAttachment: null,
+  server: { online: false, hasDeepseekKey: false, hasVisionKey: false,
+            version: "", laws: 0, experiences: 0, lawBuiltAt: "" }
 };
 
 /* ================= DOM 引用 ================= */
@@ -382,12 +427,25 @@ var el = {
   newSessionBtn: document.getElementById("newSessionBtn"),
   settingsBtn: document.getElementById("settingsBtn"),
   settingsPanel: document.getElementById("settingsPanel"),
-  settingsOverlay: document.getElementById("settingsOverlay"),
-  apiKeyInput: document.getElementById("apiKeyInput"),
+  drawerOverlay: document.getElementById("drawerOverlay"),
+  lawBtn: document.getElementById("lawBtn"),
+  lawPanel: document.getElementById("lawPanel"),
+  lawPanelTitle: document.getElementById("lawPanelTitle"),
+  lawBackBtn: document.getElementById("lawBackBtn"),
+  lawSearchInput: document.getElementById("lawSearchInput"),
+  lawSearchBtn: document.getElementById("lawSearchBtn"),
+  lawContent: document.getElementById("lawContent"),
+  statusChip: document.getElementById("statusChip"),
+  statusDot: document.getElementById("statusDot"),
+  statusText: document.getElementById("statusText"),
+  statLaws: document.getElementById("statLaws"),
+  statExp: document.getElementById("statExp"),
+  kvVersion: document.getElementById("kvVersion"),
+  kvDsKey: document.getElementById("kvDsKey"),
+  kvViKey: document.getElementById("kvViKey"),
+  kvLawBuilt: document.getElementById("kvLawBuilt"),
   modelSelect: document.getElementById("modelSelect"),
-  saveSettingsBtn: document.getElementById("saveSettingsBtn"),
-  testKeyBtn: document.getElementById("testKeyBtn"),
-  testResult: document.getElementById("testResult"),
+  updateLawsBtn: document.getElementById("updateLawsBtn"),
   exportBtn: document.getElementById("exportBtn"),
   exportAllBtn: document.getElementById("exportAllBtn"),
   clearAllBtn: document.getElementById("clearAllBtn"),
@@ -401,12 +459,10 @@ var el = {
   modalCancelBtn: document.getElementById("modalCancelBtn"),
   attachBtn: document.getElementById("attachBtn"),
   fileInput: document.getElementById("fileInput"),
-  pendingBar: document.getElementById("pendingBar"),
-  visionProviderSelect: document.getElementById("visionProviderSelect"),
-  visionKeyInput: document.getElementById("visionKeyInput")
+  pendingBar: document.getElementById("pendingBar")
 };
 
-/* ================= 存储层（只负责读写） ================= */
+/* ================= 存储层 ================= */
 function loadState(){
   try {
     var s = localStorage.getItem(LS_SESSIONS);
@@ -422,24 +478,9 @@ function loadState(){
     var st = localStorage.getItem(LS_SETTINGS);
     if (st) {
       var ps = JSON.parse(st);
-      if (ps) {
-        state.settings.apiKey = ps.apiKey || "";
-        state.settings.model = ps.model || "deepseek-chat";
-        state.settings.visionProvider = ps.visionProvider || "none";
-        state.settings.visionKey = ps.visionKey || "";
-      }
+      if (ps && ps.model) state.settings.model = ps.model;
     }
   } catch(e){ /* 忽略 */ }
-  /* 首次使用预填默认 Key（用户尚未保存过任何设置时生效，可在设置中修改） */
-  if (!state.settings.apiKey && DEFAULT_API_KEY){
-    state.settings.apiKey = DEFAULT_API_KEY;
-  }
-  if (!state.settings.visionKey && DEFAULT_VISION_KEY){
-    state.settings.visionKey = DEFAULT_VISION_KEY;
-    if (state.settings.visionProvider === "none"){
-      state.settings.visionProvider = DEFAULT_VISION_PROVIDER;
-    }
-  }
 }
 function saveSessions(){
   localStorage.setItem(LS_SESSIONS, JSON.stringify({
@@ -470,23 +511,139 @@ function createSession(){
   saveSessions();
   return s;
 }
-/* LLM 自身没有实时时钟，每次请求把当前日期时间注入系统提示词 */
-function buildDateLine(){
-  var now = new Date();
-  var wd = "日一二三四五六".charAt(now.getDay());
-  function pad(n){ return (n<10?"0":"")+n; }
-  return "【当前时间】今天是 " + now.getFullYear() + "年" + (now.getMonth()+1) + "月" +
-    now.getDate() + "日 星期" + wd + " " + pad(now.getHours()) + ":" + pad(now.getMinutes()) +
-    "。回答涉及期限、时效、日期推算（如冷静期、上诉期、起诉间隔）的问题时，以此刻日期为基准计算。";
-}
 function buildApiMessages(session){
-  var msgs = [{role:"system", content: SYSTEM_PROMPT + "\n\n" + buildDateLine()}];
-  // 只带最近 20 条历史，控制 token
+  var msgs = [{role:"system", content: SYSTEM_PROMPT}];
   var history = session.messages.slice(-20);
   for (var i=0;i<history.length;i++){
-    msgs.push({role: history[i].role, content: history[i].content});
+    var m = history[i];
+    var content = (m.role === "user" && m.apiContent) ? m.apiContent : m.content;
+    msgs.push({role: m.role, content: content});
   }
   return msgs;
+}
+
+/* ================= 网络层（本地 Python 服务） ================= */
+function apiGet(path){
+  return fetch(path).then(function(r){
+    return r.json().then(function(d){
+      if (!r.ok) throw new Error(d.error || ("请求失败 " + r.status));
+      return d;
+    });
+  });
+}
+function apiPost(path, body){
+  return fetch(path, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(body || {})
+  }).then(function(r){
+    return r.json().then(function(d){
+      if (!r.ok) throw new Error(d.error || ("请求失败 " + r.status));
+      return d;
+    });
+  });
+}
+/* 拉取服务状态（连接、Key 配置、法律库/经验库统计） */
+function refreshServerStatus(){
+  return apiGet("/api/ping").then(function(p){
+    state.server.online = true;
+    state.server.version = p.version || "";
+    state.server.laws = p.laws || 0;
+    state.server.experiences = p.experiences || 0;
+    return apiGet("/api/config");
+  }).then(function(c){
+    state.server.hasDeepseekKey = !!c.has_deepseek_key;
+    state.server.hasVisionKey = !!c.has_vision_key;
+    return apiGet("/api/laws");
+  }).then(function(l){
+    state.server.lawBuiltAt = l.built_at || "";
+    state.server.laws = (l.laws || []).length;
+    renderStatusChip();
+  }).catch(function(){
+    state.server.online = false;
+    renderStatusChip();
+  });
+}
+/* SSE 流式聊天 */
+function streamChat(apiMessages, onDelta){
+  return fetch("/api/chat", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ model: state.settings.model, messages: apiMessages })
+  }).then(function(resp){
+    if (!resp.ok){
+      return resp.json().then(function(d){
+        throw new Error(d.error || ("服务错误 " + resp.status));
+      }, function(){
+        throw new Error("服务错误 " + resp.status);
+      });
+    }
+    var reader = resp.body.getReader();
+    var decoder = new TextDecoder("utf-8");
+    var buffer = "";
+    function pump(){
+      return reader.read().then(function(result){
+        if (result.done) return;
+        buffer += decoder.decode(result.value, {stream:true});
+        var lines = buffer.split("\n");
+        buffer = lines.pop();
+        for (var i=0;i<lines.length;i++){
+          var line = lines[i].trim();
+          if (!line || line.indexOf("data:") !== 0) continue;
+          var payload = line.slice(5).trim();
+          if (payload === "[DONE]") continue;
+          try {
+            var json = JSON.parse(payload);
+            if (json.error) throw new Error(json.error);
+            var delta = json.choices && json.choices[0] && json.choices[0].delta && json.choices[0].delta.content;
+            if (delta) onDelta(delta);
+          } catch(e){
+            if (e && e.message && e.message.indexOf("DeepSeek") === 0) throw e;
+            if (e instanceof SyntaxError) { /* 忽略无法解析的行 */ }
+            else if (e && e.message && e.message.indexOf("服务") === 0) throw e;
+          }
+        }
+        return pump();
+      });
+    }
+    return pump();
+  });
+}
+/* 视觉识别图片文字 */
+function callVisionExtract(dataUrl){
+  return apiPost("/api/vision", { image: dataUrl }).then(function(d){
+    if (!d.text) throw new Error("视觉模型未返回识别结果");
+    return d.text;
+  });
+}
+/* 服务端解析 PDF/Word */
+function callParseFile(name, dataB64){
+  return apiPost("/api/parse", { name: name, data_b64: dataB64 }).then(function(d){
+    return d.text || "";
+  });
+}
+/* 自主学习：一轮对话结束后上报会话，服务端节流并蒸馏经验 */
+function reportLearn(session){
+  if (!state.server.online) return;
+  var msgs = [];
+  var history = session.messages.slice(-20);
+  for (var i=0;i<history.length;i++){
+    var m = history[i];
+    if (m.role !== "user" && m.role !== "assistant") continue;
+    var content = (m.role === "user" && m.apiContent) ? m.apiContent : m.content;
+    msgs.push({role: m.role, content: content});
+  }
+  apiPost("/api/learn", { session_id: session.id, messages: msgs }).then(function(d){
+    if (d && d.learned){
+      // 延迟刷新经验数（蒸馏在服务端后台进行）
+      setTimeout(function(){
+        apiGet("/api/learn/stats").then(function(s2){
+          state.server.experiences = s2.experiences || 0;
+          renderStatusChip();
+        }).catch(function(){});
+      }, 6000);
+    }
+  }).catch(function(){ /* 学习失败不影响使用 */ });
 }
 
 /* ================= 渲染层（互不调用，由 refreshAll 统一调度） ================= */
@@ -515,10 +672,7 @@ function renderSidebar(){
 function renderMessages(){
   el.messages.innerHTML = "";
   var s = getCurrentSession();
-  if (!s){
-    renderWelcome();
-    return;
-  }
+  if (!s){ renderWelcome(); return; }
   if (s.messages.length === 0){
     renderWelcome();
     renderQuickPrompts();
@@ -533,7 +687,7 @@ function renderWelcome(){
   var h = document.createElement("h2");
   h.textContent = "你好，我是婚讼管家";
   var p1 = document.createElement("p");
-  p1.textContent = "我可以帮你梳理离婚诉讼流程、整理证据清单、分析财产分割逻辑、准备抚养权争议要点、起草文书框架。";
+  p1.textContent = "我可以帮你梳理离婚诉讼流程、整理证据清单、分析财产分割逻辑、准备抚养权争议要点、起草文书框架。本版本内置 9 部现行婚姻家庭法律官方文本，回答时自动检索引用。";
   var p2 = document.createElement("p");
   p2.textContent = "为了给出更贴合的建议，可以直接告诉我：婚龄、有无子女及年龄、大致财产情况（房产/存款/债务）、目前是考虑离婚、已起诉还是已开庭。";
   w.appendChild(h); w.appendChild(p1); w.appendChild(p2);
@@ -551,13 +705,6 @@ function renderQuickPrompts(){
   });
   el.messages.appendChild(box);
 }
-function refreshAll(){
-  renderSidebar();
-  renderMessages();
-  renderPendingBar();
-  updateSendState();
-}
-/* 待发送附件预览条 */
 function renderPendingBar(){
   var p = state.pendingAttachment;
   el.pendingBar.innerHTML = "";
@@ -586,11 +733,41 @@ function renderPendingBar(){
   });
   el.pendingBar.appendChild(rm);
 }
+function renderStatusChip(){
+  el.statusDot.className = "dot " + (state.server.online ? "on" : "off");
+  if (!state.server.online){
+    el.statusText.textContent = "服务未连接";
+    return;
+  }
+  el.statusText.innerHTML = "";
+  var span = document.createElement("span");
+  span.className = "txt-long";
+  span.textContent = "法律库 " + state.server.laws + " 部 · 经验 " + state.server.experiences + " 条";
+  el.statusText.appendChild(span);
+}
+function renderSettingsPanel(){
+  el.statLaws.textContent = state.server.laws;
+  el.statExp.textContent = state.server.experiences;
+  el.kvVersion.textContent = state.server.version || "-";
+  el.kvDsKey.textContent = state.server.hasDeepseekKey ? "已配置" : "未配置";
+  el.kvDsKey.className = "v " + (state.server.hasDeepseekKey ? "ok" : "bad");
+  el.kvViKey.textContent = state.server.hasVisionKey ? "已配置" : "未配置";
+  el.kvViKey.className = "v " + (state.server.hasVisionKey ? "ok" : "bad");
+  el.kvLawBuilt.textContent = state.server.lawBuiltAt || "-";
+  el.modelSelect.value = state.settings.model;
+}
 function updateSendState(){
   el.sendBtn.disabled = state.streaming;
   el.sendBtn.textContent = state.streaming ? "思考中…" : "发送";
 }
-function appendMessageBubble(role, content, attachment){
+function refreshAll(){
+  renderSidebar();
+  renderMessages();
+  renderPendingBar();
+  renderStatusChip();
+  updateSendState();
+}
+function appendMessageBubble(role, content, attachment, legalRefs){
   var wrap = document.createElement("div");
   wrap.className = "msg " + role;
   var av = document.createElement("div");
@@ -613,10 +790,60 @@ function appendMessageBubble(role, content, attachment){
   if (content){
     bubble.appendChild(document.createTextNode(content));
   }
+  if (legalRefs && legalRefs.length){
+    bubble.appendChild(buildLegalRefsBlock(legalRefs));
+  }
   wrap.appendChild(av);
   wrap.appendChild(bubble);
   el.messages.appendChild(wrap);
   return bubble;
+}
+/* 法律依据卡片（折叠展示，条文+官方来源） */
+function buildLegalRefsBlock(refs){
+  var box = document.createElement("div");
+  box.className = "legal-refs";
+  var title = document.createElement("div");
+  title.className = "lr-title";
+  function label(){
+    return (box.classList.contains("open") ? "▾ " : "▸ ") +
+      "本回答参考的法律依据（" + refs.length + " 条 · 本地官方法律库）";
+  }
+  title.textContent = label();
+  title.addEventListener("click", function(){
+    box.classList.toggle("open");
+    title.textContent = label();
+  });
+  var body = document.createElement("div");
+  body.className = "lr-body";
+  refs.forEach(function(r){
+    var item = document.createElement("div");
+    item.className = "lr-item";
+    var law = document.createElement("div");
+    law.className = "lr-law";
+    law.textContent = "《" + r.law_short + "》" + r.marker;
+    var text = document.createElement("div");
+    text.className = "lr-text";
+    text.textContent = r.text;
+    var src = document.createElement("div");
+    src.className = "lr-src";
+    var srcLabel = "来源：" + (r.source_name || "官方发布") +
+      (r.effective ? " · 施行 " + r.effective : "");
+    if (r.source_url){
+      var a = document.createElement("a");
+      a.href = r.source_url;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = srcLabel + "（查看原文）";
+      src.appendChild(a);
+    } else {
+      src.textContent = srcLabel;
+    }
+    item.appendChild(law); item.appendChild(text); item.appendChild(src);
+    body.appendChild(item);
+  });
+  box.appendChild(title);
+  box.appendChild(body);
+  return box;
 }
 function scrollToBottom(){
   el.messages.scrollTop = el.messages.scrollHeight;
@@ -626,131 +853,103 @@ function showError(msg){
   el.errorBar.style.display = msg ? "block" : "none";
 }
 
-/* ================= 网络层 ================= */
-/* 通用 OpenAI 兼容接口请求（非流式）：桌面版走主进程代理，浏览器走 fetch */
-function genericApiRequest(url, apiKey, body){
-  if (window.dlcBridge && window.dlcBridge.apiRequest){
-    return window.dlcBridge.apiRequest({ url: url, apiKey: apiKey, body: body }).then(function(res){
-      if (!res.ok) throw new Error(res.error || ("请求失败 " + (res.status || "")));
-      return res.data;
+/* ================= 法律库面板 ================= */
+var lawView = { mode: "list", lawId: null };  // list | detail | search
+function renderLawList(){
+  lawView = { mode: "list", lawId: null };
+  el.lawBackBtn.style.display = "none";
+  el.lawPanelTitle.textContent = "法律库（官方文本）";
+  el.lawContent.innerHTML = "<p style='color:var(--muted);font-size:14px'>加载中…</p>";
+  apiGet("/api/laws").then(function(d){
+    el.lawContent.innerHTML = "";
+    (d.laws || []).forEach(function(l){
+      var item = document.createElement("div");
+      item.className = "law-item";
+      var nm = document.createElement("div");
+      nm.className = "lname";
+      nm.textContent = l.name;
+      var meta = document.createElement("div");
+      meta.className = "lmeta";
+      meta.textContent = "共 " + l.article_count + " 条" +
+        (l.effective ? " · 施行 " + l.effective : "") +
+        (l.source_name ? " · 来源：" + l.source_name : "");
+      item.appendChild(nm); item.appendChild(meta);
+      item.addEventListener("click", function(){ renderLawDetail(l.id); });
+      el.lawContent.appendChild(item);
     });
-  }
-  return fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + apiKey },
-    body: JSON.stringify(body)
-  }).then(function(r){
-    return r.text().then(function(t){
-      if (!r.ok){
-        var d = "";
-        try { d = JSON.parse(t).error.message; } catch(e){ d = t.slice(0,200); }
-        throw new Error("API 错误 " + r.status + "：" + d);
-      }
-      return JSON.parse(t);
-    });
+    if (d.built_at){
+      var bt = document.createElement("p");
+      bt.style.cssText = "font-size:12px;color:var(--muted);margin-top:6px";
+      bt.textContent = "法律库构建时间：" + d.built_at + "（超过 7 天自动更新）";
+      el.lawContent.appendChild(bt);
+    }
+  }).catch(function(e){
+    el.lawContent.innerHTML = "<p style='color:var(--danger);font-size:14px'>加载失败：" + e.message + "</p>";
   });
 }
-/* 视觉模型提取图片文字 */
-function callVisionExtract(dataUrl){
-  var preset = VISION_PRESETS[state.settings.visionProvider];
-  if (!preset) return Promise.reject(new Error("未配置视觉模型"));
-  var body = {
-    model: preset.model,
-    temperature: 0.1,
-    messages: [{ role: "user", content: [
-      { type: "image_url", image_url: { url: dataUrl } },
-      { type: "text", text: OCR_PROMPT }
-    ]}]
-  };
-  return genericApiRequest(preset.baseUrl, state.settings.visionKey, body).then(function(data){
-    var txt = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-    if (!txt) throw new Error("视觉模型未返回识别结果");
-    return txt;
+function renderLawDetail(lawId){
+  lawView = { mode: "detail", lawId: lawId };
+  el.lawBackBtn.style.display = "";
+  el.lawPanelTitle.textContent = "法律条文";
+  el.lawContent.innerHTML = "<p style='color:var(--muted);font-size:14px'>加载中…</p>";
+  apiGet("/api/law?id=" + encodeURIComponent(lawId)).then(function(d){
+    var law = d.law;
+    el.lawPanelTitle.textContent = law.short || law.name;
+    el.lawContent.innerHTML = "";
+    if (law.source_url){
+      var a = document.createElement("a");
+      a.className = "src-link";
+      a.href = law.source_url;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = "官方来源：" + (law.source_name || law.source_url);
+      el.lawContent.appendChild(a);
+    }
+    (law.articles || []).forEach(function(art){
+      el.lawContent.appendChild(buildArticleItem(law.short, art.marker, art.text));
+    });
+  }).catch(function(e){
+    el.lawContent.innerHTML = "<p style='color:var(--danger);font-size:14px'>加载失败：" + e.message + "</p>";
   });
 }
-/* 双模式：桌面应用内走 Electron 主进程（无跨域限制），浏览器里走 fetch */
-function streamChat(apiMessages, onDelta){
-  if (window.dlcBridge){
-    return new Promise(function(resolve, reject){
-      var buffer = "";
-      window.dlcBridge.chatStart({
-        apiKey: state.settings.apiKey,
-        model: state.settings.model,
-        messages: apiMessages,
-        stream: true
-      }, {
-        onChunk: function(chunkStr){
-          buffer += chunkStr;
-          var lines = buffer.split("\n");
-          buffer = lines.pop(); // 最后可能是不完整行
-          for (var i=0;i<lines.length;i++){
-            var line = lines[i].trim();
-            if (!line || line.indexOf("data:") !== 0) continue;
-            var payload = line.slice(5).trim();
-            if (payload === "[DONE]") continue;
-            try {
-              var json = JSON.parse(payload);
-              var delta = json.choices && json.choices[0] && json.choices[0].delta && json.choices[0].delta.content;
-              if (delta) onDelta(delta);
-            } catch(e){ /* 忽略无法解析的行 */ }
-          }
-        },
-        onDone: function(){ resolve(); },
-        onError: function(msg){ reject(new Error(msg)); }
-      });
+function renderLawSearch(query){
+  lawView = { mode: "search", lawId: null };
+  el.lawBackBtn.style.display = "";
+  el.lawPanelTitle.textContent = "搜索：" + query;
+  el.lawContent.innerHTML = "<p style='color:var(--muted);font-size:14px'>搜索中…</p>";
+  apiGet("/api/law_search?q=" + encodeURIComponent(query)).then(function(d){
+    el.lawContent.innerHTML = "";
+    var results = d.results || [];
+    if (!results.length){
+      el.lawContent.innerHTML = "<p style='color:var(--muted);font-size:14px'>未找到匹配条文，换个关键词试试。</p>";
+      return;
+    }
+    results.forEach(function(r){
+      el.lawContent.appendChild(buildArticleItem(r.law_short, r.marker, r.text));
     });
-  }
-  return fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + state.settings.apiKey
-    },
-    body: JSON.stringify({
-      model: state.settings.model,
-      messages: apiMessages,
-      stream: true,
-      temperature: 0.3
-    })
-  }).then(function(resp){
-    if (!resp.ok){
-      return resp.text().then(function(t){
-        var detail = "";
-        try { detail = JSON.parse(t).error.message; } catch(e){ detail = t.slice(0,200); }
-        throw new Error("API 错误 " + resp.status + "：" + detail);
-      });
-    }
-    var reader = resp.body.getReader();
-    var decoder = new TextDecoder("utf-8");
-    var buffer = "";
-    function pump(){
-      return reader.read().then(function(result){
-        if (result.done) return;
-        buffer += decoder.decode(result.value, {stream:true});
-        var lines = buffer.split("\n");
-        buffer = lines.pop(); // 最后可能是不完整行
-        for (var i=0;i<lines.length;i++){
-          var line = lines[i].trim();
-          if (!line || line.indexOf("data:") !== 0) continue;
-          var payload = line.slice(5).trim();
-          if (payload === "[DONE]") continue;
-          try {
-            var json = JSON.parse(payload);
-            var delta = json.choices && json.choices[0] && json.choices[0].delta && json.choices[0].delta.content;
-            if (delta) onDelta(delta);
-          } catch(e){ /* 忽略无法解析的行 */ }
-        }
-        return pump();
-      });
-    }
-    return pump();
+  }).catch(function(e){
+    el.lawContent.innerHTML = "<p style='color:var(--danger);font-size:14px'>搜索失败：" + e.message + "</p>";
   });
+}
+function buildArticleItem(lawShort, marker, text){
+  var item = document.createElement("div");
+  item.className = "art-item";
+  var lw = document.createElement("div");
+  lw.className = "alaw";
+  lw.textContent = "《" + lawShort + "》";
+  var mk = document.createElement("div");
+  mk.className = "amarker";
+  mk.textContent = marker;
+  var tx = document.createElement("div");
+  tx.className = "atext";
+  tx.textContent = text;
+  item.appendChild(lw); item.appendChild(mk); item.appendChild(tx);
+  return item;
 }
 
 /* ================= 附件处理 ================= */
 var TEXT_EXTS = ["txt","md","csv","json","log"];
-var DOC_EXTS = ["pdf","doc","docx"];
-var MAX_TEXT_CHARS = 20000;
+var DOC_EXTS = ["pdf","docx"];
 function getExt(name){
   var parts = name.split(".");
   return parts.length > 1 ? parts.pop().toLowerCase() : "";
@@ -761,14 +960,12 @@ function compressImage(file, cb){
     var img = new Image();
     img.onload = function(){
       var w = img.width, h = img.height;
-      // 全图压缩到 1600px 内（视觉模型识别用）
       var scale = Math.min(1, 1600 / Math.max(w, h));
       var canvas = document.createElement("canvas");
       canvas.width = Math.round(w * scale);
       canvas.height = Math.round(h * scale);
       canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
       var dataUrl = canvas.toDataURL("image/jpeg", 0.85);
-      // 240px 缩略图（会话历史展示用，控制 localStorage 体积）
       var tScale = Math.min(1, 240 / Math.max(w, h));
       var tc = document.createElement("canvas");
       tc.width = Math.max(1, Math.round(w * tScale));
@@ -780,6 +977,15 @@ function compressImage(file, cb){
     img.src = reader.result;
   };
   reader.readAsDataURL(file);
+}
+function arrayBufferToB64(buf){
+  var bytes = new Uint8Array(buf);
+  var binary = "";
+  var chunk = 0x8000;
+  for (var i=0;i<bytes.length;i+=chunk){
+    binary += String.fromCharCode.apply(null, bytes.subarray(i, i+chunk));
+  }
+  return btoa(binary);
 }
 function onFileSelected(file){
   if (!file) return;
@@ -808,22 +1014,11 @@ function onFileSelected(file){
     return;
   }
   if (DOC_EXTS.indexOf(ext) >= 0){
-    if (!(window.dlcBridge && window.dlcBridge.parseFile)){
-      showError("浏览器版暂不支持解析 PDF/Word，请使用桌面版，或将文档内容复制粘贴到输入框。");
-      return;
-    }
     state.pendingAttachment = { kind: "doc", name: file.name, text: "" };
     refreshAll();
     var rd = new FileReader();
     rd.onload = function(){
-      window.dlcBridge.parseFile(file.name, rd.result).then(function(res){
-        if (!res.ok){
-          state.pendingAttachment = null;
-          refreshAll();
-          showError("文档解析失败：" + (res.error || "未知错误"));
-          return;
-        }
-        var text = res.text || "";
+      callParseFile(file.name, arrayBufferToB64(rd.result)).then(function(text){
         if (!text.trim()){
           state.pendingAttachment = null;
           refreshAll();
@@ -833,6 +1028,10 @@ function onFileSelected(file){
         if (text.length > MAX_TEXT_CHARS) text = text.slice(0, MAX_TEXT_CHARS) + "\n…（内容过长已截断）";
         state.pendingAttachment = { kind: "doc", name: file.name, text: text };
         refreshAll();
+      }).catch(function(err){
+        state.pendingAttachment = null;
+        refreshAll();
+        showError("文档解析失败：" + err.message);
       });
     };
     rd.readAsArrayBuffer(file);
@@ -841,20 +1040,23 @@ function onFileSelected(file){
   showError("暂不支持该文件类型。支持：图片、TXT/MD/CSV/JSON、PDF、Word(docx)。");
 }
 
-/* ================= 事件处理（改数据 → refreshAll / 局部更新） ================= */
+/* ================= 事件处理（改数据 → refreshAll） ================= */
 function onSend(text){
   text = (text || "").trim();
   var att = state.pendingAttachment;
   if ((!text && !att) || state.streaming) return;
-  if (!state.settings.apiKey){
-    showError("请先点击右上角设置按钮，填写 DeepSeek API Key。");
-    openSettings();
+  if (!state.server.online){
+    showError("本地服务未连接，请确认 python main.py 已启动。");
     return;
   }
-  if (att && att.kind === "image" &&
-      (state.settings.visionProvider === "none" || !state.settings.visionKey)){
-    showError("上传图片需要先配置视觉模型：右上角 设置 → 图片解析，选择服务商并填写其 API Key。");
-    openSettings();
+  if (!state.server.hasDeepseekKey){
+    showError("服务端未配置 DeepSeek Key：请编辑 python_app/config.json 后重启服务。");
+    openPanel(el.settingsPanel);
+    return;
+  }
+  if (att && att.kind === "image" && !state.server.hasVisionKey){
+    showError("上传图片需要服务端配置视觉模型 Key（config.json 的 vision_key）。");
+    openPanel(el.settingsPanel);
     return;
   }
   if (att && (att.kind === "text" || att.kind === "doc") && !att.text){
@@ -869,7 +1071,8 @@ function onSend(text){
   if (att){
     msg.attachment = { name: att.name, thumb: att.thumb || null, kind: att.kind };
     if (att.kind === "text" || att.kind === "doc"){
-      msg.apiContent = display + "\n\n【上传文件「" + att.name + "」的内容】\n" + att.text;
+      msg.apiContent = display + "\n\n【材料《" + att.name + "》全文内容】：\n" + att.text +
+        "\n【材料《" + att.name + "》内容结束】";
     }
   }
   s.messages.push(msg);
@@ -883,17 +1086,16 @@ function onSend(text){
   refreshAll();
 
   if (att && att.kind === "image"){
-    // 第一步：视觉模型识别图片文字
     var ob = appendMessageBubble("assistant", "正在识别图片中的文字，请稍候…");
     scrollToBottom();
     callVisionExtract(att.dataUrl).then(function(extracted){
       var ocrMsg = "【图片识别结果】\n" + extracted;
       ob.textContent = ocrMsg;
-      msg.apiContent = display + "\n\n【上传图片「" + att.name + "」的识别内容】\n" + extracted;
+      msg.apiContent = display + "\n\n【材料《" + att.name + "》全文内容】：\n" + extracted +
+        "\n【材料《" + att.name + "》内容结束】";
       s.messages.push({ role: "assistant", content: ocrMsg });
       saveSessions();
       scrollToBottom();
-      // 第二步：DeepSeek 基于识别文字进行分析
       runAssistantStream(s);
     }).catch(function(err){
       state.streaming = false;
@@ -920,7 +1122,7 @@ function runAssistantStream(s){
     finishAssistantMessage(s, full);
   }).catch(function(err){
     finishAssistantMessage(s, "");
-    showError(err.message || "请求失败，请检查网络或 API Key。");
+    showError(err.message || "请求失败，请检查网络或服务日志。");
   });
 }
 function finishAssistantMessage(session, full){
@@ -930,6 +1132,31 @@ function finishAssistantMessage(session, full){
   state.streaming = false;
   saveSessions();
   refreshAll();
+  if (full){
+    reportLearn(session);            // 自主学习：沉淀本轮经验
+    attachLegalRefs(session);        // 回答依据：检索相关法条并挂在气泡下方
+  }
+}
+/* 取最后一轮用户提问，检索关联法条（与注入 LLM 的同一检索结果），挂到最后一条回答上 */
+function attachLegalRefs(session){
+  if (!state.server.online) return;
+  var query = "";
+  for (var i=session.messages.length-1;i>=0;i--){
+    if (session.messages[i].role === "user"){ query = session.messages[i].content; break; }
+  }
+  if (!query) return;
+  apiGet("/api/law_retrieve?q=" + encodeURIComponent(query)).then(function(d){
+    var refs = d.refs || [];
+    if (!refs.length) return;
+    for (var j=session.messages.length-1;j>=0;j--){
+      if (session.messages[j].role === "assistant"){
+        session.messages[j].legalRefs = refs;
+        break;
+      }
+    }
+    saveSessions();
+    refreshAll();
+  }).catch(function(){ /* 检索失败不影响回答 */ });
 }
 function onSwitchSession(id){
   state.currentId = id;
@@ -968,63 +1195,29 @@ function onExportAll(){
     JSON.stringify(state.sessions, null, 2), "application/json");
 }
 function onClearAll(){
-  confirmDialog("清空全部数据", "将删除所有会话记录与设置（包括 API Key），不可恢复。确定继续吗？", function(){
+  confirmDialog("清空全部会话", "将删除浏览器中的全部会话记录（服务端经验库不受影响），不可恢复。确定继续吗？", function(){
     localStorage.removeItem(LS_SESSIONS);
-    localStorage.removeItem(LS_SETTINGS);
     state.sessions = [];
     state.currentId = null;
-    state.settings = { apiKey:"", model:"deepseek-chat" };
-    el.apiKeyInput.value = "";
-    closeSettings();
+    createSession();
+    closeDrawers();
     refreshAll();
   });
 }
-function onTestKey(){
-  el.testResult.style.color = "var(--muted)";
-  el.testResult.textContent = "测试中…";
-  var key = el.apiKeyInput.value.trim();
-  if (!key){ el.testResult.style.color = "var(--danger)"; el.testResult.textContent = "请先填写 API Key"; return; }
-  if (window.dlcBridge){
-    window.dlcBridge.chatStart({
-      apiKey: key,
-      model: el.modelSelect.value,
-      messages: [{role:"user", content:"你好"}],
-      stream: false,
-      maxTokens: 5
-    }, {
-      onChunk: function(){},
-      onDone: function(){
-        el.testResult.style.color = "#059669";
-        el.testResult.textContent = "连接成功，Key 可用 ✓";
-      },
-      onError: function(msg){
-        el.testResult.style.color = "var(--danger)";
-        el.testResult.textContent = "连接失败：" + msg;
-      }
-    });
-    return;
-  }
-  fetch(API_URL, {
-    method: "POST",
-    headers: {"Content-Type":"application/json", "Authorization":"Bearer " + key},
-    body: JSON.stringify({
-      model: el.modelSelect.value,
-      messages: [{role:"user", content:"你好"}],
-      max_tokens: 5
-    })
-  }).then(function(r){
-    if (r.ok){
-      el.testResult.style.color = "#059669";
-      el.testResult.textContent = "连接成功，Key 可用 ✓";
-    } else {
-      return r.text().then(function(t){
-        el.testResult.style.color = "var(--danger)";
-        el.testResult.textContent = "连接失败：" + r.status + " " + t.slice(0,120);
-      });
-    }
+function onUpdateLaws(){
+  el.updateLawsBtn.disabled = true;
+  el.updateLawsBtn.textContent = "更新中（后台）…";
+  apiPost("/api/laws/update", {}).then(function(){
+    showError("");
+    setTimeout(function(){
+      el.updateLawsBtn.disabled = false;
+      el.updateLawsBtn.textContent = "立即更新法律库";
+      refreshServerStatus().then(renderSettingsPanel);
+    }, 30000);
   }).catch(function(e){
-    el.testResult.style.color = "var(--danger)";
-    el.testResult.textContent = "网络错误：" + e.message + "（若浏览器跨域受限，见 README 说明）";
+    el.updateLawsBtn.disabled = false;
+    el.updateLawsBtn.textContent = "立即更新法律库";
+    showError("触发更新失败：" + e.message);
   });
 }
 
@@ -1051,18 +1244,17 @@ function confirmDialog(title, text, onOk){
     el.modalOverlay.classList.remove("show");
   };
 }
-function openSettings(){
-  el.apiKeyInput.value = state.settings.apiKey;
-  el.modelSelect.value = state.settings.model;
-  el.visionProviderSelect.value = state.settings.visionProvider || "none";
-  el.visionKeyInput.value = state.settings.visionKey || "";
-  el.testResult.textContent = "";
-  el.settingsPanel.classList.add("show");
-  el.settingsOverlay.classList.add("show");
+function openPanel(panel){
+  closeDrawers();
+  panel.classList.add("show");
+  el.drawerOverlay.classList.add("show");
+  if (panel === el.settingsPanel) renderSettingsPanel();
+  if (panel === el.lawPanel) renderLawList();
 }
-function closeSettings(){
+function closeDrawers(){
   el.settingsPanel.classList.remove("show");
-  el.settingsOverlay.classList.remove("show");
+  el.lawPanel.classList.remove("show");
+  el.drawerOverlay.classList.remove("show");
 }
 function autoResizeInput(){
   el.inputBox.style.height = "auto";
@@ -1079,24 +1271,32 @@ el.inputBox.addEventListener("keydown", function(e){
 });
 el.inputBox.addEventListener("input", autoResizeInput);
 el.newSessionBtn.addEventListener("click", onNewSession);
-el.settingsBtn.addEventListener("click", openSettings);
-el.settingsOverlay.addEventListener("click", closeSettings);
-el.saveSettingsBtn.addEventListener("click", function(){
-  state.settings.apiKey = el.apiKeyInput.value.trim();
-  state.settings.model = el.modelSelect.value;
-  state.settings.visionProvider = el.visionProviderSelect.value;
-  state.settings.visionKey = el.visionKeyInput.value.trim();
-  saveSettings();
-  closeSettings();
-  showError("");
+el.settingsBtn.addEventListener("click", function(){ openPanel(el.settingsPanel); });
+el.statusChip.addEventListener("click", function(){ openPanel(el.settingsPanel); });
+el.lawBtn.addEventListener("click", function(){ openPanel(el.lawPanel); });
+el.drawerOverlay.addEventListener("click", closeDrawers);
+el.lawBackBtn.addEventListener("click", renderLawList);
+el.lawSearchBtn.addEventListener("click", function(){
+  var q = el.lawSearchInput.value.trim();
+  if (q) renderLawSearch(q);
 });
+el.lawSearchInput.addEventListener("keydown", function(e){
+  if (e.key === "Enter"){
+    var q = el.lawSearchInput.value.trim();
+    if (q) renderLawSearch(q);
+  }
+});
+el.modelSelect.addEventListener("change", function(){
+  state.settings.model = el.modelSelect.value;
+  saveSettings();
+});
+el.updateLawsBtn.addEventListener("click", onUpdateLaws);
 el.attachBtn.addEventListener("click", function(){ el.fileInput.click(); });
 el.fileInput.addEventListener("change", function(){
   var f = el.fileInput.files && el.fileInput.files[0];
-  el.fileInput.value = ""; // 允许重复选择同一文件
+  el.fileInput.value = "";
   onFileSelected(f);
 });
-el.testKeyBtn.addEventListener("click", onTestKey);
 el.exportBtn.addEventListener("click", onExportCurrent);
 el.exportAllBtn.addEventListener("click", onExportAll);
 el.clearAllBtn.addEventListener("click", onClearAll);
@@ -1108,13 +1308,16 @@ function syncMenuBtn(){
 }
 window.addEventListener("resize", syncMenuBtn);
 
-/* ================= 初始化（固定顺序：加载数据 → 初始化状态 → refreshAll） ================= */
+/* ================= 初始化（固定顺序：加载数据 → 初始化状态 → refreshAll → 拉服务状态） ================= */
 loadState();
 syncMenuBtn();
 if (state.sessions.length === 0){
   createSession();
 }
 refreshAll();
+refreshServerStatus();
+/* 周期心跳：后端（Python 服务）掉线时状态芯片及时变红 */
+setInterval(refreshServerStatus, 30000);
 
 })();
 </script>

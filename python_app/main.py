@@ -26,7 +26,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UI_FILE = os.path.join(BASE_DIR, "ui", "index.html")
 CONFIG_FILE = os.path.join(BASE_DIR, "config.json")
-VERSION = "2.0.0"
+VERSION = "2.1.0"
 
 DEEPSEEK_URL = "https://api.deepseek.com/chat/completions"
 VISION_PRESETS = {
@@ -400,11 +400,32 @@ class Handler(BaseHTTPRequestHandler):
 
 
 # ---------------------------------------------------------------- 启动
-def start_server():
-    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+def start_server(port=0):
+    server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
     port = server.server_address[1]
     threading.Thread(target=server.serve_forever, daemon=True).start()
     return server, port
+
+
+def _parse_args(argv):
+    """极简参数解析：--no-window / --port N / --port-file PATH"""
+    args = {"no_window": False, "port": 0, "port_file": ""}
+    i = 0
+    while i < len(argv):
+        a = argv[i]
+        if a == "--no-window":
+            args["no_window"] = True
+        elif a == "--port" and i + 1 < len(argv):
+            try:
+                args["port"] = int(argv[i + 1])
+            except ValueError:
+                pass
+            i += 1
+        elif a == "--port-file" and i + 1 < len(argv):
+            args["port_file"] = argv[i + 1]
+            i += 1
+        i += 1
+    return args
 
 
 def main():
@@ -414,7 +435,14 @@ def main():
         print("[提示] 法律库为空，正在后台首次构建……")
     maybe_update_legal_db()  # 过旧自动更新（自主学习能力）
 
-    server, port = start_server()
+    opts = _parse_args(sys.argv[1:])
+    server, port = start_server(opts["port"])
+    if opts["port_file"]:
+        try:
+            with open(opts["port_file"], "w", encoding="ascii") as f:
+                f.write(str(port))
+        except OSError as e:
+            print("[警告] 无法写端口文件：%s" % e)
     url = "http://127.0.0.1:%d/" % port
     print("=" * 56)
     print("  婚讼管家 · Python 版 v%s" % VERSION)
@@ -426,7 +454,7 @@ def main():
         "已配置" if cfg("vision_key") else "未配置"))
     print("=" * 56)
 
-    if "--no-window" in sys.argv:
+    if opts["no_window"]:
         print("已启动（--no-window），按 Ctrl+C 停止。")
         try:
             while True:

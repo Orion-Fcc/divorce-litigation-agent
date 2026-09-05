@@ -1316,6 +1316,8 @@ if (state.sessions.length === 0){
 }
 refreshAll();
 refreshServerStatus();
+/* 周期心跳：后端（Python 服务）掉线时状态芯片及时变红 */
+setInterval(refreshServerStatus, 30000);
 
 })();
 </script>
