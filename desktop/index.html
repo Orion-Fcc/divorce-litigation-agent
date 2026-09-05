@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>婚讼管家 · 离婚诉讼智能顾问</title>
+<style>
+  :root{
+    --primary:#1d4ed8; --primary-soft:#eff6ff; --danger:#dc2626; --danger-soft:#fef2f2;
+    --bg:#f6f7f9; --card:#ffffff; --border:#e5e7eb; --text:#1f2937; --muted:#6b7280;
+    --radius:14px; --shadow:0 1px 3px rgba(0,0,0,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--text);font-size:16px;line-height:1.65;
+    display:flex;flex-direction:column;
+  }
+  /* ===== 顶栏 ===== */
+  header{
+    background:var(--card);border-bottom:1px solid var(--border);
+    padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;
+    position:sticky;top:0;z-index:20;
+  }
+  .logo{
+    width:36px;height:36px;border-radius:10px;background:var(--primary-soft);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .logo svg{width:22px;height:22px}
+  header h1{font-size:17px;font-weight:600}
+  header .sub{font-size:12px;color:var(--muted)}
+  .header-actions{margin-left:auto;display:flex;gap:8px}
+  .icon-btn{
+    min-width:44px;min-height:44px;border:1px solid var(--border);border-radius:10px;
+    background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;
+    padding:8px;color:var(--text);gap:6px;font-size:14px;
+  }
+  .icon-btn:hover{background:var(--primary-soft);border-color:var(--primary)}
+  .icon-btn svg{width:18px;height:18px}
+  /* ===== 主区域 ===== */
+  main{flex:1;display:flex;min-height:0;max-width:1080px;width:100%;margin:0 auto}
+  /* 侧边栏 */
+  aside{
+    width:250px;flex-shrink:0;border-right:1px solid var(--border);background:var(--card);
+    display:flex;flex-direction:column;padding:12px;gap:8px;
+  }
+  #newSessionBtn{
+    width:100%;min-height:44px;border:1px dashed var(--primary);color:var(--primary);
+    background:var(--primary-soft);border-radius:10px;cursor:pointer;font-size:15px;font-weight:500;
+  }
+  #newSessionBtn:hover{background:#dbeafe}
+  #sessionList{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
+  .session-item{
+    padding:10px 12px;border-radius:10px;cursor:pointer;font-size:14px;
+    display:flex;align-items:center;gap:6px;border:1px solid transparent;
+  }
+  .session-item:hover{background:var(--bg)}
+  .session-item.active{background:var(--primary-soft);border-color:var(--primary)}
+  .session-item .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .session-item .del{color:var(--muted);font-size:16px;padding:2px 6px;border-radius:6px}
+  .session-item .del:hover{color:var(--danger);background:var(--danger-soft)}
+  /* 聊天区 */
+  #chatArea{flex:1;display:flex;flex-direction:column;min-width:0}
+  #messages{flex:1;overflow-y:auto;padding:16px}
+  .msg{display:flex;margin-bottom:18px;gap:10px}
+  .msg .avatar{
+    width:34px;height:34px;border-radius:50%;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;
+  }
+  .msg.user .avatar{background:var(--primary)}
+  .msg.assistant .avatar{background:#0f766e}
+  .msg .bubble{
+    max-width:78%;padding:12px 14px;border-radius:var(--radius);background:var(--card);
+    box-shadow:var(--shadow);font-size:15px;white-space:pre-wrap;word-break:break-word;
+  }
+  .msg.user{flex-direction:row-reverse}
+  .msg.user .bubble{background:var(--primary);color:#fff}
+  .msg.assistant .bubble{line-height:1.7}
+  .msg .bubble .cursor{display:inline-block;width:8px;height:16px;background:var(--primary);animation:blink 1s infinite;vertical-align:text-bottom}
+  @keyframes blink{50%{opacity:0}}
+  /* 快捷问题 */
+  #quickPrompts{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+  .chip{
+    border:1px solid var(--border);background:var(--card);border-radius:999px;
+    padding:9px 16px;font-size:14px;cursor:pointer;min-height:44px;
+  }
+  .chip:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-soft)}
+  /* 欢迎卡 */
+  .welcome{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    padding:20px;margin-bottom:8px;
+  }
+  .welcome h2{font-size:18px;margin-bottom:8px}
+  .welcome p{font-size:14px;color:var(--muted);margin-bottom:6px}
+  .disclaimer{
+    background:var(--danger-soft);border:1px solid #fecaca;color:#991b1b;
+    border-radius:var(--radius);padding:10px 14px;font-size:13px;margin:12px 16px 0;
+  }
+  /* 输入区 */
+  #inputBar{
+    border-top:1px solid var(--border);background:var(--card);padding:12px 16px;
+    display:flex;gap:10px;align-items:flex-end;flex-shrink:0;
+    padding-bottom:calc(12px + env(safe-area-inset-bottom));
+  }
+  #inputBox{
+    flex:1;border:1px solid var(--border);border-radius:12px;padding:12px 14px;
+    font-size:16px;resize:none;max-height:140px;line-height:1.5;font-family:inherit;
+  }
+  #inputBox:focus{outline:none;border-color:var(--primary)}
+  #sendBtn{
+    min-width:44px;min-height:48px;border:none;border-radius:12px;background:var(--primary);
+    color:#fff;font-size:15px;cursor:pointer;padding:0 20px;font-weight:500;
+  }
+  #sendBtn:disabled{background:#93c5fd;cursor:not-allowed}
+  /* 设置抽屉 */
+  #settingsOverlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:40;display:none;
+  }
+  #settingsOverlay.show{display:block}
+  #settingsPanel{
+    position:fixed;top:0;right:-340px;width:320px;max-width:90vw;height:100%;
+    background:var(--card);z-index:50;transition:right .25s ease;
+    padding:20px;overflow-y:auto;box-shadow:-2px 0 12px rgba(0,0,0,.08);
+  }
+  #settingsPanel.show{right:0}
+  #settingsPanel h2{font-size:17px;margin-bottom:16px}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:14px;font-weight:500;margin-bottom:6px}
+  .field input,.field select{
+    width:100%;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:16px;
+  }
+  .field .hint{font-size:12px;color:var(--muted);margin-top:4px}
+  .btn-row{display:flex;gap:8px;margin-top:8px}
+  .btn{
+    min-height:44px;border-radius:10px;border:1px solid var(--border);cursor:pointer;
+    padding:0 16px;font-size:14px;background:var(--card);
+  }
+  .btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+  .btn.danger{background:var(--danger);color:#fff;border-color:var(--danger)}
+  .btn:hover{opacity:.9}
+  /* 弹窗 */
+  #modalOverlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:60;display:none;
+    align-items:center;justify-content:center;padding:20px;
+  }
+  #modalOverlay.show{display:flex}
+  .modal{
+    background:var(--card);border-radius:var(--radius);padding:22px;max-width:400px;width:100%;
+  }
+  .modal h3{font-size:16px;margin-bottom:10px}
+  .modal p{font-size:14px;color:var(--muted);margin-bottom:16px}
+  /* 错误提示条 */
+  #errorBar{
+    display:none;background:var(--danger-soft);color:var(--danger);border:1px solid #fecaca;
+    margin:0 16px;border-radius:10px;padding:10px 14px;font-size:13px;
+  }
+  /* 移动端 */
+  @media (max-width:768px){
+    aside{display:none}
+    .msg .bubble{max-width:88%}
+    header h1{font-size:15px}
+  }
+  /* 移动端侧边栏改为浮层 */
+  @media (max-width:768px){
+    aside.mobile-open{
+      display:flex;position:fixed;left:0;top:0;height:100%;z-index:55;
+      box-shadow:2px 0 12px rgba(0,0,0,.15);
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <button class="icon-btn" id="menuBtn" title="会话列表" style="display:none">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  </button>
+  <div class="logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3v18"/><path d="M8 21h8"/><path d="M3 7h18"/><path d="M5 7l-2 6a3 3 0 0 0 6 0L7 7"/><path d="M17 7l-2 6a3 3 0 0 0 6 0l-2-6"/>
+    </svg>
+  </div>
+  <div>
+    <h1>婚讼管家</h1>
+    <div class="sub">离婚诉讼全流程智能顾问 · 独立运行版</div>
+  </div>
+  <div class="header-actions">
+    <button class="icon-btn" id="exportBtn" title="导出当前会话">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+    </button>
+    <button class="icon-btn" id="settingsBtn" title="设置">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="disclaimer">
+  本应用为法律信息参考工具，不构成正式法律意见，不能替代执业律师。涉及重大决策请咨询当地律师；遇家暴请先报警并拨打 110 / 妇联热线 12338 / 法律援助 12348。
+</div>
+
+<main>
+  <aside id="sidebar">
+    <button id="newSessionBtn">+ 新会话</button>
+    <div id="sessionList"></div>
+  </aside>
+
+  <div id="chatArea">
+    <div id="errorBar"></div>
+    <div id="messages"></div>
+    <div id="inputBar">
+      <textarea id="inputBox" rows="1" placeholder="描述你的情况，例如：我们结婚8年，有一套房和一个5岁的孩子…（Shift+Enter 换行）"></textarea>
+      <button id="sendBtn">发送</button>
+    </div>
+  </div>
+</main>
+
+<!-- 设置抽屉 -->
+<div id="settingsOverlay"></div>
+<div id="settingsPanel">
+  <h2>设置</h2>
+  <div class="field">
+    <label>DeepSeek API Key</label>
+    <input type="password" id="apiKeyInput" placeholder="sk-...">
+    <div class="hint">仅保存在你的浏览器 localStorage 中，不会上传到任何第三方。可在 platform.deepseek.com 申请。</div>
+  </div>
+  <div class="field">
+    <label>模型</label>
+    <select id="modelSelect">
+      <option value="deepseek-chat">deepseek-chat（通用，推荐）</option>
+      <option value="deepseek-reasoner">deepseek-reasoner（深度推理）</option>
+    </select>
+  </div>
+  <div class="btn-row">
+    <button class="btn primary" id="saveSettingsBtn">保存</button>
+    <button class="btn" id="testKeyBtn">测试连接</button>
+  </div>
+  <div id="testResult" style="font-size:13px;margin-top:8px"></div>
+  <hr style="margin:18px 0;border:none;border-top:1px solid var(--border)">
+  <h2>数据管理</h2>
+  <div class="btn-row">
+    <button class="btn" id="exportAllBtn">导出全部会话 JSON</button>
+  </div>
+  <div class="btn-row" style="margin-top:8px">
+    <button class="btn danger" id="clearAllBtn">清空全部数据</button>
+  </div>
+</div>
+
+<!-- 确认弹窗 -->
+<div id="modalOverlay">
+  <div class="modal">
+    <h3 id="modalTitle"></h3>
+    <p id="modalText"></p>
+    <div class="btn-row" style="justify-content:flex-end">
+      <button class="btn" id="modalCancelBtn">取消</button>
+      <button class="btn danger" id="modalOkBtn">确认</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ================= 常量 ================= */
+var LS_PREFIX = "dlc_";
+var LS_SESSIONS = LS_PREFIX + "sessions";
+var LS_SETTINGS = LS_PREFIX + "settings";
+var API_URL = "https://api.deepseek.com/chat/completions";
+
+var QUICK_PROMPTS = [
+  "请帮我梳理离婚诉讼的完整流程和时间线，以及现在最该做的三件事",
+  "帮我整理一份离婚诉讼的财产证据清单和过错证据收集要点",
+  "孩子抚养权一般怎么判？帮我梳理争取抚养权的准备要点",
+  "帮我起草一份离婚起诉状的结构框架"
+];
+
+var SYSTEM_PROMPT = [
+"你是「婚讼管家」，一位中立、专业、情绪稳定的婚姻家事诉讼顾问。你不代表原告也不代表被告，而是站在事实与法律一边，帮助当事人理清离婚纠纷中的程序、证据、财产、抚养等问题。你依据《中华人民共和国民法典》（婚姻家庭编及司法解释）、《中华人民共和国民事诉讼法》等现行有效的中国法律提供法律信息与流程指引，而非正式法律意见。",
+"",
+"【核心能力】",
+"1. 诉讼全流程指引：协议离婚 vs 诉讼离婚选择、管辖法院、立案、应诉答辩、调解、开庭、判决、上诉、执行，逐阶段说明程序要点、法定期限（一审普通程序6个月、简易程序3个月、上诉期15日、判决不准离婚后6个月内不得再次起诉等）与常见误区。",
+"2. 证据体系梳理：按「感情破裂、财产、债务、过错、抚养能力」五大类定制证据清单，说明证据三性（真实性、合法性、关联性）要求和合法取证边界。",
+"3. 财产分割分析：夫妻共同财产与个人财产界定（婚前财产、婚后所得、父母出资购房等），分割原则（照顾子女、女方和无过错方权益），彩礼返还、房产加名、股权分割等高频争议点。",
+"4. 抚养权与抚养费准备：不满2周岁原则上随母、8周岁以上尊重子女意愿、2-8周岁按最有利于未成年子女原则；抚养费一般为月收入20%-30%；探望权安排。",
+"5. 文书思路与谈判辅助：起诉状、答辩状、证据目录、财产申报的结构框架（提供模板思路，不代替律师出具正式文书），调解谈判要点与预期管理。",
+"",
+"【工作流程】",
+"1. 先简要回应用户情绪（一句话共情），再用2-3个澄清问题确认关键事实：婚龄、子女及年龄、财产概况、当前阶段、起诉方还是应诉方。",
+"2. 定位用户所处流程节点，给出「必须知道的事+必须做的事+常见错误」。",
+"3. 结构化输出：程序类用阶段时间线；证据类用分类清单；财产类用财产清单表+分割逻辑。引用法条注明出处（如《民法典》第1079条），并说明这是现行规定的一般规则，个案可能不同。",
+"4. 每次回答结尾固定包含两块：【下一步行动】（≤3条，按优先级）和【风险与边界提示】（含：本回答为法律信息参考，不构成正式法律意见，重要决策请咨询执业律师）。",
+"",
+"【表达规范】",
+"- 使用简体中文，语言克制专业，不评判婚姻对错，不做道德说教。用户情绪激动时先共情一句话再进入分析，不催促做决定。",
+"- 不做结果承诺，不宣称「你一定能赢」，只做基于一般规则的可能性分析。",
+"",
+"【合规底线（不可协商）】",
+"- 不得协助隐匿、转移、变卖夫妻共同财产或伪造债务——遇到此类请求明确拒绝，并说明该行为在分割时可能少分或不分（《民法典》第1092条）及虚假诉讼的法律风险。",
+"- 不得指导非法取证（侵入住宅、非法窃听窃照、窃取他人通讯记录），只讲合法途径（自行留存的聊天记录、依法报警记录、公证等）。",
+"- 不得教唆伪造证据、虚假陈述、干扰证人；不得协助抢夺、藏匿未成年子女制造既成事实，但可客观说明此类行为对抚养权判决的不利影响。",
+"- 涉及家庭暴力、人身安全时，优先提示申请人身安全保护令（《反家庭暴力法》）、报警、就医验伤，建议联系妇联12338或法律援助12348。",
+"- 各地法院裁量存在差异，涉及具体金额与结果预判时提示用户咨询受诉法院辖区的本地律师。"
+].join("\n");
+
+/* ================= 状态 ================= */
+var state = {
+  sessions: [],          // [{id, title, createdAt, messages:[{role,content}]}]
+  currentId: null,
+  settings: { apiKey: "", model: "deepseek-chat" },
+  streaming: false
+};
+
+/* ================= DOM 引用 ================= */
+var el = {
+  messages: document.getElementById("messages"),
+  inputBox: document.getElementById("inputBox"),
+  sendBtn: document.getElementById("sendBtn"),
+  sessionList: document.getElementById("sessionList"),
+  newSessionBtn: document.getElementById("newSessionBtn"),
+  settingsBtn: document.getElementById("settingsBtn"),
+  settingsPanel: document.getElementById("settingsPanel"),
+  settingsOverlay: document.getElementById("settingsOverlay"),
+  apiKeyInput: document.getElementById("apiKeyInput"),
+  modelSelect: document.getElementById("modelSelect"),
+  saveSettingsBtn: document.getElementById("saveSettingsBtn"),
+  testKeyBtn: document.getElementById("testKeyBtn"),
+  testResult: document.getElementById("testResult"),
+  exportBtn: document.getElementById("exportBtn"),
+  exportAllBtn: document.getElementById("exportAllBtn"),
+  clearAllBtn: document.getElementById("clearAllBtn"),
+  menuBtn: document.getElementById("menuBtn"),
+  sidebar: document.getElementById("sidebar"),
+  errorBar: document.getElementById("errorBar"),
+  modalOverlay: document.getElementById("modalOverlay"),
+  modalTitle: document.getElementById("modalTitle"),
+  modalText: document.getElementById("modalText"),
+  modalOkBtn: document.getElementById("modalOkBtn"),
+  modalCancelBtn: document.getElementById("modalCancelBtn")
+};
+
+/* ================= 存储层（只负责读写） ================= */
+function loadState(){
+  try {
+    var s = localStorage.getItem(LS_SESSIONS);
+    if (s) {
+      var parsed = JSON.parse(s);
+      if (parsed && Array.isArray(parsed.sessions)) {
+        state.sessions = parsed.sessions;
+        state.currentId = parsed.currentId || null;
+      }
+    }
+  } catch(e){ /* 忽略损坏数据 */ }
+  try {
+    var st = localStorage.getItem(LS_SETTINGS);
+    if (st) {
+      var ps = JSON.parse(st);
+      if (ps) {
+        state.settings.apiKey = ps.apiKey || "";
+        state.settings.model = ps.model || "deepseek-chat";
+      }
+    }
+  } catch(e){ /* 忽略 */ }
+}
+function saveSessions(){
+  localStorage.setItem(LS_SESSIONS, JSON.stringify({
+    sessions: state.sessions,
+    currentId: state.currentId
+  }));
+}
+function saveSettings(){
+  localStorage.setItem(LS_SETTINGS, JSON.stringify(state.settings));
+}
+
+/* ================= 计算层 ================= */
+function getCurrentSession(){
+  for (var i=0;i<state.sessions.length;i++){
+    if (state.sessions[i].id === state.currentId) return state.sessions[i];
+  }
+  return null;
+}
+function createSession(){
+  var s = {
+    id: "s_" + Date.now() + "_" + Math.random().toString(36).slice(2,7),
+    title: "新会话",
+    createdAt: new Date().toISOString(),
+    messages: []
+  };
+  state.sessions.unshift(s);
+  state.currentId = s.id;
+  saveSessions();
+  return s;
+}
+function buildApiMessages(session){
+  var msgs = [{role:"system", content: SYSTEM_PROMPT}];
+  // 只带最近 20 条历史，控制 token
+  var history = session.messages.slice(-20);
+  for (var i=0;i<history.length;i++){
+    msgs.push({role: history[i].role, content: history[i].content});
+  }
+  return msgs;
+}
+
+/* ================= 渲染层（互不调用，由 refreshAll 统一调度） ================= */
+function renderSidebar(){
+  el.sessionList.innerHTML = "";
+  state.sessions.forEach(function(s){
+    var item = document.createElement("div");
+    item.className = "session-item" + (s.id===state.currentId ? " active" : "");
+    var title = document.createElement("span");
+    title.className = "title";
+    title.textContent = s.title;
+    var del = document.createElement("span");
+    del.className = "del";
+    del.textContent = "×";
+    del.title = "删除会话";
+    del.addEventListener("click", function(ev){
+      ev.stopPropagation();
+      onDeleteSession(s.id);
+    });
+    item.appendChild(title);
+    item.appendChild(del);
+    item.addEventListener("click", function(){ onSwitchSession(s.id); });
+    el.sessionList.appendChild(item);
+  });
+}
+function renderMessages(){
+  el.messages.innerHTML = "";
+  var s = getCurrentSession();
+  if (!s){
+    renderWelcome();
+    return;
+  }
+  if (s.messages.length === 0){
+    renderWelcome();
+    renderQuickPrompts();
+    return;
+  }
+  s.messages.forEach(function(m){ appendMessageBubble(m.role, m.content); });
+  scrollToBottom();
+}
+function renderWelcome(){
+  var w = document.createElement("div");
+  w.className = "welcome";
+  var h = document.createElement("h2");
+  h.textContent = "你好，我是婚讼管家";
+  var p1 = document.createElement("p");
+  p1.textContent = "我可以帮你梳理离婚诉讼流程、整理证据清单、分析财产分割逻辑、准备抚养权争议要点、起草文书框架。";
+  var p2 = document.createElement("p");
+  p2.textContent = "为了给出更贴合的建议，可以直接告诉我：婚龄、有无子女及年龄、大致财产情况（房产/存款/债务）、目前是考虑离婚、已起诉还是已开庭。";
+  w.appendChild(h); w.appendChild(p1); w.appendChild(p2);
+  el.messages.appendChild(w);
+}
+function renderQuickPrompts(){
+  var box = document.createElement("div");
+  box.id = "quickPrompts";
+  QUICK_PROMPTS.forEach(function(q){
+    var c = document.createElement("button");
+    c.className = "chip";
+    c.textContent = q;
+    c.addEventListener("click", function(){ onSend(q); });
+    box.appendChild(c);
+  });
+  el.messages.appendChild(box);
+}
+function refreshAll(){
+  renderSidebar();
+  renderMessages();
+  updateSendState();
+}
+function updateSendState(){
+  el.sendBtn.disabled = state.streaming;
+  el.sendBtn.textContent = state.streaming ? "思考中…" : "发送";
+}
+function appendMessageBubble(role, content){
+  var wrap = document.createElement("div");
+  wrap.className = "msg " + role;
+  var av = document.createElement("div");
+  av.className = "avatar";
+  av.textContent = role === "user" ? "我" : "讼";
+  var bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.textContent = content;
+  wrap.appendChild(av);
+  wrap.appendChild(bubble);
+  el.messages.appendChild(wrap);
+  return bubble;
+}
+function scrollToBottom(){
+  el.messages.scrollTop = el.messages.scrollHeight;
+}
+function showError(msg){
+  el.errorBar.textContent = msg;
+  el.errorBar.style.display = msg ? "block" : "none";
+}
+
+/* ================= 网络层 ================= */
+/* 双模式：桌面应用内走 Electron 主进程（无跨域限制），浏览器里走 fetch */
+function streamChat(apiMessages, onDelta){
+  if (window.dlcBridge){
+    return new Promise(function(resolve, reject){
+      var buffer = "";
+      window.dlcBridge.chatStart({
+        apiKey: state.settings.apiKey,
+        model: state.settings.model,
+        messages: apiMessages,
+        stream: true
+      }, {
+        onChunk: function(chunkStr){
+          buffer += chunkStr;
+          var lines = buffer.split("\n");
+          buffer = lines.pop(); // 最后可能是不完整行
+          for (var i=0;i<lines.length;i++){
+            var line = lines[i].trim();
+            if (!line || line.indexOf("data:") !== 0) continue;
+            var payload = line.slice(5).trim();
+            if (payload === "[DONE]") continue;
+            try {
+              var json = JSON.parse(payload);
+              var delta = json.choices && json.choices[0] && json.choices[0].delta && json.choices[0].delta.content;
+              if (delta) onDelta(delta);
+            } catch(e){ /* 忽略无法解析的行 */ }
+          }
+        },
+        onDone: function(){ resolve(); },
+        onError: function(msg){ reject(new Error(msg)); }
+      });
+    });
+  }
+  return fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + state.settings.apiKey
+    },
+    body: JSON.stringify({
+      model: state.settings.model,
+      messages: apiMessages,
+      stream: true,
+      temperature: 0.3
+    })
+  }).then(function(resp){
+    if (!resp.ok){
+      return resp.text().then(function(t){
+        var detail = "";
+        try { detail = JSON.parse(t).error.message; } catch(e){ detail = t.slice(0,200); }
+        throw new Error("API 错误 " + resp.status + "：" + detail);
+      });
+    }
+    var reader = resp.body.getReader();
+    var decoder = new TextDecoder("utf-8");
+    var buffer = "";
+    function pump(){
+      return reader.read().then(function(result){
+        if (result.done) return;
+        buffer += decoder.decode(result.value, {stream:true});
+        var lines = buffer.split("\n");
+        buffer = lines.pop(); // 最后可能是不完整行
+        for (var i=0;i<lines.length;i++){
+          var line = lines[i].trim();
+          if (!line || line.indexOf("data:") !== 0) continue;
+          var payload = line.slice(5).trim();
+          if (payload === "[DONE]") continue;
+          try {
+            var json = JSON.parse(payload);
+            var delta = json.choices && json.choices[0] && json.choices[0].delta && json.choices[0].delta.content;
+            if (delta) onDelta(delta);
+          } catch(e){ /* 忽略无法解析的行 */ }
+        }
+        return pump();
+      });
+    }
+    return pump();
+  });
+}
+
+/* ================= 事件处理（改数据 → refreshAll / 局部更新） ================= */
+function onSend(text){
+  text = (text || "").trim();
+  if (!text || state.streaming) return;
+  if (!state.settings.apiKey){
+    showError("请先点击右上角设置按钮，填写 DeepSeek API Key。");
+    openSettings();
+    return;
+  }
+  showError("");
+  var s = getCurrentSession();
+  if (!s) s = createSession();
+  s.messages.push({role:"user", content:text});
+  if (s.title === "新会话") s.title = text.slice(0, 18) + (text.length>18 ? "…" : "");
+  saveSessions();
+
+  el.inputBox.value = "";
+  autoResizeInput();
+  state.streaming = true;
+  refreshAll();
+
+  var bubble = appendMessageBubble("assistant", "");
+  var cursor = document.createElement("span");
+  cursor.className = "cursor";
+  bubble.appendChild(cursor);
+  var full = "";
+  streamChat(buildApiMessages(s), function(delta){
+    full += delta;
+    bubble.textContent = full;
+    bubble.appendChild(cursor);
+    scrollToBottom();
+  }).then(function(){
+    finishAssistantMessage(s, full);
+  }).catch(function(err){
+    finishAssistantMessage(s, "");
+    showError(err.message || "请求失败，请检查网络或 API Key。");
+  });
+}
+function finishAssistantMessage(session, full){
+  if (full){
+    session.messages.push({role:"assistant", content:full});
+  }
+  state.streaming = false;
+  saveSessions();
+  refreshAll();
+}
+function onSwitchSession(id){
+  state.currentId = id;
+  saveSessions();
+  refreshAll();
+  el.sidebar.classList.remove("mobile-open");
+}
+function onDeleteSession(id){
+  confirmDialog("删除会话", "确定删除该会话吗？此操作不可恢复。", function(){
+    state.sessions = state.sessions.filter(function(s){ return s.id !== id; });
+    if (state.currentId === id){
+      state.currentId = state.sessions.length ? state.sessions[0].id : null;
+    }
+    saveSessions();
+    refreshAll();
+  });
+}
+function onNewSession(){
+  createSession();
+  refreshAll();
+  el.inputBox.focus();
+}
+function onExportCurrent(){
+  var s = getCurrentSession();
+  if (!s || s.messages.length === 0){ showError("当前没有可导出的会话内容。"); return; }
+  var lines = ["# 婚讼管家 · 会话导出", "导出时间：" + new Date().toLocaleString(), ""];
+  s.messages.forEach(function(m){
+    lines.push(m.role === "user" ? "## 我" : "## 婚讼管家");
+    lines.push(m.content);
+    lines.push("");
+  });
+  downloadFile("divorce-consult-" + Date.now() + ".md", lines.join("\n"), "text/markdown");
+}
+function onExportAll(){
+  downloadFile("divorce-consult-all-" + Date.now() + ".json",
+    JSON.stringify(state.sessions, null, 2), "application/json");
+}
+function onClearAll(){
+  confirmDialog("清空全部数据", "将删除所有会话记录与设置（包括 API Key），不可恢复。确定继续吗？", function(){
+    localStorage.removeItem(LS_SESSIONS);
+    localStorage.removeItem(LS_SETTINGS);
+    state.sessions = [];
+    state.currentId = null;
+    state.settings = { apiKey:"", model:"deepseek-chat" };
+    el.apiKeyInput.value = "";
+    closeSettings();
+    refreshAll();
+  });
+}
+function onTestKey(){
+  el.testResult.style.color = "var(--muted)";
+  el.testResult.textContent = "测试中…";
+  var key = el.apiKeyInput.value.trim();
+  if (!key){ el.testResult.style.color = "var(--danger)"; el.testResult.textContent = "请先填写 API Key"; return; }
+  if (window.dlcBridge){
+    window.dlcBridge.chatStart({
+      apiKey: key,
+      model: el.modelSelect.value,
+      messages: [{role:"user", content:"你好"}],
+      stream: false,
+      maxTokens: 5
+    }, {
+      onChunk: function(){},
+      onDone: function(){
+        el.testResult.style.color = "#059669";
+        el.testResult.textContent = "连接成功，Key 可用 ✓";
+      },
+      onError: function(msg){
+        el.testResult.style.color = "var(--danger)";
+        el.testResult.textContent = "连接失败：" + msg;
+      }
+    });
+    return;
+  }
+  fetch(API_URL, {
+    method: "POST",
+    headers: {"Content-Type":"application/json", "Authorization":"Bearer " + key},
+    body: JSON.stringify({
+      model: el.modelSelect.value,
+      messages: [{role:"user", content:"你好"}],
+      max_tokens: 5
+    })
+  }).then(function(r){
+    if (r.ok){
+      el.testResult.style.color = "#059669";
+      el.testResult.textContent = "连接成功，Key 可用 ✓";
+    } else {
+      return r.text().then(function(t){
+        el.testResult.style.color = "var(--danger)";
+        el.testResult.textContent = "连接失败：" + r.status + " " + t.slice(0,120);
+      });
+    }
+  }).catch(function(e){
+    el.testResult.style.color = "var(--danger)";
+    el.testResult.textContent = "网络错误：" + e.message + "（若浏览器跨域受限，见 README 说明）";
+  });
+}
+
+/* ================= 工具函数 ================= */
+function downloadFile(name, content, type){
+  var blob = new Blob([content], {type: type + ";charset=utf-8"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+}
+function confirmDialog(title, text, onOk){
+  el.modalTitle.textContent = title;
+  el.modalText.textContent = text;
+  el.modalOverlay.classList.add("show");
+  el.modalOkBtn.onclick = function(){
+    el.modalOverlay.classList.remove("show");
+    onOk();
+  };
+  el.modalCancelBtn.onclick = function(){
+    el.modalOverlay.classList.remove("show");
+  };
+}
+function openSettings(){
+  el.apiKeyInput.value = state.settings.apiKey;
+  el.modelSelect.value = state.settings.model;
+  el.testResult.textContent = "";
+  el.settingsPanel.classList.add("show");
+  el.settingsOverlay.classList.add("show");
+}
+function closeSettings(){
+  el.settingsPanel.classList.remove("show");
+  el.settingsOverlay.classList.remove("show");
+}
+function autoResizeInput(){
+  el.inputBox.style.height = "auto";
+  el.inputBox.style.height = Math.min(el.inputBox.scrollHeight, 140) + "px";
+}
+
+/* ================= 绑定 ================= */
+el.sendBtn.addEventListener("click", function(){ onSend(el.inputBox.value); });
+el.inputBox.addEventListener("keydown", function(e){
+  if (e.key === "Enter" && !e.shiftKey){
+    e.preventDefault();
+    onSend(el.inputBox.value);
+  }
+});
+el.inputBox.addEventListener("input", autoResizeInput);
+el.newSessionBtn.addEventListener("click", onNewSession);
+el.settingsBtn.addEventListener("click", openSettings);
+el.settingsOverlay.addEventListener("click", closeSettings);
+el.saveSettingsBtn.addEventListener("click", function(){
+  state.settings.apiKey = el.apiKeyInput.value.trim();
+  state.settings.model = el.modelSelect.value;
+  saveSettings();
+  closeSettings();
+  showError("");
+});
+el.testKeyBtn.addEventListener("click", onTestKey);
+el.exportBtn.addEventListener("click", onExportCurrent);
+el.exportAllBtn.addEventListener("click", onExportAll);
+el.clearAllBtn.addEventListener("click", onClearAll);
+el.menuBtn.addEventListener("click", function(){
+  el.sidebar.classList.toggle("mobile-open");
+});
+function syncMenuBtn(){
+  el.menuBtn.style.display = window.innerWidth <= 768 ? "flex" : "none";
+}
+window.addEventListener("resize", syncMenuBtn);
+
+/* ================= 初始化（固定顺序：加载数据 → 初始化状态 → refreshAll） ================= */
+loadState();
+syncMenuBtn();
+if (state.sessions.length === 0){
+  createSession();
+}
+refreshAll();
+
+})();
+</script>
+</body>
+</html>
