@@ -1,10 +1,10 @@
-node_modules/
-desktop/node_modules/
-desktop/dist/
 *.log
-
-# Python 版
-python_app/config.json
-python_app/data/
 __pycache__/
 *.pyc
+
+# 本地密钥与数据
+python_app/config.json
+python_app/data/
+
+# 本地桌面版打包产物（含密钥，不上传）
+婚讼管家-桌面版/

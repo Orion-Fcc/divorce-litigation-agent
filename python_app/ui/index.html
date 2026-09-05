@@ -397,6 +397,7 @@ var SYSTEM_PROMPT = [
 "",
 "【表达规范】",
 "- 使用简体中文，语言克制专业，不评判婚姻对错，不做道德说教。用户情绪激动时先共情一句话再进入分析，不催促做决定。",
+"- 禁止使用任何 Markdown 符号（星号、井号、下划线等）。回答一律用纯文本：段落之间空一行，分点用数字编号（1. 2. 3.），需要强调时用【】括起来，小标题直接写中文文字。",
 "- 不做结果承诺，不宣称「你一定能赢」，只做基于一般规则的可能性分析。",
 "",
 "【合规底线（不可协商）】",
@@ -788,7 +789,8 @@ function appendMessageBubble(role, content, attachment, legalRefs){
     bubble.appendChild(nm);
   }
   if (content){
-    bubble.appendChild(document.createTextNode(content));
+    var text = role === "assistant" ? stripMarkdown(content) : content;
+    bubble.appendChild(document.createTextNode(text));
   }
   if (legalRefs && legalRefs.length){
     bubble.appendChild(buildLegalRefsBlock(legalRefs));
@@ -797,6 +799,16 @@ function appendMessageBubble(role, content, attachment, legalRefs){
   wrap.appendChild(bubble);
   el.messages.appendChild(wrap);
   return bubble;
+}
+/* 纯文本化：去掉星号/井号等 Markdown 符号（回答不显示任何星星号） */
+function stripMarkdown(t){
+  t = String(t || "");
+  t = t.replace(/\*\*(.+?)\*\*/g, "$1");          // **加粗** → 加粗
+  t = t.replace(/\*(.+?)\*/g, "$1");              // *斜体* → 斜体
+  t = t.replace(/^#{1,6}\s+/gm, "");              // 标题井号
+  t = t.replace(/`(.+?)`/g, "$1");                // 行内代码
+  t = t.replace(/^\s*[-*]\s+/gm, "");             // 无序列表符号
+  return t;
 }
 /* 法律依据卡片（折叠展示，条文+官方来源） */
 function buildLegalRefsBlock(refs){
