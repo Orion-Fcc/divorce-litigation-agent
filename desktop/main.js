@@ -9,6 +9,7 @@ const path = require("path");
 
 let backend = null;
 let win = null;
+let splash = null;
 let lastPort = 0;
 let backendLog = "";
 
@@ -48,7 +49,7 @@ function startBackend(pythonAppDir) {
   const portFile = path.join(os.tmpdir(), "hunsonguanjia-port-" + process.pid + ".txt");
   try { fs.unlinkSync(portFile); } catch (e) { /* 不存在则忽略 */ }
   const args = (py.cmd === "py" ? ["-3"] : [])
-    .concat([path.join(pythonAppDir, "main.py"), "--no-window", "--port-file", portFile]);
+    .concat([path.join(pythonAppDir, "main.py"), "--auto-init", "--no-window", "--port-file", portFile]);
   backend = spawn(py.cmd, args, {
     cwd: pythonAppDir,
     windowsHide: true,
@@ -106,6 +107,48 @@ function createWindow(port) {
   win.on("closed", () => { win = null; });
 }
 
+// 初始化闪屏：显示 Python 环境自动初始化进度（首次运行自动装依赖、构建法律库）
+function createSplash() {
+  splash = new BrowserWindow({
+    width: 460,
+    height: 320,
+    frame: false,
+    resizable: false,
+    alwaysOnTop: true,
+    backgroundColor: "#f6f7f9",
+    webPreferences: { contextIsolation: true, nodeIntegration: false }
+  });
+  const html = [
+    "<!DOCTYPE html><html><head><meta charset='utf-8'>",
+    "<style>",
+    "body{font-family:'Microsoft YaHei',sans-serif;display:flex;flex-direction:column;",
+    "align-items:center;justify-content:center;height:100vh;margin:0;background:#f6f7f9;color:#1f2937}",
+    ".spin{width:36px;height:36px;border:4px solid #dbeafe;border-top-color:#1d4ed8;",
+    "border-radius:50%;animation:r 1s linear infinite}",
+    "@keyframes r{to{transform:rotate(360deg)}}",
+    "h1{font-size:16px;margin:14px 0 4px}",
+    ".sub{font-size:12px;color:#6b7280;margin:0 0 8px}",
+    "pre{font-size:11px;color:#6b7280;max-height:120px;overflow:hidden;",
+    "white-space:pre-wrap;width:86%;background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:8px}",
+    "</style></head><body>",
+    "<div class='spin'></div><h1>婚讼管家</h1>",
+    "<p class='sub'>正在初始化 Python 环境…（首次运行约需 1-3 分钟）</p>",
+    "<pre id='log'>正在启动…</pre>",
+    "</body></html>"
+  ].join("");
+  splash.loadURL("data:text/html;charset=utf-8," + encodeURIComponent(html));
+  splash.on("closed", () => { splash = null; });
+}
+
+function updateSplashLog() {
+  if (splash && !splash.isDestroyed()) {
+    const tail = backendLog.slice(-800);
+    splash.webContents.executeJavaScript(
+      "document.getElementById('log').textContent = " + JSON.stringify(tail)
+    ).catch(() => {});
+  }
+}
+
 app.whenReady().then(() => {
   const pythonAppDir = findPythonAppDir();
   if (!pythonAppDir) {
@@ -124,8 +167,13 @@ app.whenReady().then(() => {
     app.quit();
     return;
   }
-  waitForPort(portFile, 30000, (err, port) => {
+  createSplash();
+  const logTimer = setInterval(updateSplashLog, 800);
+  // 首次运行会自动装依赖 + 构建法律库，放宽等待时间
+  waitForPort(portFile, 600000, (err, port) => {
+    clearInterval(logTimer);
     if (err) {
+      if (splash) { try { splash.close(); } catch (e) {} }
       dialog.showErrorBox(
         "婚讼管家",
         "Python 后端启动失败：" + err.message + "\n\n后端日志：\n" + backendLog.slice(-800)
@@ -133,6 +181,7 @@ app.whenReady().then(() => {
       app.quit();
       return;
     }
+    if (splash) { try { splash.close(); } catch (e) {} }
     createWindow(port);
   });
   app.on("activate", () => {

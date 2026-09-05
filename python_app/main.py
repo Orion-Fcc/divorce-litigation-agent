@@ -399,22 +399,75 @@ class Handler(BaseHTTPRequestHandler):
         self._send_json({"learned": True})
 
 
-# ---------------------------------------------------------------- 启动
-def start_server(port=0):
-    server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
-    port = server.server_address[1]
-    threading.Thread(target=server.serve_forever, daemon=True).start()
-    return server, port
+# ---------------------------------------------------------------- 自动初始化
+def auto_init():
+    """首次运行自动初始化（桌面壳 / 浏览器版一键启动都会调用）：
+    装依赖 → 生成 config.json → 构建法律库。每一步幂等，可反复执行。"""
+    import subprocess
+
+    # 1) 依赖检查与安装
+    print("[初始化] 检查 Python 依赖…", flush=True)
+    try:
+        import requests  # noqa: F401
+        print("[初始化] 依赖已就绪。", flush=True)
+    except ImportError:
+        req = os.path.join(BASE_DIR, "requirements.txt")
+        print("[初始化] 正在安装依赖（pip install -r requirements.txt），请稍候…", flush=True)
+        try:
+            r = subprocess.run([sys.executable, "-m", "pip", "install", "-r", req],
+                               capture_output=True, text=True, timeout=900)
+            if r.returncode == 0:
+                print("[初始化] 依赖安装完成。", flush=True)
+            else:
+                print("[初始化] 依赖安装失败：%s" % (r.stderr or r.stdout)[-300:], flush=True)
+        except Exception as e:
+            print("[初始化] 依赖安装异常：%s" % e, flush=True)
+
+    # 2) 生成配置（存在则不覆盖）
+    if not os.path.exists(CONFIG_FILE):
+        try:
+            import shutil
+            shutil.copyfile(os.path.join(BASE_DIR, "config.example.json"), CONFIG_FILE)
+            print("[初始化] 已生成 config.json（请用记事本填入你的 DeepSeek Key，然后重启本应用）。", flush=True)
+        except Exception as e:
+            print("[初始化] 生成 config.json 失败：%s" % e, flush=True)
+    else:
+        print("[初始化] config.json 已存在。", flush=True)
+
+    # 3) 构建法律库（首次构建约 1-2 分钟）
+    manifest_path = os.path.join(BASE_DIR, "legal_db", "manifest.json")
+    laws_ready = False
+    try:
+        with open(manifest_path, encoding="utf-8") as f:
+            laws_ready = bool(json.load(f).get("laws"))
+    except Exception:
+        laws_ready = False
+    if laws_ready:
+        print("[初始化] 法律库已就绪。", flush=True)
+        return
+    print("[初始化] 法律库为空，开始首次构建（从政府/法院官网抓取官方文本，约 1-2 分钟）…", flush=True)
+    try:
+        script = os.path.join(BASE_DIR, "tools", "build_legal_db.py")
+        r = subprocess.run([sys.executable, script], capture_output=True, text=True, timeout=1800)
+        tail = (r.stdout or "")[-600:]
+        print("[初始化] 法律库构建%s。%s" % ("完成" if r.returncode == 0 else "失败", tail), flush=True)
+    except Exception as e:
+        print("[初始化] 法律库构建异常：%s" % e, flush=True)
 
 
 def _parse_args(argv):
-    """极简参数解析：--no-window / --port N / --port-file PATH"""
-    args = {"no_window": False, "port": 0, "port_file": ""}
+    """极简参数解析：--no-window / --auto-init / --open-browser / --port N / --port-file PATH"""
+    args = {"no_window": False, "auto_init": False, "open_browser": False,
+            "port": 0, "port_file": ""}
     i = 0
     while i < len(argv):
         a = argv[i]
         if a == "--no-window":
             args["no_window"] = True
+        elif a == "--auto-init":
+            args["auto_init"] = True
+        elif a == "--open-browser":
+            args["open_browser"] = True
         elif a == "--port" and i + 1 < len(argv):
             try:
                 args["port"] = int(argv[i + 1])
@@ -428,14 +481,24 @@ def _parse_args(argv):
     return args
 
 
+# ---------------------------------------------------------------- 启动
+def start_server(port=0):
+    server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
+    port = server.server_address[1]
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    return server, port
+
+
 def main():
+    opts = _parse_args(sys.argv[1:])
     load_config()
+    if opts["auto_init"]:
+        auto_init()  # 桌面壳/浏览器版一键启动：自动装依赖→生成配置→构建法律库
     legal_db.load()
     if not legal_db.is_loaded():
-        print("[提示] 法律库为空，正在后台首次构建……")
+        print("[提示] 法律库为空，可在启动时加 --auto-init 自动构建。")
     maybe_update_legal_db()  # 过旧自动更新（自主学习能力）
 
-    opts = _parse_args(sys.argv[1:])
     server, port = start_server(opts["port"])
     if opts["port_file"]:
         try:
@@ -456,6 +519,19 @@ def main():
 
     if opts["no_window"]:
         print("已启动（--no-window），按 Ctrl+C 停止。")
+        try:
+            while True:
+                time.sleep(3600)
+        except KeyboardInterrupt:
+            pass
+        return
+
+    if opts["open_browser"]:
+        if os.environ.get("HSG_NO_BROWSER"):
+            print("[浏览器版] 服务已就绪（测试模式跳过打开浏览器）。")
+        else:
+            print("[浏览器版] 正在打开浏览器…")
+            webbrowser.open(url)
         try:
             while True:
                 time.sleep(3600)
