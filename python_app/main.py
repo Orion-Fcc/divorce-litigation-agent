@@ -26,7 +26,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UI_FILE = os.path.join(BASE_DIR, "ui", "index.html")
 CONFIG_FILE = os.path.join(BASE_DIR, "config.json")
-VERSION = "2.1.2"
+VERSION = "2.2.0"
 
 DEEPSEEK_URL = "https://api.deepseek.com/chat/completions"
 VISION_PRESETS = {

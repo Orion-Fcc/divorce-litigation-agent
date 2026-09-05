@@ -123,6 +123,107 @@ SOURCES = [
         "start_after": None,
         "article_range": None,
     },
+    # ================= 新增：更多婚姻家庭相关法律 =================
+    {
+        "id": "minfadian-jicheng",
+        "name": "中华人民共和国民法典·继承编（第六编）",
+        "short": "民法典·继承编",
+        "source_name": "湖南省人民政府门户网站（转载全国人大通过文本）",
+        "source_url": "https://www.hunan.gov.cn/zqt/zcsd/202005/t20200528_13751405.html",
+        "publish": "2020-05-28",
+        "effective": "2021-01-01",
+        "start_after": "第一千一百一十九条",
+        "article_range": [1119, 1163],
+    },
+    {
+        "id": "jicheng-jieshi-1",
+        "name": "最高人民法院关于适用《中华人民共和国民法典》继承编的解释（一）",
+        "short": "继承编司法解释（一）",
+        "source_name": "最高人民法院官网（法释〔2020〕23号）",
+        "source_url": "https://www.court.gov.cn/zixun/xiangqing/282091.html",
+        "publish": "2020-12-29",
+        "effective": "2021-01-01",
+        "start_after": "制定本解释",
+        "article_range": None,
+    },
+    {
+        "id": "jiating-jiaoyu-fa",
+        "name": "中华人民共和国家庭教育促进法",
+        "short": "家庭教育促进法",
+        "source_name": "成都市成华区人民检察院官网（转载主席令第98号）",
+        "source_url": "http://www.cdchjcy.gov.cn/wcnrfzyf/236843.jhtml",
+        "publish": "2021-10-23",
+        "effective": "2022-01-01",
+        "start_after": "全文如下",
+        "article_range": None,
+    },
+    {
+        "id": "renshen-anquan-baohuling",
+        "name": "最高人民法院关于办理人身安全保护令案件适用法律若干问题的规定",
+        "short": "人身安全保护令规定",
+        "source_name": "最高人民法院官网（法释〔2022〕17号）",
+        "source_url": "https://www.court.gov.cn/fabu/xiangqing/366021.html",
+        "publish": "2022-07-14",
+        "effective": "2022-08-01",
+        "start_after": "制定本规定",
+        "article_range": None,
+    },
+    {
+        "id": "xingfa-hunyin",
+        "name": "中华人民共和国刑法·婚姻家庭相关条文（第257-262条节选）",
+        "short": "刑法·婚姻家庭条文",
+        "source_name": "司法部普法平台（12348陕西法网，转载刑法全文，节选）",
+        "source_url": "http://ya.sn.12348.gov.cn/zixundayi/578.html",
+        "publish": "2020-12-26",
+        "effective": "2021-03-01",
+        "start_after": "第二百五十六条",
+        "article_range": [257, 262],
+    },
+    {
+        "id": "susongfei-banfa",
+        "name": "诉讼费用交纳办法（国务院令第481号）",
+        "short": "诉讼费用交纳办法",
+        "source_name": "中国政府网",
+        "source_url": "https://www.gov.cn/ziliao/flfg/2006-12/29/content_483682.htm",
+        "publish": "2006-12-19",
+        "effective": "2007-04-01",
+        "start_after": "诉讼费用交纳办法",
+        "article_range": None,
+    },
+    {
+        "id": "laonianren-quanyi-fa",
+        "name": "中华人民共和国老年人权益保障法（2018年修正）",
+        "short": "老年人权益保障法",
+        "source_name": "介休市人民政府门户网站（2018年修正本）",
+        "source_url": "https://www.jiexiu.gov.cn/Upload/main/InfoPublicity/PublicInformation/File/2021/05/27/202105271149166153.pdf",
+        "publish": "2018-12-29",
+        "effective": "2018-12-29",
+        "start_after": None,
+        "article_range": None,
+        "inline_articles": True,   # PDF 文本无换行，需放宽「第X条」匹配
+    },
+    {
+        "id": "muying-baojian-fa",
+        "name": "中华人民共和国母婴保健法（2017年修正）",
+        "short": "母婴保健法",
+        "source_name": "中国政府网",
+        "source_url": "https://www.gov.cn/guoqing/2021-10/29/content_5647619.htm",
+        "publish": "2017-11-04",
+        "effective": "2017-11-05",
+        "start_after": None,
+        "article_range": None,
+    },
+    {
+        "id": "hunyin-dengji-guifan",
+        "name": "婚姻登记工作规范（民发〔2015〕230号）",
+        "short": "婚姻登记工作规范",
+        "source_name": "中国政府网（民政部文件）",
+        "source_url": "https://www.gov.cn/zhengce/zhengceku/2015-12/12/content_5554664.htm",
+        "publish": "2015-12-08",
+        "effective": "2015-12-08",
+        "start_after": "婚姻登记工作规范",
+        "article_range": None,
+    },
 ]
 
 # 页面正文中出现以下词时，视为正文结束（其后为页脚/相关链接等噪音）
@@ -132,7 +233,14 @@ CUT_MARKERS = ["责任编辑", "【纠错】", "我要纠错", "网站纠错", "
 CN_NUM = {"零": 0, "一": 1, "二": 2, "两": 2, "三": 3, "四": 4, "五": 5,
           "六": 6, "七": 7, "八": 8, "九": 9}
 # 条文起始标记必须出现在行首，避免把正文里引用的「民法典第一千零五十一条」误当新条文
-ARTICLE_RE = re.compile(r"(?m)^(第[零一二两三四五六七八九十百千]+条)\s*")
+# 支持「第X条之一」类条文（如刑法第二百六十条之一）
+ARTICLE_RE = re.compile(
+    r"(?m)^(第[零一二两三四五六七八九十百千]+条(?:之[一二三四五六七八九十]+)?)\s*")
+# PDF 提取文本无换行时的宽松版（仅对标记 inline_articles 的来源启用）
+ARTICLE_RE_INLINE = re.compile(
+    r"(第[零一二两三四五六七八九十百千]+条(?:之[一二三四五六七八九十]+)?)\s*")
+# 纯页码行（PDF 提取常见噪音）
+PAGE_NO_RE = re.compile(r"^\s*[-—]?\s*\d+\s*[-—]?\s*$")
 
 
 def cn_to_int(s):
@@ -218,8 +326,52 @@ def _fetch_curl(url):
     return _decode(body, ctype.decode("ascii", errors="replace"))
 
 
+def _pdf_to_text(data):
+    import io
+    try:
+        from pypdf import PdfReader
+    except ImportError:
+        raise RuntimeError("PDF 来源需要 pypdf：pip install -r requirements.txt")
+    reader = PdfReader(io.BytesIO(data))
+    return "\n".join((p.extract_text() or "") for p in reader.pages)
+
+
+def _download_bytes(url):
+    import urllib.request
+    req = urllib.request.Request(url, headers={
+        "User-Agent": UA,
+        "Accept": "*/*",
+    })
+    with urllib.request.urlopen(req, timeout=90) as resp:
+        return resp.read(), resp.headers.get("Content-Type", "")
+
+
+def _fetch_pdf_curl(url):
+    import subprocess
+    import tempfile
+    tmp = os.path.join(tempfile.gettempdir(), "flk_doc.pdf")
+    out = subprocess.run(["curl", "-sL", "--max-time", "120", "--max-redirs", "10",
+                          "-A", UA, "-o", tmp, url], capture_output=True, timeout=150)
+    if out.returncode != 0 or not os.path.exists(tmp):
+        raise RuntimeError("curl 下载 PDF 失败，returncode=%s" % out.returncode)
+    try:
+        with open(tmp, "rb") as f:
+            return _pdf_to_text(f.read())
+    finally:
+        try:
+            os.remove(tmp)
+        except OSError:
+            pass
+
+
 def fetch(url):
     import urllib.request
+    if url.lower().endswith(".pdf"):
+        try:
+            data, _ = _download_bytes(url)
+        except Exception:
+            return _fetch_pdf_curl(url)
+        return _pdf_to_text(data)
     req = urllib.request.Request(url, headers={
         "User-Agent": UA,
         "Accept": "text/html,application/xhtml+xml,*/*;q=0.8",
@@ -233,15 +385,24 @@ def fetch(url):
         return _fetch_curl(url)
 
 
-def parse_articles(text, article_range=None):
+def _art_no(marker):
+    """从「第二百六十条之一」提取条号整数 260。"""
+    core = marker[1:] if marker.startswith("第") else marker
+    core = re.sub(r"之[一二三四五六七八九十]+$", "", core)
+    core = core.replace("条", "")
+    return cn_to_int(core)
+
+
+def parse_articles(text, article_range=None, inline=False):
     """把正文按「第X条」切分为条文列表。"""
-    pieces = ARTICLE_RE.split(text)
+    regex = ARTICLE_RE_INLINE if inline else ARTICLE_RE
+    pieces = regex.split(text)
     articles = []
     i = 1  # pieces[0] 是第一条之前的内容
     while i + 1 < len(pieces) + 1 and i < len(pieces):
         marker = pieces[i]
         body = pieces[i + 1] if i + 1 < len(pieces) else ""
-        no = cn_to_int(marker[1:-1])
+        no = _art_no(marker)
         if no is None:
             i += 2
             continue
@@ -251,18 +412,19 @@ def parse_articles(text, article_range=None):
             l for l in body.split("\n")
             if not (re.match(r"^第[零一二三四五六七八九十百千]+[编章节][\s　]", l.strip())
                     and len(l.strip()) <= 30 and "。" not in l)
+            and not PAGE_NO_RE.match(l)
         ).strip()
         if article_range and not (article_range[0] <= no <= article_range[1]):
             i += 2
             continue
         articles.append({"no": no, "marker": marker, "text": (marker + " " + body).strip()})
         i += 2
-    # 去掉条号重复的（页面可能重复收录）
+    # 去掉条号重复的（页面可能重复收录；按 marker 去重以保留「条之一」）
     seen, uniq = set(), []
     for a in articles:
-        if a["no"] in seen:
+        if a["marker"] in seen:
             continue
-        seen.add(a["no"])
+        seen.add(a["marker"])
         uniq.append(a)
     return uniq
 
@@ -286,7 +448,8 @@ def build_one(src):
             cut_positions = [p for p in (text.find(m) for m in CUT_MARKERS) if p > min_pos]
             if cut_positions:
                 text = text[:min(cut_positions)]
-            articles = parse_articles(text, src.get("article_range"))
+            articles = parse_articles(text, src.get("article_range"),
+                                      inline=bool(src.get("inline_articles")))
             if not articles:
                 raise RuntimeError("未解析到任何条文")
             return articles
@@ -317,9 +480,25 @@ def check_db():
 def main():
     if "--check" in sys.argv:
         sys.exit(check_db())
+    only = []
+    if "--only" in sys.argv:
+        idx = sys.argv.index("--only")
+        if idx + 1 < len(sys.argv):
+            only = [x.strip() for x in sys.argv[idx + 1].split(",") if x.strip()]
+    targets = [s for s in SOURCES if (not only or s["id"] in only)]
     os.makedirs(DB_DIR, exist_ok=True)
-    manifest = {"built_at": time.strftime("%Y-%m-%d %H:%M:%S"), "laws": []}
-    for src in SOURCES:
+
+    # 部分构建时合并已有法律（不丢失其余条目），最终按 SOURCES 顺序输出
+    existing = {}
+    mpath = os.path.join(DB_DIR, "manifest.json")
+    if only and os.path.exists(mpath):
+        try:
+            existing = {l["id"]: l for l in json.load(open(mpath, encoding="utf-8"))["laws"]}
+        except Exception:
+            existing = {}
+
+    built = {}
+    for src in targets:
         print("下载: %s ..." % src["short"], flush=True)
         try:
             articles = build_one(src)
@@ -330,17 +509,24 @@ def main():
         print("  %d 条（%s ~ %s）" % (len(articles), first["marker"], last["marker"]))
         doc = dict(src)
         doc.pop("start_after", None)
+        doc.pop("inline_articles", None)
         doc["articles"] = articles
         with open(os.path.join(DB_DIR, src["id"] + ".json"), "w", encoding="utf-8") as f:
             json.dump(doc, f, ensure_ascii=False, indent=1)
         m = dict(src)
         m.pop("start_after", None)
+        m.pop("inline_articles", None)
         m["article_count"] = len(articles)
-        manifest["laws"].append(m)
+        built[src["id"]] = m
         time.sleep(1)  # 友好抓取
-    with open(os.path.join(DB_DIR, "manifest.json"), "w", encoding="utf-8") as f:
+
+    all_laws = dict(existing)
+    all_laws.update(built)
+    manifest = {"built_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+                "laws": [all_laws[s["id"]] for s in SOURCES if s["id"] in all_laws]}
+    with open(mpath, "w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=1)
-    print("完成，共 %d 部。" % len(manifest["laws"]))
+    print("完成，共 %d 部（本次构建 %d 部）。" % (len(manifest["laws"]), len(built)))
 
 
 if __name__ == "__main__":
