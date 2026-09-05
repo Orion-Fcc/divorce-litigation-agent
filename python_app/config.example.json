@@ -1,0 +1,7 @@
+{
+  "deepseek_key": "sk-在这里填入你的DeepSeek密钥",
+  "model": "deepseek-chat",
+  "vision_provider": "glm",
+  "vision_key": "在这里填入视觉模型密钥（智谱GLM或阿里DashScope）",
+  "vision_model": ""
+}

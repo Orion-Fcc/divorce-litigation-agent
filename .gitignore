@@ -2,3 +2,9 @@ node_modules/
 desktop/node_modules/
 desktop/dist/
 *.log
+
+# Python 版
+python_app/config.json
+python_app/data/
+__pycache__/
+*.pyc

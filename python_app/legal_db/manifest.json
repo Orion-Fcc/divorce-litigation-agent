@@ -1,0 +1,107 @@
+{
+ "built_at": "2026-09-06 00:24:42",
+ "laws": [
+  {
+   "id": "minfadian-hunyin",
+   "name": "中华人民共和国民法典·婚姻家庭编（第五编）",
+   "short": "民法典·婚姻家庭编",
+   "source_name": "湖南省人民政府门户网站（转载全国人大通过文本）",
+   "source_url": "https://www.hunan.gov.cn/zqt/zcsd/202005/t20200528_13751405.html",
+   "publish": "2020-05-28",
+   "effective": "2021-01-01",
+   "article_range": [
+    1040,
+    1118
+   ],
+   "article_count": 79
+  },
+  {
+   "id": "jieshi-1",
+   "name": "最高人民法院关于适用《中华人民共和国民法典》婚姻家庭编的解释（一）",
+   "short": "婚姻家庭编司法解释（一）",
+   "source_name": "最高人民法院官网（法释〔2020〕22号）",
+   "source_url": "https://www.court.gov.cn/zixun/xiangqing/282071.html",
+   "publish": "2020-12-29",
+   "effective": "2021-01-01",
+   "article_range": null,
+   "article_count": 91
+  },
+  {
+   "id": "jieshi-2",
+   "name": "最高人民法院关于适用《中华人民共和国民法典》婚姻家庭编的解释（二）",
+   "short": "婚姻家庭编司法解释（二）",
+   "source_name": "西藏自治区司法厅官网（转载法释〔2025〕1号）",
+   "source_url": "https://sft.xizang.gov.cn/xwzx/xwfbh/202501/t20250116_457574.html",
+   "publish": "2025-01-15",
+   "effective": "2025-02-01",
+   "article_range": null,
+   "article_count": 23
+  },
+  {
+   "id": "caili-guiding",
+   "name": "最高人民法院关于审理涉彩礼纠纷案件适用法律若干问题的规定",
+   "short": "涉彩礼纠纷规定",
+   "source_name": "最高人民法院官网（法释〔2024〕1号）",
+   "source_url": "https://www.court.gov.cn/zixun/xiangqing/423442.html",
+   "publish": "2024-01-17",
+   "effective": "2024-02-01",
+   "article_range": null,
+   "article_count": 7
+  },
+  {
+   "id": "fanjiabaoli-fa",
+   "name": "中华人民共和国反家庭暴力法",
+   "short": "反家庭暴力法",
+   "source_name": "中国人大网",
+   "source_url": "http://www.npc.gov.cn/c2/c10134/201905/t20190521_260193.html",
+   "publish": "2015-12-27",
+   "effective": "2016-03-01",
+   "article_range": null,
+   "article_count": 38
+  },
+  {
+   "id": "funv-quanyi-fa",
+   "name": "中华人民共和国妇女权益保障法（2022年修订）",
+   "short": "妇女权益保障法",
+   "source_name": "深圳市人力资源和社会保障局官网（转载2022年修订文本）",
+   "source_url": "https://hrss.sz.gov.cn/ztfw/xzzfgs/sqgk/yjxx/content/post_11035339.html",
+   "publish": "2022-10-30",
+   "effective": "2023-01-01",
+   "article_range": null,
+   "article_count": 86
+  },
+  {
+   "id": "weichengnianren-fa",
+   "name": "中华人民共和国未成年人保护法（2020年修订）",
+   "short": "未成年人保护法",
+   "source_name": "国家互联网信息办公室官网（转载新华社文本）",
+   "source_url": "https://www.cac.gov.cn/2020-10/22/c_1604928959588622.htm",
+   "publish": "2020-10-17",
+   "effective": "2021-06-01",
+   "article_range": null,
+   "article_count": 132
+  },
+  {
+   "id": "hunyin-dengji-tiaoli",
+   "name": "婚姻登记条例（2025年修订）",
+   "short": "婚姻登记条例",
+   "source_name": "吉安县人民法院官网（转载国务院令第804号）",
+   "source_url": "https://jaxfy.jxfy.gov.cn/article/detail/2025/04/id/8792886.shtml",
+   "publish": "2025-04-06",
+   "effective": "2025-05-10",
+   "article_range": null,
+   "article_count": 28
+  },
+  {
+   "id": "minshi-susong-fa",
+   "name": "中华人民共和国民事诉讼法（2023年修正）",
+   "short": "民事诉讼法",
+   "source_name": "最高人民法院国际商事法庭官网（来源：国家法律法规数据库）",
+   "source_url": "https://cicc.court.gov.cn/html/1/218/62/83/443.html",
+   "publish": "2023-09-01",
+   "effective": "2024-01-01",
+   "article_range": null,
+   "article_count": 306
+  }
+ ]
+}
