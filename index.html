@@ -304,6 +304,9 @@ var LS_SETTINGS = LS_PREFIX + "settings";
 var API_URL = "https://api.deepseek.com/chat/completions";
 /* 首次打开时预填的 DeepSeek Key。仓库中为占位符（防泄露），本地分发版本可注入真实 Key */
 var DEFAULT_API_KEY = "";
+/* 首次打开时预填的视觉模型 Key（智谱 GLM-4V）。仓库中为占位符（防泄露），本地分发版本可注入真实 Key */
+var DEFAULT_VISION_KEY = "";
+var DEFAULT_VISION_PROVIDER = "glm";
 
 /* 视觉模型预设（均为 OpenAI 兼容接口，图片走 image_url 格式） */
 var VISION_PRESETS = {
@@ -408,9 +411,21 @@ function loadState(){
       if (ps) {
         state.settings.apiKey = ps.apiKey || "";
         state.settings.model = ps.model || "deepseek-chat";
+        state.settings.visionProvider = ps.visionProvider || "none";
+        state.settings.visionKey = ps.visionKey || "";
       }
     }
   } catch(e){ /* 忽略 */ }
+  /* 首次使用预填默认 Key（用户尚未保存过任何设置时生效，可在设置中修改） */
+  if (!state.settings.apiKey && DEFAULT_API_KEY){
+    state.settings.apiKey = DEFAULT_API_KEY;
+  }
+  if (!state.settings.visionKey && DEFAULT_VISION_KEY){
+    state.settings.visionKey = DEFAULT_VISION_KEY;
+    if (state.settings.visionProvider === "none"){
+      state.settings.visionProvider = DEFAULT_VISION_PROVIDER;
+    }
+  }
 }
 function saveSessions(){
   localStorage.setItem(LS_SESSIONS, JSON.stringify({
@@ -1016,6 +1031,8 @@ function confirmDialog(title, text, onOk){
 function openSettings(){
   el.apiKeyInput.value = state.settings.apiKey;
   el.modelSelect.value = state.settings.model;
+  el.visionProviderSelect.value = state.settings.visionProvider || "none";
+  el.visionKeyInput.value = state.settings.visionKey || "";
   el.testResult.textContent = "";
   el.settingsPanel.classList.add("show");
   el.settingsOverlay.classList.add("show");
