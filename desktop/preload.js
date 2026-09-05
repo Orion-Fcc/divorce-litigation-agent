@@ -10,5 +10,13 @@ contextBridge.exposeInMainWorld("dlcBridge", {
     ipcRenderer.on("dlc-chat-done", () => handlers.onDone && handlers.onDone());
     ipcRenderer.on("dlc-chat-error", (_e, msg) => handlers.onError && handlers.onError(msg));
     return ipcRenderer.invoke("dlc-chat-start", payload);
+  },
+  // 通用 API 代理（视觉模型等）
+  apiRequest(payload) {
+    return ipcRenderer.invoke("dlc-api-request", payload);
+  },
+  // 文档解析（PDF / docx），buffer 为 ArrayBuffer
+  parseFile(name, buffer) {
+    return ipcRenderer.invoke("dlc-parse-file", { name: name, buffer: buffer });
   }
 });

@@ -103,11 +103,23 @@
     display:flex;gap:10px;align-items:flex-end;flex-shrink:0;
     padding-bottom:calc(12px + env(safe-area-inset-bottom));
   }
+  #inputCol{flex:1;display:flex;flex-direction:column;gap:6px;min-width:0}
   #inputBox{
-    flex:1;border:1px solid var(--border);border-radius:12px;padding:12px 14px;
+    width:100%;border:1px solid var(--border);border-radius:12px;padding:12px 14px;
     font-size:16px;resize:none;max-height:140px;line-height:1.5;font-family:inherit;
   }
   #inputBox:focus{outline:none;border-color:var(--primary)}
+  /* 待发送附件预览条 */
+  #pendingBar{display:none;align-items:center;gap:10px;background:var(--primary-soft);
+    border:1px solid #bfdbfe;border-radius:10px;padding:6px 10px;font-size:13px}
+  #pendingBar.show{display:flex}
+  #pendingBar img{width:40px;height:40px;object-fit:cover;border-radius:8px;flex-shrink:0}
+  #pendingBar .pname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}
+  #pendingBar .premove{color:var(--muted);cursor:pointer;padding:4px 8px;border-radius:6px;font-size:16px}
+  #pendingBar .premove:hover{color:var(--danger);background:var(--danger-soft)}
+  /* 气泡内的附件缩略图 */
+  .bubble img.attach-thumb{max-width:220px;max-height:160px;border-radius:10px;display:block;margin-bottom:8px;cursor:default}
+  .msg.user .bubble .attach-name{font-size:12px;opacity:.85;display:block;margin-bottom:6px}
   #sendBtn{
     min-width:44px;min-height:48px;border:none;border-radius:12px;background:var(--primary);
     color:#fff;font-size:15px;cursor:pointer;padding:0 20px;font-weight:500;
@@ -209,7 +221,14 @@
     <div id="errorBar"></div>
     <div id="messages"></div>
     <div id="inputBar">
-      <textarea id="inputBox" rows="1" placeholder="描述你的情况，例如：我们结婚8年，有一套房和一个5岁的孩子…（Shift+Enter 换行）"></textarea>
+      <button class="icon-btn" id="attachBtn" title="上传图片材料（合同/文书/截图照片）">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+      </button>
+      <input type="file" id="fileInput" accept="image/*,.txt,.md,.csv,.json,.log,.pdf,.docx,.doc" style="display:none">
+      <div id="inputCol">
+        <div id="pendingBar"></div>
+        <textarea id="inputBox" rows="1" placeholder="描述你的情况，或点左侧回形针上传合同/材料照片…（Shift+Enter 换行）"></textarea>
+      </div>
       <button id="sendBtn">发送</button>
     </div>
   </div>
@@ -230,6 +249,22 @@
       <option value="deepseek-chat">deepseek-chat（通用，推荐）</option>
       <option value="deepseek-reasoner">deepseek-reasoner（深度推理）</option>
     </select>
+  </div>
+  <hr style="margin:18px 0;border:none;border-top:1px solid var(--border)">
+  <h2 style="font-size:15px">图片解析（可选）</h2>
+  <div class="field">
+    <label>视觉模型服务商</label>
+    <select id="visionProviderSelect">
+      <option value="none">关闭（不解析图片）</option>
+      <option value="glm">智谱 GLM-4V-Flash（免费，推荐）</option>
+      <option value="qwen">阿里通义千问 VL</option>
+    </select>
+    <div class="hint">DeepSeek 不支持识图，上传的照片会先由视觉模型提取文字，再交给 DeepSeek 分析。</div>
+  </div>
+  <div class="field">
+    <label>视觉模型 API Key</label>
+    <input type="password" id="visionKeyInput" placeholder="视觉服务商的 API Key">
+    <div class="hint" id="visionKeyHint">智谱：open.bigmodel.cn 注册即得免费 Key；阿里：bailian.console.aliyun.com 开通 DashScope。</div>
   </div>
   <div class="btn-row">
     <button class="btn primary" id="saveSettingsBtn">保存</button>
@@ -267,6 +302,16 @@ var LS_PREFIX = "dlc_";
 var LS_SESSIONS = LS_PREFIX + "sessions";
 var LS_SETTINGS = LS_PREFIX + "settings";
 var API_URL = "https://api.deepseek.com/chat/completions";
+/* 首次打开时预填的 DeepSeek Key。仓库中为占位符（防泄露），本地分发版本可注入真实 Key */
+var DEFAULT_API_KEY = "";
+
+/* 视觉模型预设（均为 OpenAI 兼容接口，图片走 image_url 格式） */
+var VISION_PRESETS = {
+  glm:  { baseUrl: "https://open.bigmodel.cn/api/paas/v4/chat/completions", model: "glm-4v-flash" },
+  qwen: { baseUrl: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions", model: "qwen-vl-plus" }
+};
+var OCR_PROMPT = "请完整识别并转写这张图片中的所有文字内容（可能是合同、法律文书、聊天记录、票据、证件等）。要求：1) 保持原有结构和条款顺序；2) 不得遗漏金额、日期、姓名、证件号、账号等关键信息；3) 对非文字的重要信息（如签字、手印、盖章位置）简要说明；4) 只输出识别结果，不要评论分析。";
+var MAX_IMAGE_MB = 10;
 
 var QUICK_PROMPTS = [
   "请帮我梳理离婚诉讼的完整流程和时间线，以及现在最该做的三件事",
@@ -336,7 +381,12 @@ var el = {
   modalTitle: document.getElementById("modalTitle"),
   modalText: document.getElementById("modalText"),
   modalOkBtn: document.getElementById("modalOkBtn"),
-  modalCancelBtn: document.getElementById("modalCancelBtn")
+  modalCancelBtn: document.getElementById("modalCancelBtn"),
+  attachBtn: document.getElementById("attachBtn"),
+  fileInput: document.getElementById("fileInput"),
+  pendingBar: document.getElementById("pendingBar"),
+  visionProviderSelect: document.getElementById("visionProviderSelect"),
+  visionKeyInput: document.getElementById("visionKeyInput")
 };
 
 /* ================= 存储层（只负责读写） ================= */
@@ -436,7 +486,7 @@ function renderMessages(){
     renderQuickPrompts();
     return;
   }
-  s.messages.forEach(function(m){ appendMessageBubble(m.role, m.content); });
+  s.messages.forEach(function(m){ appendMessageBubble(m.role, m.content, m.attachment); });
   scrollToBottom();
 }
 function renderWelcome(){
@@ -466,13 +516,43 @@ function renderQuickPrompts(){
 function refreshAll(){
   renderSidebar();
   renderMessages();
+  renderPendingBar();
   updateSendState();
+}
+/* 待发送附件预览条 */
+function renderPendingBar(){
+  var p = state.pendingAttachment;
+  el.pendingBar.innerHTML = "";
+  if (!p){ el.pendingBar.classList.remove("show"); return; }
+  el.pendingBar.classList.add("show");
+  if (p.thumb){
+    var img = document.createElement("img");
+    img.src = p.thumb;
+    el.pendingBar.appendChild(img);
+  }
+  var nm = document.createElement("span");
+  nm.className = "pname";
+  if (p.kind === "image"){
+    nm.textContent = "图片：" + p.name;
+  } else {
+    nm.textContent = "文件：" + p.name + (p.text ? "（已读取 " + p.text.length + " 字）" : "（解析中…）");
+  }
+  el.pendingBar.appendChild(nm);
+  var rm = document.createElement("span");
+  rm.className = "premove";
+  rm.textContent = "×";
+  rm.title = "移除附件";
+  rm.addEventListener("click", function(){
+    state.pendingAttachment = null;
+    refreshAll();
+  });
+  el.pendingBar.appendChild(rm);
 }
 function updateSendState(){
   el.sendBtn.disabled = state.streaming;
   el.sendBtn.textContent = state.streaming ? "思考中…" : "发送";
 }
-function appendMessageBubble(role, content){
+function appendMessageBubble(role, content, attachment){
   var wrap = document.createElement("div");
   wrap.className = "msg " + role;
   var av = document.createElement("div");
@@ -480,7 +560,21 @@ function appendMessageBubble(role, content){
   av.textContent = role === "user" ? "我" : "讼";
   var bubble = document.createElement("div");
   bubble.className = "bubble";
-  bubble.textContent = content;
+  if (attachment){
+    if (attachment.thumb){
+      var img = document.createElement("img");
+      img.className = "attach-thumb";
+      img.src = attachment.thumb;
+      bubble.appendChild(img);
+    }
+    var nm = document.createElement("span");
+    nm.className = "attach-name";
+    nm.textContent = "附件：" + attachment.name;
+    bubble.appendChild(nm);
+  }
+  if (content){
+    bubble.appendChild(document.createTextNode(content));
+  }
   wrap.appendChild(av);
   wrap.appendChild(bubble);
   el.messages.appendChild(wrap);
@@ -495,6 +589,47 @@ function showError(msg){
 }
 
 /* ================= 网络层 ================= */
+/* 通用 OpenAI 兼容接口请求（非流式）：桌面版走主进程代理，浏览器走 fetch */
+function genericApiRequest(url, apiKey, body){
+  if (window.dlcBridge && window.dlcBridge.apiRequest){
+    return window.dlcBridge.apiRequest({ url: url, apiKey: apiKey, body: body }).then(function(res){
+      if (!res.ok) throw new Error(res.error || ("请求失败 " + (res.status || "")));
+      return res.data;
+    });
+  }
+  return fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + apiKey },
+    body: JSON.stringify(body)
+  }).then(function(r){
+    return r.text().then(function(t){
+      if (!r.ok){
+        var d = "";
+        try { d = JSON.parse(t).error.message; } catch(e){ d = t.slice(0,200); }
+        throw new Error("API 错误 " + r.status + "：" + d);
+      }
+      return JSON.parse(t);
+    });
+  });
+}
+/* 视觉模型提取图片文字 */
+function callVisionExtract(dataUrl){
+  var preset = VISION_PRESETS[state.settings.visionProvider];
+  if (!preset) return Promise.reject(new Error("未配置视觉模型"));
+  var body = {
+    model: preset.model,
+    temperature: 0.1,
+    messages: [{ role: "user", content: [
+      { type: "image_url", image_url: { url: dataUrl } },
+      { type: "text", text: OCR_PROMPT }
+    ]}]
+  };
+  return genericApiRequest(preset.baseUrl, state.settings.visionKey, body).then(function(data){
+    var txt = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+    if (!txt) throw new Error("视觉模型未返回识别结果");
+    return txt;
+  });
+}
 /* 双模式：桌面应用内走 Electron 主进程（无跨域限制），浏览器里走 fetch */
 function streamChat(apiMessages, onDelta){
   if (window.dlcBridge){
@@ -574,20 +709,134 @@ function streamChat(apiMessages, onDelta){
   });
 }
 
+/* ================= 附件处理 ================= */
+var TEXT_EXTS = ["txt","md","csv","json","log"];
+var DOC_EXTS = ["pdf","doc","docx"];
+var MAX_TEXT_CHARS = 20000;
+function getExt(name){
+  var parts = name.split(".");
+  return parts.length > 1 ? parts.pop().toLowerCase() : "";
+}
+function compressImage(file, cb){
+  var reader = new FileReader();
+  reader.onload = function(){
+    var img = new Image();
+    img.onload = function(){
+      var w = img.width, h = img.height;
+      // 全图压缩到 1600px 内（视觉模型识别用）
+      var scale = Math.min(1, 1600 / Math.max(w, h));
+      var canvas = document.createElement("canvas");
+      canvas.width = Math.round(w * scale);
+      canvas.height = Math.round(h * scale);
+      canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+      var dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+      // 240px 缩略图（会话历史展示用，控制 localStorage 体积）
+      var tScale = Math.min(1, 240 / Math.max(w, h));
+      var tc = document.createElement("canvas");
+      tc.width = Math.max(1, Math.round(w * tScale));
+      tc.height = Math.max(1, Math.round(h * tScale));
+      tc.getContext("2d").drawImage(img, 0, 0, tc.width, tc.height);
+      cb(dataUrl, tc.toDataURL("image/jpeg", 0.8));
+    };
+    img.onerror = function(){ showError("图片读取失败，请换一张试试。"); };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+}
+function onFileSelected(file){
+  if (!file) return;
+  if (file.size > MAX_IMAGE_MB * 1024 * 1024){
+    showError("文件过大，请选择 " + MAX_IMAGE_MB + "MB 以内的文件。");
+    return;
+  }
+  var ext = getExt(file.name);
+  showError("");
+  if (file.type.indexOf("image/") === 0){
+    compressImage(file, function(dataUrl, thumb){
+      state.pendingAttachment = { kind: "image", name: file.name, dataUrl: dataUrl, thumb: thumb };
+      refreshAll();
+    });
+    return;
+  }
+  if (TEXT_EXTS.indexOf(ext) >= 0){
+    var reader = new FileReader();
+    reader.onload = function(){
+      var text = String(reader.result || "");
+      if (text.length > MAX_TEXT_CHARS) text = text.slice(0, MAX_TEXT_CHARS) + "\n…（内容过长已截断）";
+      state.pendingAttachment = { kind: "text", name: file.name, text: text };
+      refreshAll();
+    };
+    reader.readAsText(file, "utf-8");
+    return;
+  }
+  if (DOC_EXTS.indexOf(ext) >= 0){
+    if (!(window.dlcBridge && window.dlcBridge.parseFile)){
+      showError("浏览器版暂不支持解析 PDF/Word，请使用桌面版，或将文档内容复制粘贴到输入框。");
+      return;
+    }
+    state.pendingAttachment = { kind: "doc", name: file.name, text: "" };
+    refreshAll();
+    var rd = new FileReader();
+    rd.onload = function(){
+      window.dlcBridge.parseFile(file.name, rd.result).then(function(res){
+        if (!res.ok){
+          state.pendingAttachment = null;
+          refreshAll();
+          showError("文档解析失败：" + (res.error || "未知错误"));
+          return;
+        }
+        var text = res.text || "";
+        if (!text.trim()){
+          state.pendingAttachment = null;
+          refreshAll();
+          showError("未能从文档中提取到文字（扫描件 PDF 请拍照后用图片方式上传）。");
+          return;
+        }
+        if (text.length > MAX_TEXT_CHARS) text = text.slice(0, MAX_TEXT_CHARS) + "\n…（内容过长已截断）";
+        state.pendingAttachment = { kind: "doc", name: file.name, text: text };
+        refreshAll();
+      });
+    };
+    rd.readAsArrayBuffer(file);
+    return;
+  }
+  showError("暂不支持该文件类型。支持：图片、TXT/MD/CSV/JSON、PDF、Word(docx)。");
+}
+
 /* ================= 事件处理（改数据 → refreshAll / 局部更新） ================= */
 function onSend(text){
   text = (text || "").trim();
-  if (!text || state.streaming) return;
+  var att = state.pendingAttachment;
+  if ((!text && !att) || state.streaming) return;
   if (!state.settings.apiKey){
     showError("请先点击右上角设置按钮，填写 DeepSeek API Key。");
     openSettings();
     return;
   }
+  if (att && att.kind === "image" &&
+      (state.settings.visionProvider === "none" || !state.settings.visionKey)){
+    showError("上传图片需要先配置视觉模型：右上角 设置 → 图片解析，选择服务商并填写其 API Key。");
+    openSettings();
+    return;
+  }
+  if (att && (att.kind === "text" || att.kind === "doc") && !att.text){
+    showError("文件仍在解析中，请稍候再发送。");
+    return;
+  }
   showError("");
   var s = getCurrentSession();
   if (!s) s = createSession();
-  s.messages.push({role:"user", content:text});
-  if (s.title === "新会话") s.title = text.slice(0, 18) + (text.length>18 ? "…" : "");
+  var display = text || (att.kind === "image" ? "请解析这份图片材料" : "请解析这份文件");
+  var msg = { role: "user", content: display };
+  if (att){
+    msg.attachment = { name: att.name, thumb: att.thumb || null, kind: att.kind };
+    if (att.kind === "text" || att.kind === "doc"){
+      msg.apiContent = display + "\n\n【上传文件「" + att.name + "」的内容】\n" + att.text;
+    }
+  }
+  s.messages.push(msg);
+  if (s.title === "新会话") s.title = display.slice(0, 18) + (display.length>18 ? "…" : "");
+  state.pendingAttachment = null;
   saveSessions();
 
   el.inputBox.value = "";
@@ -595,6 +844,30 @@ function onSend(text){
   state.streaming = true;
   refreshAll();
 
+  if (att && att.kind === "image"){
+    // 第一步：视觉模型识别图片文字
+    var ob = appendMessageBubble("assistant", "正在识别图片中的文字，请稍候…");
+    scrollToBottom();
+    callVisionExtract(att.dataUrl).then(function(extracted){
+      var ocrMsg = "【图片识别结果】\n" + extracted;
+      ob.textContent = ocrMsg;
+      msg.apiContent = display + "\n\n【上传图片「" + att.name + "」的识别内容】\n" + extracted;
+      s.messages.push({ role: "assistant", content: ocrMsg });
+      saveSessions();
+      scrollToBottom();
+      // 第二步：DeepSeek 基于识别文字进行分析
+      runAssistantStream(s);
+    }).catch(function(err){
+      state.streaming = false;
+      saveSessions();
+      refreshAll();
+      showError("图片识别失败：" + err.message);
+    });
+    return;
+  }
+  runAssistantStream(s);
+}
+function runAssistantStream(s){
   var bubble = appendMessageBubble("assistant", "");
   var cursor = document.createElement("span");
   cursor.className = "cursor";
@@ -771,9 +1044,17 @@ el.settingsOverlay.addEventListener("click", closeSettings);
 el.saveSettingsBtn.addEventListener("click", function(){
   state.settings.apiKey = el.apiKeyInput.value.trim();
   state.settings.model = el.modelSelect.value;
+  state.settings.visionProvider = el.visionProviderSelect.value;
+  state.settings.visionKey = el.visionKeyInput.value.trim();
   saveSettings();
   closeSettings();
   showError("");
+});
+el.attachBtn.addEventListener("click", function(){ el.fileInput.click(); });
+el.fileInput.addEventListener("change", function(){
+  var f = el.fileInput.files && el.fileInput.files[0];
+  el.fileInput.value = ""; // 允许重复选择同一文件
+  onFileSelected(f);
 });
 el.testKeyBtn.addEventListener("click", onTestKey);
 el.exportBtn.addEventListener("click", onExportCurrent);

@@ -1,6 +1,6 @@
 {
   "name": "divorce-litigation-agent",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "婚讼管家 - 离婚诉讼全流程智能顾问（桌面版）",
   "main": "main.js",
   "author": "User",
@@ -12,5 +12,9 @@
   "devDependencies": {
     "electron": "^33.2.0",
     "electron-packager": "^17.1.2"
+  },
+  "dependencies": {
+    "mammoth": "^1.12.2",
+    "pdf-parse": "^2.4.5"
   }
 }

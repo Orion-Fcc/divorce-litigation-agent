@@ -73,3 +73,57 @@ ipcMain.handle("dlc-chat-start", (event, payload) => {
   request.end();
   return true;
 });
+
+// 通用 OpenAI 兼容接口代理（视觉模型等第三方服务，非流式，主进程无 CORS 限制）
+ipcMain.handle("dlc-api-request", (event, payload) => {
+  return new Promise((resolve) => {
+    const request = net.request({ method: "POST", url: payload.url });
+    request.setHeader("Content-Type", "application/json");
+    request.setHeader("Authorization", "Bearer " + payload.apiKey);
+    let body = "";
+    request.on("response", (response) => {
+      response.on("data", (c) => { body += c.toString(); });
+      response.on("end", () => {
+        if (response.statusCode !== 200) {
+          resolve({ ok: false, status: response.statusCode, error: "API 错误 " + response.statusCode + "：" + body.slice(0, 300) });
+          return;
+        }
+        try {
+          resolve({ ok: true, data: JSON.parse(body) });
+        } catch (e) {
+          resolve({ ok: false, error: "返回内容解析失败" });
+        }
+      });
+    });
+    request.on("error", (err) => resolve({ ok: false, error: err.message }));
+    request.write(JSON.stringify(payload.body));
+    request.end();
+  });
+});
+
+// 文档解析：PDF（pdf-parse）/ Word docx（mammoth），渲染进程传入文件 ArrayBuffer
+ipcMain.handle("dlc-parse-file", async (event, payload) => {
+  try {
+    const buf = Buffer.from(payload.buffer);
+    const parts = payload.name.split(".");
+    const ext = parts.length > 1 ? parts.pop().toLowerCase() : "";
+    if (ext === "pdf") {
+      const { PDFParse } = require("pdf-parse");
+      const parser = new PDFParse({ data: buf });
+      const result = await parser.getText();
+      await parser.destroy();
+      return { ok: true, text: result.text || "" };
+    }
+    if (ext === "docx") {
+      const mammoth = require("mammoth");
+      const result = await mammoth.extractRawText({ buffer: buf });
+      return { ok: true, text: result.value || "" };
+    }
+    if (ext === "doc") {
+      return { ok: false, error: "暂不支持旧版 .doc 格式，请先在 Word/WPS 中另存为 .docx 再上传" };
+    }
+    return { ok: false, error: "不支持的文件类型：" + ext };
+  } catch (e) {
+    return { ok: false, error: e.message || "解析异常" };
+  }
+});
