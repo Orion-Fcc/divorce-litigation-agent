@@ -1,34 +1,42 @@
 @echo off
-chcp 65001 >nul
-title å©šè®¼ç®¡å®¶ Â· æµè§ˆå™¨ç‰ˆ
+title »éËÏ¹Ü¼Ò - ä¯ÀÀÆ÷°æ
 cd /d "%~dp0python_app"
 
+set "PY="
 python --version >nul 2>nul
-if not errorlevel 1 (
-    python main.py --auto-init --open-browser
-    if errorlevel 1 (
-        echo.
-        echo  [é”™è¯¯] åº”ç”¨å¯åŠ¨å¤±è´¥ï¼Œè¯·æŸ¥çœ‹ä¸Šæ–¹æ—¥å¿—ã€‚å¸¸è§åŸå› ï¼šç½‘ç»œä¸é€šã€pip å®‰è£…å¤±è´¥ã€‚
-        pause
-    )
-    goto :end
+if not errorlevel 1 set "PY=python"
+if not defined PY (
+    py -3 --version >nul 2>nul
+    if not errorlevel 1 set "PY=py -3"
 )
-
-py -3 --version >nul 2>nul
-if not errorlevel 1 (
-    py -3 main.py --auto-init --open-browser
-    if errorlevel 1 (
-        echo.
-        echo  [é”™è¯¯] åº”ç”¨å¯åŠ¨å¤±è´¥ï¼Œè¯·æŸ¥çœ‹ä¸Šæ–¹æ—¥å¿—ã€‚å¸¸è§åŸå› ï¼šç½‘ç»œä¸é€šã€pip å®‰è£…å¤±è´¥ã€‚
-        pause
+if not defined PY (
+    for /d %%i in ("%LOCALAPPDATA%\Programs\Python\Python3*") do (
+        if exist "%%i\python.exe" (
+            set "PY=%%i\python.exe"
+            goto :py_found
+        )
     )
-    goto :end
 )
+:py_found
 
+if defined PY goto :run
 echo.
-echo  [é”™è¯¯] æœªæ‰¾åˆ° Pythonã€‚è¯·å…ˆå®‰è£… Python 3.9+ï¼ˆå®‰è£…æ—¶å‹¾é€‰ Add to PATHï¼‰ï¼Œ
-echo         ç„¶åé‡æ–°åŒå‡»æœ¬è„šæœ¬ã€‚ä¸‹è½½åœ°å€ï¼šhttps://www.python.org/downloads/
+echo  [´íÎó] Î´ÕÒµ½ Python¡£ÇëÏÈ°²×° Python 3.9+£¨°²×°Ê±¹´Ñ¡ Add to PATH£©£¬
+echo         È»ºóÖØĞÂË«»÷±¾½Å±¾¡£ÏÂÔØµØÖ·£ºhttps://www.python.org/downloads/
 echo.
 pause
+goto :end
+
+:run
+if "%PY%"=="py -3" (
+    py -3 main.py --auto-init --open-browser
+) else (
+    "%PY%" main.py --auto-init --open-browser
+)
+if errorlevel 1 (
+    echo.
+    echo  [´íÎó] Ó¦ÓÃÆô¶¯Ê§°Ü£¬Çë²é¿´ÉÏ·½ÈÕÖ¾¡£³£¼ûÔ­Òò£ºÍøÂç²»Í¨»ò pip °²×°Ê§°Ü¡£
+    pause
+)
 
 :end

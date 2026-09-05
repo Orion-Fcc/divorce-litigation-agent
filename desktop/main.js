@@ -27,7 +27,7 @@ function findPythonAppDir() {
   return null;
 }
 
-// 探测可用的 Python 解释器
+// 探测可用的 Python 解释器（PATH → py 启动器 → 常见安装目录）
 function findPython() {
   const tries = [
     { cmd: "python", args: ["--version"] },
@@ -40,6 +40,20 @@ function findPython() {
       if (r.status === 0) return t;
     } catch (e) { /* 继续尝试下一个 */ }
   }
+  // %LOCALAPPDATA%\Programs\Python\Python3*（python.org 默认安装位置）
+  try {
+    const base = path.join(process.env.LOCALAPPDATA || "", "Programs", "Python");
+    if (fs.existsSync(base)) {
+      for (const d of fs.readdirSync(base)) {
+        if (!d.startsWith("Python3")) continue;
+        const exe = path.join(base, d, "python.exe");
+        if (fs.existsSync(exe)) {
+          const r = spawnSync(exe, ["--version"], { encoding: "utf8", windowsHide: true });
+          if (r.status === 0) return { cmd: exe, args: [] };
+        }
+      }
+    }
+  } catch (e) { /* 忽略 */ }
   return null;
 }
 
