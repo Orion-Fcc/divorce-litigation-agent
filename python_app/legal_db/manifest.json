@@ -1,5 +1,5 @@
 {
- "built_at": "2026-09-06 17:13:03",
+ "built_at": "2026-09-06 17:37:10",
  "laws": [
   {
    "id": "flk-2c909fdd678bf17901678bf594240005",
@@ -6998,17 +6998,6 @@
    "article_count": 45
   },
   {
-   "id": "renshen-anquan-baohuling",
-   "name": "最高人民法院关于办理人身安全保护令案件适用法律若干问题的规定",
-   "short": "人身安全保护令规定",
-   "category": "行政法规",
-   "source_name": "最高人民法院官网（法释〔2022〕17号）",
-   "source_url": "https://www.court.gov.cn/fabu/xiangqing/366021.html",
-   "publish": "2022-07-14",
-   "effective": "2022-08-01",
-   "article_count": 13
-  },
-  {
    "id": "caili-guiding",
    "name": "最高人民法院关于审理涉彩礼纠纷案件适用法律若干问题的规定",
    "short": "涉彩礼纠纷规定",
@@ -8329,6 +8318,17 @@
    "article_count": 1
   },
   {
+   "id": "flk-402881e45ffbbe41015ffbe08b7c0185",
+   "name": "关于审理非法行医刑事案件具体应用法律若干问题的解释",
+   "short": "关于审理非法行医刑事案件具体应用法律若干问题的解释",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?402881e45ffbbe41015ffbe08b7c0185",
+   "publish": "2016-12-16",
+   "effective": "2016-12-20",
+   "article_count": 6
+  },
+  {
    "id": "flk-ff8081817b96962b017b9bad853d0c51",
    "name": "最高人民法院关于上海金融法院案件管辖的规定",
    "short": "最高人民法院关于上海金融法院案件管辖的规定",
@@ -8351,6 +8351,28 @@
    "article_count": 24
   },
   {
+   "id": "flk-ff8080816f3e98bd016f41f31e9e0219",
+   "name": "最高人民法院关于严格规范民商事案件延长审限和延期开庭问题的规定",
+   "short": "最高人民法院关于严格规范民商事案件延长审限和延期开庭问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e98bd016f41f31e9e0219",
+   "publish": "2019-03-27",
+   "effective": "2019-03-28",
+   "article_count": 9
+  },
+  {
+   "id": "flk-2c90e5ba65c68cf70167f2e544ff5012",
+   "name": "最高人民法院关于互联网法院审理案件若干问题的规定",
+   "short": "最高人民法院关于互联网法院审理案件若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?2c90e5ba65c68cf70167f2e544ff5012",
+   "publish": "2018-09-06",
+   "effective": "2018-09-07",
+   "article_count": 23
+  },
+  {
    "id": "flk-402881e46000e27901600183dc2f0644",
    "name": "最高人民法院关于人民检察院对撤销仲裁裁决的民事裁定提起抗诉人民法院应如何处理问题的批复",
    "short": "最高人民法院关于人民检察院对撤销仲裁裁决的民事裁定提起抗诉人民法院应如何处理问题的批复",
@@ -8371,6 +8393,17 @@
    "publish": "1998-08-31",
    "effective": "1998-09-05",
    "article_count": 1
+  },
+  {
+   "id": "flk-2c90e5bb65c68cfd0167f2d6dcdb4ef7",
+   "name": "最高人民法院关于人民法院办理仲裁裁决执行案件若干问题的规定",
+   "short": "最高人民法院关于人民法院办理仲裁裁决执行案件若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?2c90e5bb65c68cfd0167f2d6dcdb4ef7",
+   "publish": "2018-02-22",
+   "effective": "2018-03-01",
+   "article_count": 24
   },
   {
    "id": "flk-ff80818179f5d2480179fa3b2d930427",
@@ -8406,6 +8439,28 @@
    "article_count": 1
   },
   {
+   "id": "flk-ff808081777d07c50177cce022c5537e",
+   "name": "最高人民法院关于人民法院司法警察依法履行职权的规定",
+   "short": "最高人民法院关于人民法院司法警察依法履行职权的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808081777d07c50177cce022c5537e",
+   "publish": "2020-06-28",
+   "effective": "2021-01-01",
+   "article_count": 7
+  },
+  {
+   "id": "flk-ff8081818a1cb546018ad025f56c21bf",
+   "name": "最高人民法院关于人民法院在互联网公布裁判文书的规定",
+   "short": "最高人民法院关于人民法院在互联网公布裁判文书的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8081818a1cb546018ad025f56c21bf",
+   "publish": "2016-08-29",
+   "effective": "2016-10-01",
+   "article_count": 18
+  },
+  {
    "id": "flk-ff808181799df4000179ad132b9c13ac",
    "name": "最高人民法院关于人民法院对注册商标权进行财产保全的解释",
    "short": "最高人民法院关于人民法院对注册商标权进行财产保全的解释",
@@ -8428,6 +8483,17 @@
    "article_count": 3
   },
   {
+   "id": "flk-402881e45ffbbe41015ffbf5143f02c4",
+   "name": "最高人民法院关于人民法院庭审录音录像的若干规定",
+   "short": "最高人民法院关于人民法院庭审录音录像的若干规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?402881e45ffbbe41015ffbf5143f02c4",
+   "publish": "2017-02-22",
+   "effective": "2017-03-01",
+   "article_count": 19
+  },
+  {
    "id": "flk-ff8081817e8f9846017e9b04394e0115",
    "name": "最高人民法院关于人民法院强制执行股权若干问题的规定",
    "short": "最高人民法院关于人民法院强制执行股权若干问题的规定",
@@ -8436,6 +8502,17 @@
    "source_url": "https://flk.npc.gov.cn/detail2.html?ff8081817e8f9846017e9b04394e0115",
    "publish": "2021-12-20",
    "effective": "2022-01-01",
+   "article_count": 1
+  },
+  {
+   "id": "flk-ff80818179f5d2480179fa3ea0250437",
+   "name": "最高人民法院关于人民法院扣押铁路运输货物若干问题的规定",
+   "short": "最高人民法院关于人民法院扣押铁路运输货物若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff80818179f5d2480179fa3ea0250437",
+   "publish": "2020-12-29",
+   "effective": "2021-01-01",
    "article_count": 1
   },
   {
@@ -8472,6 +8549,28 @@
    "article_count": 1
   },
   {
+   "id": "flk-2c90e5bb65c68cfd0167f2d419504eef",
+   "name": "最高人民法院关于人民法院确定财产处置参考价若干问题的规定",
+   "short": "最高人民法院关于人民法院确定财产处置参考价若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?2c90e5bb65c68cfd0167f2d419504eef",
+   "publish": "2018-08-28",
+   "effective": "2018-09-01",
+   "article_count": 35
+  },
+  {
+   "id": "flk-402881e45ffbbe41015ffbd41c8700b2",
+   "name": "最高人民法院关于人民法院网络司法拍卖若干问题的规定",
+   "short": "最高人民法院关于人民法院网络司法拍卖若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?402881e45ffbbe41015ffbd41c8700b2",
+   "publish": "2016-08-02",
+   "effective": "2017-01-01",
+   "article_count": 38
+  },
+  {
    "id": "flk-ff80818179f5d52f0179fa46346c06e2",
    "name": "最高人民法院关于人民法院能否对信用证开证保证金采取冻结和扣划措施问题的规定",
    "short": "最高人民法院关于人民法院能否对信用证开证保证金采取冻结和扣划措施问题的规定",
@@ -8483,6 +8582,17 @@
    "article_count": 1
   },
   {
+   "id": "flk-2c90e5ba65c68cf70167f2d2b42c4fcd",
+   "name": "最高人民法院关于人民法院通过互联网公开审判流程信息的规定",
+   "short": "最高人民法院关于人民法院通过互联网公开审判流程信息的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?2c90e5ba65c68cf70167f2d2b42c4fcd",
+   "publish": "2018-03-04",
+   "effective": "2018-09-01",
+   "article_count": 17
+  },
+  {
    "id": "flk-ff8081817e8f9846017e9b0773e70132",
    "name": "最高人民法院关于仲裁司法审查案件报核问题的有关规定",
    "short": "最高人民法院关于仲裁司法审查案件报核问题的有关规定",
@@ -8492,6 +8602,94 @@
    "publish": "2021-12-24",
    "effective": "2022-01-01",
    "article_count": 1
+  },
+  {
+   "id": "flk-2c90e5bb65c68cfd0167f25faae04d51",
+   "name": "最高人民法院关于仲裁机构“先予仲裁”裁决或者调解书立案、执行等法律适用问题的批复",
+   "short": "最高人民法院关于仲裁机构“先予仲裁”裁决或者调解书立案、执行等法律适用问题的批复",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?2c90e5bb65c68cfd0167f25faae04d51",
+   "publish": "2018-06-05",
+   "effective": "2018-06-12",
+   "article_count": 1
+  },
+  {
+   "id": "flk-ff8081818bd2739d018bf51548a6011d",
+   "name": "最高人民法院关于公司解散纠纷案件受理费收费标准的批复",
+   "short": "最高人民法院关于公司解散纠纷案件受理费收费标准的批复",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8081818bd2739d018bf51548a6011d",
+   "publish": "2023-09-22",
+   "effective": "2023-09-22",
+   "article_count": 1
+  },
+  {
+   "id": "flk-402881e45ffbbe41015ffbf8911a030d",
+   "name": "最高人民法院关于公布失信被执行人名单信息的若干规定",
+   "short": "最高人民法院关于公布失信被执行人名单信息的若干规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?402881e45ffbbe41015ffbf8911a030d",
+   "publish": "2017-02-28",
+   "effective": "2017-05-01",
+   "article_count": 13
+  },
+  {
+   "id": "flk-2c90e5bb65c68cfd0167f2f641544f92",
+   "name": "最高人民法院关于公证债权文书执行若干问题的规定",
+   "short": "最高人民法院关于公证债权文书执行若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?2c90e5bb65c68cfd0167f2f641544f92",
+   "publish": "2018-09-30",
+   "effective": "2018-10-01",
+   "article_count": 25
+  },
+  {
+   "id": "flk-ff8081818a1cb546018acf07c69e1be5",
+   "name": "最高人民法院关于具有专门知识的人民陪审员参加环境资源案件审理的若干规定",
+   "short": "最高人民法院关于具有专门知识的人民陪审员参加环境资源案件审理的若干规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8081818a1cb546018acf07c69e1be5",
+   "publish": "2023-07-26",
+   "effective": "2023-08-01",
+   "article_count": 16
+  },
+  {
+   "id": "flk-ff808081777d0c940177ccd7ae4a4e2b",
+   "name": "最高人民法院关于内地与澳门特别行政区法院就民商事案件相互委托送达司法文书和调取证据的安排",
+   "short": "最高人民法院关于内地与澳门特别行政区法院就民商事案件相互委托送达司法文书和调取证据的安排",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808081777d0c940177ccd7ae4a4e2b",
+   "publish": "2020-01-14",
+   "effective": "2020-03-01",
+   "article_count": 27
+  },
+  {
+   "id": "flk-ff8080816f3e9784016f41e6bc59016a",
+   "name": "最高人民法院关于内地与香港特别行政区法院就仲裁程序相互协助保全的安排",
+   "short": "最高人民法院关于内地与香港特别行政区法院就仲裁程序相互协助保全的安排",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e9784016f41e6bc59016a",
+   "publish": "2019-09-26",
+   "effective": "2019-10-01",
+   "article_count": 11
+  },
+  {
+   "id": "flk-402881e45ffbbe41015ffbf2ff880294",
+   "name": "最高人民法院关于内地与香港特别行政区法院就民商事案件相互委托提取证据的安排",
+   "short": "最高人民法院关于内地与香港特别行政区法院就民商事案件相互委托提取证据的安排",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?402881e45ffbbe41015ffbf2ff880294",
+   "publish": "2017-02-27",
+   "effective": "2017-03-01",
+   "article_count": 12
   },
   {
    "id": "flk-402881e46000e27901600157d9cf026d",
@@ -8538,6 +8736,50 @@
    "article_count": 1
   },
   {
+   "id": "flk-ff8081818364d90301837cd35c6538e5",
+   "name": "最高人民法院关于办理人身安全保护令案件适用法律若干问题的规定",
+   "short": "最高人民法院关于办理人身安全保护令案件适用法律若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8081818364d90301837cd35c6538e5",
+   "publish": "2022-07-14",
+   "effective": "2022-08-01",
+   "article_count": 13
+  },
+  {
+   "id": "flk-2c90e5ba6a291d8f016c6b1756613a05",
+   "name": "最高人民法院关于办理减刑、假释案件具体应用法律的补充规定",
+   "short": "最高人民法院关于办理减刑、假释案件具体应用法律的补充规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?2c90e5ba6a291d8f016c6b1756613a05",
+   "publish": "2019-04-24",
+   "effective": "2019-06-01",
+   "article_count": 7
+  },
+  {
+   "id": "flk-402881e45ffbbe41015ffbda85700121",
+   "name": "最高人民法院关于办理减刑、假释案件具体应用法律的规定",
+   "short": "最高人民法院关于办理减刑、假释案件具体应用法律的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?402881e45ffbbe41015ffbda85700121",
+   "publish": "2016-11-14",
+   "effective": "2017-01-01",
+   "article_count": 42
+  },
+  {
+   "id": "flk-402881e45ffbbe41015ffc10cc420487",
+   "name": "最高人民法院关于办理申请人民法院强制执行国有土地上房屋征收补偿决定案件若干问题的规定",
+   "short": "最高人民法院关于办理申请人民法院强制执行国有土地上房屋征收补偿决定案件若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?402881e45ffbbe41015ffc10cc420487",
+   "publish": "2012-03-26",
+   "effective": "2012-04-10",
+   "article_count": 11
+  },
+  {
    "id": "flk-ff8081817b969375017b9ba43b3d0a2f",
    "name": "最高人民法院关于办理行政申请再审案件若干问题的规定",
    "short": "最高人民法院关于办理行政申请再审案件若干问题的规定",
@@ -8560,6 +8802,28 @@
    "article_count": 13
   },
   {
+   "id": "flk-ff80818187c296200188276f69e868fa",
+   "name": "最高人民法院关于商品房消费者权利保护问题的批复",
+   "short": "最高人民法院关于商品房消费者权利保护问题的批复",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff80818187c296200188276f69e868fa",
+   "publish": "2023-04-20",
+   "effective": "2023-04-20",
+   "article_count": 1
+  },
+  {
+   "id": "flk-402881e45ffbbe41015ffc02a07403c0",
+   "name": "最高人民法院关于因申请诉中财产保全损害责任纠纷管辖问题的批复",
+   "short": "最高人民法院关于因申请诉中财产保全损害责任纠纷管辖问题的批复",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?402881e45ffbbe41015ffc02a07403c0",
+   "publish": "2017-08-01",
+   "effective": "2017-08-10",
+   "article_count": 1
+  },
+  {
    "id": "flk-402881e45ffbbe41015ffc512c8f09b1",
    "name": "最高人民法院关于国家工作人员利用职务上的便利为他人谋取利益离退休后收受财物行为如何处理问题的批复",
    "short": "最高人民法院关于国家工作人员利用职务上的便利为他人谋取利益离退休后收受财物行为如何处理问题的批复",
@@ -8569,6 +8833,28 @@
    "publish": "2000-07-13",
    "effective": "2000-07-21",
    "article_count": 1
+  },
+  {
+   "id": "flk-402881e45ffbbe41015ffc2f598706ad",
+   "name": "最高人民法院关于国家赔偿案件立案工作的规定",
+   "short": "最高人民法院关于国家赔偿案件立案工作的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?402881e45ffbbe41015ffc2f598706ad",
+   "publish": "2012-01-13",
+   "effective": "2012-02-15",
+   "article_count": 11
+  },
+  {
+   "id": "flk-402881e45ffbbe41015ffbfb1dab0341",
+   "name": "最高人民法院关于国家赔偿监督程序若干问题的规定",
+   "short": "最高人民法院关于国家赔偿监督程序若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?402881e45ffbbe41015ffbfb1dab0341",
+   "publish": "2017-04-20",
+   "effective": "2017-05-01",
+   "article_count": 27
   },
   {
    "id": "flk-ff80818192289187019240cb0c853fa4",
@@ -8615,6 +8901,28 @@
    "article_count": 1
   },
   {
+   "id": "flk-ff8080816f3e98bd016f41f4fc6a0228",
+   "name": "最高人民法院关于审查知识产权纠纷行为保全案件适用法律若干问题的规定",
+   "short": "最高人民法院关于审查知识产权纠纷行为保全案件适用法律若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e98bd016f41f4fc6a0228",
+   "publish": "2018-12-12",
+   "effective": "2019-01-01",
+   "article_count": 21
+  },
+  {
+   "id": "flk-ff808081777d07c50177cda5e1bd54ae",
+   "name": "最高人民法院关于审理专利授权确权行政案件适用法律若干问题的规定（一）",
+   "short": "最高人民法院关于审理专利授权确权行政案件适用法律若干问题的规定（一）",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808081777d07c50177cda5e1bd54ae",
+   "publish": "2020-09-10",
+   "effective": "2020-09-12",
+   "article_count": 32
+  },
+  {
    "id": "flk-402881e45ffbbe41015ffc958ca21039",
    "name": "最高人民法院关于审理交通肇事刑事案件具体应用法律若干问题的解释",
    "short": "最高人民法院关于审理交通肇事刑事案件具体应用法律若干问题的解释",
@@ -8624,6 +8932,39 @@
    "publish": "2000-11-15",
    "effective": "2000-11-21",
    "article_count": 9
+  },
+  {
+   "id": "flk-402881e46000e279016001ac9e5408df",
+   "name": "最高人民法院关于审理人民检察院按照审判监督程序提出的刑事抗诉案件若干问题的规定",
+   "short": "最高人民法院关于审理人民检察院按照审判监督程序提出的刑事抗诉案件若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?402881e46000e279016001ac9e5408df",
+   "publish": "2011-10-14",
+   "effective": "2012-01-01",
+   "article_count": 10
+  },
+  {
+   "id": "flk-ff80818181d823c50181ffd1b39b5e54",
+   "name": "最高人民法院关于审理人身损害赔偿案件适用法律若干问题的解释",
+   "short": "最高人民法院关于审理人身损害赔偿案件适用法律若干问题的解释",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff80818181d823c50181ffd1b39b5e54",
+   "publish": "2022-04-24",
+   "effective": "2022-05-01",
+   "article_count": 24
+  },
+  {
+   "id": "flk-2c90e5bb65c68cfd0167f2b56b244e4b",
+   "name": "最高人民法院关于审理仲裁司法审查案件若干问题的规定",
+   "short": "最高人民法院关于审理仲裁司法审查案件若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?2c90e5bb65c68cfd0167f2b56b244e4b",
+   "publish": "2017-12-26",
+   "effective": "2018-01-01",
+   "article_count": 22
   },
   {
    "id": "flk-402881e45ffff9500160002bb7bb0157",
@@ -8681,6 +9022,28 @@
    "article_count": 25
   },
   {
+   "id": "flk-ff808081777d0c940177ccf1bb924e92",
+   "name": "最高人民法院关于审理侵犯商业秘密民事案件适用法律若干问题的规定",
+   "short": "最高人民法院关于审理侵犯商业秘密民事案件适用法律若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808081777d0c940177ccf1bb924e92",
+   "publish": "2020-09-10",
+   "effective": "2020-09-12",
+   "article_count": 29
+  },
+  {
+   "id": "flk-ff808181799df4000179abf4798310d4",
+   "name": "最高人民法院关于审理信用证纠纷案件若干问题的规定",
+   "short": "最高人民法院关于审理信用证纠纷案件若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808181799df4000179abf4798310d4",
+   "publish": "2020-12-29",
+   "effective": "2021-01-01",
+   "article_count": 1
+  },
+  {
    "id": "flk-402881e45ffbbe41015ffc88fce00ed9",
    "name": "最高人民法院关于审理倒卖车票刑事案件有关问题的解释",
    "short": "最高人民法院关于审理倒卖车票刑事案件有关问题的解释",
@@ -8711,6 +9074,50 @@
    "source_url": "https://flk.npc.gov.cn/detail2.html?402881e45ffbbe41015ffc836d8e0e6a",
    "publish": "2000-09-30",
    "effective": "2000-10-10",
+   "article_count": 1
+  },
+  {
+   "id": "flk-402881e45ffbbe41015ffbcf2a34007b",
+   "name": "最高人民法院关于审理发生在我国管辖海域相关案件若干问题的规定（一）",
+   "short": "最高人民法院关于审理发生在我国管辖海域相关案件若干问题的规定（一）",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?402881e45ffbbe41015ffbcf2a34007b",
+   "publish": "2016-08-01",
+   "effective": "2016-08-02",
+   "article_count": 8
+  },
+  {
+   "id": "flk-402881e45ffbbe41015ffbd2fca8009c",
+   "name": "最高人民法院关于审理发生在我国管辖海域相关案件若干问题的规定（二）",
+   "short": "最高人民法院关于审理发生在我国管辖海域相关案件若干问题的规定（二）",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?402881e45ffbbe41015ffbd2fca8009c",
+   "publish": "2016-08-01",
+   "effective": "2016-08-02",
+   "article_count": 16
+  },
+  {
+   "id": "flk-ff80818188c8b06b01899136d1d20bbc",
+   "name": "最高人民法院关于审理司法赔偿案件适用请求时效制度若干问题的解释",
+   "short": "最高人民法院关于审理司法赔偿案件适用请求时效制度若干问题的解释",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff80818188c8b06b01899136d1d20bbc",
+   "publish": "2023-05-23",
+   "effective": "2023-06-01",
+   "article_count": 13
+  },
+  {
+   "id": "flk-ff808181799df6140179ad1ab03821fa",
+   "name": "最高人民法院关于审理商标案件有关管辖和法律适用范围问题的解释",
+   "short": "最高人民法院关于审理商标案件有关管辖和法律适用范围问题的解释",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808181799df6140179ad1ab03821fa",
+   "publish": "2020-12-29",
+   "effective": "2021-01-01",
    "article_count": 1
   },
   {
@@ -8769,6 +9176,17 @@
    "article_count": 10
   },
   {
+   "id": "flk-402881e45ffbbe41015ffbe2373b01a4",
+   "name": "最高人民法院关于审理拐卖妇女儿童犯罪案件具体应用法律若干问题的解释",
+   "short": "最高人民法院关于审理拐卖妇女儿童犯罪案件具体应用法律若干问题的解释",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?402881e45ffbbe41015ffbe2373b01a4",
+   "publish": "2016-12-21",
+   "effective": "2017-01-01",
+   "article_count": 10
+  },
+  {
    "id": "flk-402881e45ffbbe41015ffc92022a0fd4",
    "name": "最高人民法院关于审理拐卖妇女案件适用法律有关问题的解释",
    "short": "最高人民法院关于审理拐卖妇女案件适用法律有关问题的解释",
@@ -8802,6 +9220,17 @@
    "article_count": 2
   },
   {
+   "id": "flk-ff8081818364da1401837ccf57395945",
+   "name": "最高人民法院关于审理森林资源民事纠纷案件适用法律若干问题的解释",
+   "short": "最高人民法院关于审理森林资源民事纠纷案件适用法律若干问题的解释",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8081818364da1401837ccf57395945",
+   "publish": "2022-06-13",
+   "effective": "2022-06-15",
+   "article_count": 1
+  },
+  {
    "id": "flk-ff808181799def980179ad20e02a1488",
    "name": "最高人民法院关于审理植物新品种纠纷案件若干问题的解释",
    "short": "最高人民法院关于审理植物新品种纠纷案件若干问题的解释",
@@ -8813,12 +9242,34 @@
    "article_count": 1
   },
   {
+   "id": "flk-402881e45ffbbe41015ffbd6ca3300dc",
+   "name": "最高人民法院关于审理民事、行政诉讼中司法赔偿案件适用法律若干问题的解释",
+   "short": "最高人民法院关于审理民事、行政诉讼中司法赔偿案件适用法律若干问题的解释",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?402881e45ffbbe41015ffbd6ca3300dc",
+   "publish": "2016-09-07",
+   "effective": "2016-10-01",
+   "article_count": 22
+  },
+  {
    "id": "flk-ff808181799def980179ad228936148a",
    "name": "最高人民法院关于审理注册商标、企业名称与在先权利冲突的民事纠纷案件若干问题的规定",
    "short": "最高人民法院关于审理注册商标、企业名称与在先权利冲突的民事纠纷案件若干问题的规定",
    "category": "高法司法解释",
    "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
    "source_url": "https://flk.npc.gov.cn/detail2.html?ff808181799def980179ad228936148a",
+   "publish": "2020-12-29",
+   "effective": "2021-01-01",
+   "article_count": 1
+  },
+  {
+   "id": "flk-ff808181799df6140179abe178691908",
+   "name": "最高人民法院关于审理海上保险纠纷案件若干问题的规定",
+   "short": "最高人民法院关于审理海上保险纠纷案件若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808181799df6140179abe178691908",
    "publish": "2020-12-29",
    "effective": "2021-01-01",
    "article_count": 1
@@ -8844,6 +9295,17 @@
    "publish": "2020-12-29",
    "effective": "2021-01-01",
    "article_count": 1
+  },
+  {
+   "id": "flk-2c90e5bb65c68cfd0167f2e8d0464f48",
+   "name": "最高人民法院关于审理海洋自然资源与生态环境损害赔偿纠纷案件若干问题的规定",
+   "short": "最高人民法院关于审理海洋自然资源与生态环境损害赔偿纠纷案件若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?2c90e5bb65c68cfd0167f2e8d0464f48",
+   "publish": "2017-12-29",
+   "effective": "2018-01-15",
+   "article_count": 13
   },
   {
    "id": "flk-ff808181799def980179ad1e265c1462",
@@ -8879,6 +9341,17 @@
    "article_count": 20
   },
   {
+   "id": "flk-ff808081777d07c50177cdb0af7054f8",
+   "name": "最高人民法院关于审理涉船员纠纷案件若干问题的规定",
+   "short": "最高人民法院关于审理涉船员纠纷案件若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808081777d07c50177cdb0af7054f8",
+   "publish": "2020-09-27",
+   "effective": "2020-09-29",
+   "article_count": 21
+  },
+  {
    "id": "flk-ff80818181cdceb30181d28c77f9217f",
    "name": "最高人民法院关于审理生态环境侵权纠纷案件适用惩罚性赔偿的解释",
    "short": "最高人民法院关于审理生态环境侵权纠纷案件适用惩罚性赔偿的解释",
@@ -8888,6 +9361,17 @@
    "publish": "2022-01-12",
    "effective": "2022-01-20",
    "article_count": 14
+  },
+  {
+   "id": "flk-ff8081818b288414018b4164e15676c3",
+   "name": "最高人民法院关于审理生态环境侵权责任纠纷案件适用法律若干问题的解释",
+   "short": "最高人民法院关于审理生态环境侵权责任纠纷案件适用法律若干问题的解释",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8081818b288414018b4164e15676c3",
+   "publish": "2023-08-14",
+   "effective": "2023-09-01",
+   "article_count": 30
   },
   {
    "id": "flk-ff8081817b96971c017b9bb65eb013bb",
@@ -8912,6 +9396,50 @@
    "article_count": 9
   },
   {
+   "id": "flk-ff8081818a1cb546018acf22744a1cb8",
+   "name": "最高人民法院关于审理破坏森林资源刑事案件适用法律若干问题的解释",
+   "short": "最高人民法院关于审理破坏森林资源刑事案件适用法律若干问题的解释",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8081818a1cb546018acf22744a1cb8",
+   "publish": "2023-08-13",
+   "effective": "2023-08-15",
+   "article_count": 19
+  },
+  {
+   "id": "flk-ff80818181cdd7a70181d65a7e48303f",
+   "name": "最高人民法院关于审理网络消费纠纷案件适用法律若干问题的规定（一）",
+   "short": "最高人民法院关于审理网络消费纠纷案件适用法律若干问题的规定（一）",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff80818181cdd7a70181d65a7e48303f",
+   "publish": "2022-03-01",
+   "effective": "2022-03-15",
+   "article_count": 20
+  },
+  {
+   "id": "flk-ff808181799df6140179abdc12cd18c3",
+   "name": "最高人民法院关于审理船舶油污损害赔偿纠纷案件若干问题的规定",
+   "short": "最高人民法院关于审理船舶油污损害赔偿纠纷案件若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808181799df6140179abdc12cd18c3",
+   "publish": "2020-12-29",
+   "effective": "2021-01-01",
+   "article_count": 1
+  },
+  {
+   "id": "flk-ff808181799df4000179abb59e1d0f70",
+   "name": "最高人民法院关于审理船舶碰撞和触碰案件财产损害赔偿的规定",
+   "short": "最高人民法院关于审理船舶碰撞和触碰案件财产损害赔偿的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808181799df4000179abb59e1d0f70",
+   "publish": "2020-12-29",
+   "effective": "2021-01-01",
+   "article_count": 1
+  },
+  {
    "id": "flk-ff808181799df4000179ad239f441454",
    "name": "最高人民法院关于审理著作权民事纠纷案件适用法律若干问题的解释",
    "short": "最高人民法院关于审理著作权民事纠纷案件适用法律若干问题的解释",
@@ -8921,6 +9449,28 @@
    "publish": "2020-12-29",
    "effective": "2021-01-01",
    "article_count": 1
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f402ac5580116",
+   "name": "最高人民法院关于审理行政协议案件若干问题的规定",
+   "short": "最高人民法院关于审理行政协议案件若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f402ac5580116",
+   "publish": "2019-11-27",
+   "effective": "2020-01-01",
+   "article_count": 29
+  },
+  {
+   "id": "flk-ff80818181cdd7a70181d7efd910420a",
+   "name": "最高人民法院关于审理行政赔偿案件若干问题的规定",
+   "short": "最高人民法院关于审理行政赔偿案件若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff80818181cdd7a70181d7efd910420a",
+   "publish": "2022-03-20",
+   "effective": "2022-05-01",
+   "article_count": 33
   },
   {
    "id": "flk-ff80818181cdd7a70181d2930fd1225a",
@@ -8943,6 +9493,17 @@
    "publish": "2000-06-30",
    "effective": "2000-07-08",
    "article_count": 3
+  },
+  {
+   "id": "flk-ff8080816f3e9784016f41da49ed00cb",
+   "name": "最高人民法院关于审理走私、非法经营、非法使用兴奋剂刑事案件适用法律若干问题的解释",
+   "short": "最高人民法院关于审理走私、非法经营、非法使用兴奋剂刑事案件适用法律若干问题的解释",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e9784016f41da49ed00cb",
+   "publish": "2019-11-18",
+   "effective": "2020-01-01",
+   "article_count": 9
   },
   {
    "id": "flk-ff8081817e8f9b80017e9afb663d1f3b",
@@ -9088,6 +9649,17 @@
    "article_count": 1
   },
   {
+   "id": "flk-402881e45ffbbe41015ffbe5805401d0",
+   "name": "最高人民法院关于巡回法庭审理案件若干问题的规定",
+   "short": "最高人民法院关于巡回法庭审理案件若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?402881e45ffbbe41015ffbe5805401d0",
+   "publish": "2016-12-27",
+   "effective": "2016-12-28",
+   "article_count": 13
+  },
+  {
    "id": "flk-402881e46005230d01600584880504d2",
    "name": "最高人民法院关于废止1979年至1989年间发布的部分司法解释的通知",
    "short": "最高人民法院关于废止1979年至1989年间发布的部分司法解释的通知",
@@ -9108,6 +9680,17 @@
    "publish": "1999-02-11",
    "effective": "1999-02-16",
    "article_count": 1
+  },
+  {
+   "id": "flk-ff808181862ee02d01863a623c403c58",
+   "name": "最高人民法院关于成渝金融法院案件管辖的规定",
+   "short": "最高人民法院关于成渝金融法院案件管辖的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808181862ee02d01863a623c403c58",
+   "publish": "2022-12-20",
+   "effective": "2023-01-01",
+   "article_count": 11
   },
   {
    "id": "flk-ff80818179f5d2480179fa51516904a9",
@@ -9141,6 +9724,17 @@
    "publish": "1997-08-05",
    "effective": "1997-08-07",
    "article_count": 1
+  },
+  {
+   "id": "flk-ff8080816f3e9784016f41f7a0640228",
+   "name": "最高人民法院关于技术调查官参与知识产权案件诉讼活动的若干规定",
+   "short": "最高人民法院关于技术调查官参与知识产权案件诉讼活动的若干规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e9784016f41f7a0640228",
+   "publish": "2019-03-18",
+   "effective": "2019-05-01",
+   "article_count": 15
   },
   {
    "id": "flk-402881e46000e279016001cad5a10b63",
@@ -9187,6 +9781,17 @@
    "article_count": 1
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f401d3d2700b5",
+   "name": "最高人民法院关于死刑复核及执行程序中保障当事人合法权益的若干规定",
+   "short": "最高人民法院关于死刑复核及执行程序中保障当事人合法权益的若干规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f401d3d2700b5",
+   "publish": "2019-08-08",
+   "effective": "2019-09-01",
+   "article_count": 13
+  },
+  {
    "id": "flk-ff80818179f5d2480179fa3186d503e4",
    "name": "最高人民法院关于民事执行中财产调查若干问题的规定",
    "short": "最高人民法院关于民事执行中财产调查若干问题的规定",
@@ -9209,6 +9814,61 @@
    "article_count": 1
   },
   {
+   "id": "flk-ff808081777d0c940177ccd29d894ded",
+   "name": "最高人民法院关于民事诉讼证据的若干规定",
+   "short": "最高人民法院关于民事诉讼证据的若干规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808081777d0c940177ccd29d894ded",
+   "publish": "2019-12-25",
+   "effective": "2020-05-01",
+   "article_count": 100
+  },
+  {
+   "id": "flk-ff80818179f5d3e70179fa2e402703b2",
+   "name": "最高人民法院关于法院冻结财产的户名与账号不符银行能否自行解冻的请示的答复",
+   "short": "最高人民法院关于法院冻结财产的户名与账号不符银行能否自行解冻的请示的答复",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff80818179f5d3e70179fa2e402703b2",
+   "publish": "2020-12-29",
+   "effective": "2021-01-01",
+   "article_count": 1
+  },
+  {
+   "id": "flk-ff808181862ee02d01863a5b52143c38",
+   "name": "最高人民法院关于涉外民商事案件管辖若干问题的规定",
+   "short": "最高人民法院关于涉外民商事案件管辖若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808181862ee02d01863a5b52143c38",
+   "publish": "2022-11-14",
+   "effective": "2023-01-01",
+   "article_count": 9
+  },
+  {
+   "id": "flk-ff808081777d07c50177cda8bd0354b9",
+   "name": "最高人民法院关于涉网络知识产权侵权纠纷几个法律适用问题的批复",
+   "short": "最高人民法院关于涉网络知识产权侵权纠纷几个法律适用问题的批复",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808081777d07c50177cda8bd0354b9",
+   "publish": "2020-09-12",
+   "effective": "2020-09-14",
+   "article_count": 1
+  },
+  {
+   "id": "flk-ff8081818a22132f018acf11fbae21f3",
+   "name": "最高人民法院关于生态环境侵权民事诉讼证据的若干规定",
+   "short": "最高人民法院关于生态环境侵权民事诉讼证据的若干规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8081818a22132f018acf11fbae21f3",
+   "publish": "2023-08-14",
+   "effective": "2023-09-01",
+   "article_count": 34
+  },
+  {
    "id": "flk-ff8081817b96962b017b9bb179d50c7e",
    "name": "最高人民法院关于知识产权侵权诉讼中被告以原告滥用权利为由请求赔偿合理开支问题的批复",
    "short": "最高人民法院关于知识产权侵权诉讼中被告以原告滥用权利为由请求赔偿合理开支问题的批复",
@@ -9218,6 +9878,28 @@
    "publish": "2021-06-03",
    "effective": "2021-06-03",
    "article_count": 1
+  },
+  {
+   "id": "flk-ff808081777d07c50177cdb330855510",
+   "name": "最高人民法院关于知识产权民事诉讼证据的若干规定",
+   "short": "最高人民法院关于知识产权民事诉讼证据的若干规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808081777d07c50177cdb330855510",
+   "publish": "2020-11-16",
+   "effective": "2020-11-18",
+   "article_count": 33
+  },
+  {
+   "id": "flk-ff8081818bd2739d018bf51a7bbd0145",
+   "name": "最高人民法院关于知识产权法庭若干问题的规定",
+   "short": "最高人民法院关于知识产权法庭若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8081818bd2739d018bf51a7bbd0145",
+   "publish": "2023-10-21",
+   "effective": "2023-11-01",
+   "article_count": 11
   },
   {
    "id": "flk-402881e46000e27901600160e0ec033a",
@@ -9231,6 +9913,17 @@
    "article_count": 1
   },
   {
+   "id": "flk-ff8081818bd27b26018bfbac49d92cda",
+   "name": "最高人民法院关于综合治理类司法建议工作若干问题的规定",
+   "short": "最高人民法院关于综合治理类司法建议工作若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8081818bd27b26018bfbac49d92cda",
+   "publish": "2023-11-15",
+   "effective": "2023-11-16",
+   "article_count": 13
+  },
+  {
    "id": "flk-402881e46000e2790160015b2e3f02bf",
    "name": "最高人民法院关于能否将国有土地使用权折价抵偿给抵押权人问题的批复",
    "short": "最高人民法院关于能否将国有土地使用权折价抵偿给抵押权人问题的批复",
@@ -9240,6 +9933,28 @@
    "publish": "1998-09-03",
    "effective": "1998-09-09",
    "article_count": 1
+  },
+  {
+   "id": "flk-ff808081777d07c50177ccdced10536c",
+   "name": "最高人民法院关于行政机关负责人出庭应诉若干问题的规定",
+   "short": "最高人民法院关于行政机关负责人出庭应诉若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808081777d07c50177ccdced10536c",
+   "publish": "2020-06-22",
+   "effective": "2020-07-01",
+   "article_count": 15
+  },
+  {
+   "id": "flk-ff808081777d0c940177ce4371685184",
+   "name": "最高人民法院关于行政申请再审案件立案程序的规定",
+   "short": "最高人民法院关于行政申请再审案件立案程序的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808081777d0c940177ce4371685184",
+   "publish": "2017-10-13",
+   "effective": "2018-01-01",
+   "article_count": 15
   },
   {
    "id": "flk-402881e45ffbbe41015ffc066c6703fd",
@@ -9275,6 +9990,17 @@
    "article_count": 1
   },
   {
+   "id": "flk-ff808081777d07c50177cce25a2d5386",
+   "name": "最高人民法院关于证券纠纷代表人诉讼若干问题的规定",
+   "short": "最高人民法院关于证券纠纷代表人诉讼若干问题的规定",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808081777d07c50177cce25a2d5386",
+   "publish": "2020-07-30",
+   "effective": "2020-07-31",
+   "article_count": 42
+  },
+  {
    "id": "flk-402881e46000e279016001c197a90aa8",
    "name": "最高人民法院关于诉前财产保全几个问题的批复",
    "short": "最高人民法院关于诉前财产保全几个问题的批复",
@@ -9297,6 +10023,28 @@
    "article_count": 1
   },
   {
+   "id": "flk-ff8080816f3e98bd016f41d0af1600c5",
+   "name": "最高人民法院关于适用《中华人民共和国人民陪审员法》若干问题的解释",
+   "short": "最高人民法院关于适用《人民陪审员法》若干问题的解释",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e98bd016f41d0af1600c5",
+   "publish": "2019-04-24",
+   "effective": "2019-05-01",
+   "article_count": 19
+  },
+  {
+   "id": "flk-402881e45ffbbe41015ffbf0370a025c",
+   "name": "最高人民法院关于适用《中华人民共和国企业破产法》若干问题的规定（一）",
+   "short": "最高人民法院关于适用《企业破产法》若干问题的规定（一）",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?402881e45ffbbe41015ffbf0370a025c",
+   "publish": "2011-09-09",
+   "effective": "2011-09-26",
+   "article_count": 9
+  },
+  {
    "id": "flk-ff808181799df6140179ac2131981a99",
    "name": "最高人民法院关于适用《中华人民共和国企业破产法》若干问题的规定（三）",
    "short": "最高人民法院关于适用《企业破产法》若干问题的规定（三）",
@@ -9306,6 +10054,28 @@
    "publish": "2020-12-29",
    "effective": "2021-01-01",
    "article_count": 1
+  },
+  {
+   "id": "flk-ff808181799df4000179ac03d7f21115",
+   "name": "最高人民法院关于适用《中华人民共和国保险法》若干问题的解释（三）",
+   "short": "最高人民法院关于适用《保险法》若干问题的解释（三）",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808181799df4000179ac03d7f21115",
+   "publish": "2020-12-29",
+   "effective": "2021-01-01",
+   "article_count": 1
+  },
+  {
+   "id": "flk-ff808181799def980179ac02b05c115a",
+   "name": "最高人民法院关于适用《中华人民共和国保险法》若干问题的解释（二）",
+   "short": "最高人民法院关于适用《保险法》若干问题的解释（二）",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808181799def980179ac02b05c115a",
+   "publish": "2020-12-29",
+   "effective": "2021-01-01",
+   "article_count": 6
   },
   {
    "id": "flk-ff808181799def980179ac050b09116a",
@@ -9330,6 +10100,28 @@
    "article_count": 8
   },
   {
+   "id": "flk-ff808181799def980179ac07a9ca117c",
+   "name": "最高人民法院关于适用《中华人民共和国公司法》若干问题的规定（三）",
+   "short": "最高人民法院关于适用《公司法》若干问题的规定（三）",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808181799def980179ac07a9ca117c",
+   "publish": "2020-12-29",
+   "effective": "2021-01-01",
+   "article_count": 28
+  },
+  {
+   "id": "flk-ff808181799df6140179ac069a281a27",
+   "name": "最高人民法院关于适用《中华人民共和国公司法》若干问题的规定（二）",
+   "short": "最高人民法院关于适用《公司法》若干问题的规定（二）",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808181799df6140179ac069a281a27",
+   "publish": "2020-12-29",
+   "effective": "2021-01-01",
+   "article_count": 24
+  },
+  {
    "id": "flk-ff808181799df4000179ac1ef1b1115c",
    "name": "最高人民法院关于适用《中华人民共和国公司法》若干问题的规定（五）",
    "short": "最高人民法院关于适用《公司法》若干问题的规定（五）",
@@ -9352,6 +10144,17 @@
    "article_count": 653
   },
   {
+   "id": "flk-ff808081777d0c940177d7dd0cdb59bb",
+   "name": "最高人民法院关于适用《中华人民共和国外商投资法》若干问题的解释",
+   "short": "最高人民法院关于适用《外商投资法》若干问题的解释",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff808081777d0c940177d7dd0cdb59bb",
+   "publish": "2019-12-26",
+   "effective": "2020-01-01",
+   "article_count": 7
+  },
+  {
    "id": "flk-ff80818179f5d2480179fa4c0ccb0492",
    "name": "最高人民法院关于适用《中华人民共和国民事诉讼法》执行程序若干问题的解释",
    "short": "最高人民法院关于适用《民事诉讼法》执行程序若干问题的解释",
@@ -9361,6 +10164,17 @@
    "publish": "2020-12-29",
    "effective": "2021-01-01",
    "article_count": 1
+  },
+  {
+   "id": "flk-ff80818181cdceb30181d801c31c4070",
+   "name": "最高人民法院关于适用《中华人民共和国民事诉讼法》的解释",
+   "short": "最高人民法院关于适用《民事诉讼法》的解释",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff80818181cdceb30181d801c31c4070",
+   "publish": "2022-04-01",
+   "effective": "2022-04-10",
+   "article_count": 550
   },
   {
    "id": "flk-ff808181923a4d0c019240cdec8b09f8",
@@ -9383,6 +10197,28 @@
    "publish": "2020-12-31",
    "effective": "2021-01-01",
    "article_count": 1
+  },
+  {
+   "id": "flk-ff8081818c24e05b018c814a8bcb5a91",
+   "name": "最高人民法院关于适用《中华人民共和国涉外民事关系法律适用法》若干问题的解释（二）",
+   "short": "最高人民法院关于适用《涉外民事关系法律适用法》若干问题的解释（二）",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8081818c24e05b018c814a8bcb5a91",
+   "publish": "2023-11-30",
+   "effective": "2024-01-01",
+   "article_count": 13
+  },
+  {
+   "id": "flk-2c90e5ba65c68cf70167f29d0e604ec4",
+   "name": "最高人民法院关于适用《中华人民共和国行政诉讼法》的解释",
+   "short": "最高人民法院关于适用《行政诉讼法》的解释",
+   "category": "高法司法解释",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?2c90e5ba65c68cf70167f29d0e604ec4",
+   "publish": "2018-02-06",
+   "effective": "2018-02-08",
+   "article_count": 163
   },
   {
    "id": "flk-402881e45ffff9500160003b310a026e",
