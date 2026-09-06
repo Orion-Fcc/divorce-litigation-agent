@@ -189,29 +189,72 @@ def resolve_urls(bbbs):
     return urls
 
 
+def _docx_text_raw(data):
+    """python-docx 解析失败的兜底：直接解压读取 document xml 提取文本。"""
+    import io
+    import zipfile
+    z = zipfile.ZipFile(io.BytesIO(data))
+    target = None
+    for n in z.namelist():
+        if re.match(r"word/document\d*\.xml$", n):
+            target = n
+            break
+    if not target:
+        for n in z.namelist():
+            if n.endswith(".xml") and "document" in n:
+                target = n
+                break
+    if not target:
+        raise RuntimeError("docx 内找不到正文 xml")
+    xml = z.read(target).decode("utf-8", errors="replace")
+    out = []
+    for p in re.split(r"</w:p>", xml):
+        t = "".join(re.findall(r"<w:t[^>]*>([^<]*)</w:t>", p)).strip()
+        if t:
+            out.append(t)
+    return "\n".join(out)
+
+
 def _download_docx(url):
     import io
-    import docx
     req = _requests()
-    fr = req.get(url, headers={"User-Agent": UA}, timeout=180, verify=False)
-    if fr.status_code != 200 or len(fr.content) <= 1000:
-        raise RuntimeError("docx 下载失败 HTTP %s" % fr.status_code)
-    doc = docx.Document(io.BytesIO(fr.content))
-    text = "\n".join(p.text for p in doc.paragraphs).strip()
-    if len(text) <= 200:
-        raise RuntimeError("docx 正文过短")
-    return text
+    last = None
+    for attempt in range(3):
+        try:
+            fr = req.get(url, headers={"User-Agent": UA}, timeout=180, verify=False)
+            if fr.status_code != 200 or len(fr.content) <= 1000:
+                raise RuntimeError("docx 下载失败 HTTP %s" % fr.status_code)
+            try:
+                import docx
+                doc = docx.Document(io.BytesIO(fr.content))
+                text = "\n".join(p.text for p in doc.paragraphs).strip()
+            except Exception:
+                text = _docx_text_raw(fr.content)  # 变体格式走 XML 兜底
+            if len(text) > 200:
+                return text
+            raise RuntimeError("docx 正文过短")
+        except Exception as e:
+            last = e
+            time.sleep(1 + attempt * 1.5)
+    raise last
 
 
 def _download_pdf(url):
     req = _requests()
-    fr = req.get(url, headers={"User-Agent": UA}, timeout=180, verify=False)
-    if fr.status_code != 200 or len(fr.content) <= 1000:
-        raise RuntimeError("pdf 下载失败 HTTP %s" % fr.status_code)
-    text = build_legal_db._pdf_to_text(fr.content)
-    if len(text.strip()) <= 200:
-        raise RuntimeError("pdf 正文过短")
-    return text.strip()
+    last = None
+    for attempt in range(3):
+        try:
+            fr = req.get(url, headers={"User-Agent": UA}, timeout=180, verify=False)
+            if fr.status_code != 200 or len(fr.content) <= 1000:
+                raise RuntimeError("pdf 下载失败 HTTP %s" % fr.status_code)
+            text = build_legal_db._pdf_to_text(fr.content)
+            if len(text.strip()) > 200:
+                return text.strip()
+            raise RuntimeError("pdf 正文过短")
+        except Exception as e:
+            last = e
+            time.sleep(1 + attempt * 1.5)
+    raise last
 
 
 def fetch_full_text(bbbs, urls=None):
@@ -445,34 +488,44 @@ def main():
         return None
 
     # ---- 阶段 A ----
-    need_a = [c for c in todo if c["bbbs"] not in state["urls"]]
+    # 没有链接或链接为空（官网限流导致）的条目都在此重试
+    need_a = [c for c in todo if not (state["urls"].get(c["bbbs"]) or {})]
     if need_a:
-        print("[阶段A] 解析详情与下载链接：%d 部…" % len(need_a), flush=True)
+        print("[阶段A] 解析下载链接：%d 部…" % len(need_a), flush=True)
+        empty_streak = 0
         if api_workers > 1 and len(need_a) > 1:
             with ThreadPoolExecutor(max_workers=api_workers) as pool:
                 futures = {pool.submit(_pass_a, item): item for item in need_a}
                 for fut in as_completed(futures):
                     item = futures[fut]
                     try:
-                        doc = fut.result()
-                        if doc is not None:
-                            _finish(item, doc=doc)
+                        _pass_a(item)
                     except Exception as e:
                         _finish(item, err=e)
         else:
             for item in need_a:
                 try:
-                    doc = _pass_a(item)
-                    if doc is not None:
-                        _finish(item, doc=doc)
+                    _pass_a(item)
                 except Exception as e:
                     _finish(item, err=e)
-                time.sleep(0.2)
+                if not (state["urls"].get(item["bbbs"]) or {}):
+                    # 连续拿不到链接 = 官网反爬限流，暂停避让（波浪式拦截）
+                    empty_streak += 1
+                    if empty_streak >= 8:
+                        print("[阶段A] 连续 %d 次拿不到下载链接，官网疑似限流，暂停 120 秒…"
+                              % empty_streak, flush=True)
+                        time.sleep(120)
+                        empty_streak = 0
+                else:
+                    empty_streak = 0
+                time.sleep(0.3)
         with lock:
             save_state(state)
 
     # ---- 阶段 B ----
-    todo_b = [c for c in todo if c["bbbs"] not in state["done"]]
+    # 只处理已拿到链接的条目；拿不到链接（官网限流）的留到下一轮阶段 A 重试
+    todo_b = [c for c in todo
+              if c["bbbs"] not in state["done"] and (state["urls"].get(c["bbbs"]) or {})]
     if todo_b:
         print("[阶段B] 并行下载全文：%d 部…" % len(todo_b), flush=True)
 
