@@ -7,4 +7,7 @@ python_app/config.json
 python_app/data/
 
 # 本地桌面版打包产物（含密钥，不上传）
-婚讼管家-桌面版/
+律衡-桌面版/
+
+# 本地嵌入模型（首次运行自动下载）
+python_app/models/

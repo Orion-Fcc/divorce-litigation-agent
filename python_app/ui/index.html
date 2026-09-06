@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- 本工作台由婚讼管家本地服务（main.py）托管：法律检索 + 自主学习 + 智能问答 -->
+<!-- 本工作台由律衡本地服务（main.py）托管：法律检索（倒排+向量）+ Agent Memory + 智能问答 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>婚讼管家 · 离婚诉讼全流程智能顾问</title>
+<title>律衡 · 你的全领域法律顾问</title>
 <style>
   :root{
     --primary:#1d4ed8; --primary-soft:#eff6ff; --danger:#dc2626; --danger-soft:#fef2f2;
@@ -169,12 +169,15 @@
   .stat-card .num{font-size:22px;font-weight:600;color:var(--primary)}
   .stat-card .lbl{font-size:12px;color:var(--muted)}
   .kv{display:flex;justify-content:space-between;font-size:14px;padding:8px 0;border-bottom:1px dashed var(--border)}
+  .mem-item{display:flex;gap:8px;align-items:flex-start;font-size:13px;padding:8px 10px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px}
+  .mem-type{flex:none;font-size:11px;font-weight:600;color:var(--primary);background:var(--primary-soft);border-radius:6px;padding:2px 8px;margin-top:1px}
   .kv .k{color:var(--muted)}
   .kv .v.ok{color:var(--ok);font-weight:500}
   .kv .v.bad{color:var(--danger);font-weight:500}
   /* 法律库浏览 */
   #lawSearchRow{display:flex;gap:8px;margin-bottom:12px}
   #lawSearchInput{flex:1;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:16px}
+  .law-group-head{font-size:13px;font-weight:600;color:var(--primary);margin:14px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--border)}
   .law-item{
     border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px;cursor:pointer;
   }
@@ -236,8 +239,8 @@
     </svg>
   </div>
   <div>
-    <h1>婚讼管家</h1>
-    <div class="sub">离婚诉讼全流程智能顾问</div>
+    <h1>律衡</h1>
+    <div class="sub">你的全领域法律顾问</div>
   </div>
   <div class="header-actions">
     <div id="statusChip" title="服务状态">
@@ -305,13 +308,23 @@
   <div class="stat-grid">
     <div class="stat-card"><div class="num" id="statLaws">-</div><div class="lbl">法律库（部）</div></div>
     <div class="stat-card"><div class="num" id="statExp">-</div><div class="lbl">已沉淀经验（条）</div></div>
+    <div class="stat-card"><div class="num" id="statMem">-</div><div class="lbl">长期记忆（条）</div></div>
   </div>
   <div class="kv"><span class="k">服务版本</span><span class="v" id="kvVersion">-</span></div>
-  <div class="kv"><span class="k">DeepSeek Key</span><span class="v" id="kvDsKey">-</span></div>
+  <div class="kv"><span class="k">模型服务</span><span class="v" id="kvLlm">-</span></div>
+  <div class="kv"><span class="k">向量语义检索</span><span class="v" id="kvVec">-</span></div>
   <div class="kv"><span class="k">视觉模型 Key</span><span class="v" id="kvViKey">-</span></div>
   <div class="kv"><span class="k">法律库构建时间</span><span class="v" id="kvLawBuilt">-</span></div>
   <div class="field" style="margin-top:12px">
-    <div class="hint">API Key 在服务端 python_app/config.json 中配置（不上传 git）。修改后重启服务生效。</div>
+    <div class="hint">模型服务在服务端 python_app/config.json 中配置（llm_provider / llm_base_url / llm_model / llm_key，支持 DeepSeek、Ollama、vLLM 等任何 OpenAI 兼容端点）。修改后重启服务生效。</div>
+  </div>
+  <h2 style="margin-top:16px">长期记忆（Agent Memory）</h2>
+  <div class="field">
+    <div class="hint">对话中自动提取的当事人情况（已脱敏，仅存本机），用于后续回答结合你的实际情况。不想要了可一键清空。</div>
+  </div>
+  <div id="memList"></div>
+  <div class="field">
+    <button class="btn" id="memClearBtn">清空长期记忆</button>
   </div>
   <div class="field">
     <label>对话模型</label>
@@ -327,7 +340,7 @@
     <div class="hint">法律库超过 7 天会自动后台更新；法律文本全部来自国家法律法规数据库及政府/法院官网。</div>
   </div>
   <div class="field">
-    <div class="hint">自主学习：每轮有效对话结束后，服务端会把会话要点脱敏后整理为经验存入本地经验库，后续对话自动参考；经验仅存本机，不上传。</div>
+    <div class="hint">Agent Memory：每轮有效对话后，服务端会脱敏提取你的案件事实存入长期记忆（本地数据库），并把有法条依据的结论沉淀为经验，后续对话自动参考；全部仅存本机，不上传。</div>
   </div>
   <hr style="margin:18px 0;border:none;border-top:1px solid var(--border)">
   <h2>数据管理</h2>
@@ -363,56 +376,58 @@ var MAX_IMAGE_MB = 10;
 var MAX_TEXT_CHARS = 20000;
 
 var QUICK_PROMPTS = [
+  "被公司辞退没有给补偿，我可以主张什么？步骤是什么？",
+  "朋友借钱不还，只有微信转账记录和聊天记录，怎么起诉？",
   "请帮我梳理离婚诉讼的完整流程和时间线，以及现在最该做的三件事",
-  "帮我整理一份离婚诉讼的财产证据清单和过错证据收集要点",
-  "孩子抚养权一般怎么判？帮我梳理争取抚养权的准备要点",
-  "帮我起草一份离婚起诉状的结构框架"
+  "楼上漏水把我家泡了，损失谁来赔？需要收集哪些证据？"
 ];
 
 var SYSTEM_PROMPT = [
-"你是「婚讼管家」，一位中立、专业、情绪稳定的婚姻家事诉讼顾问。你不代表原告也不代表被告，而是站在事实与法律一边，帮助当事人理清离婚纠纷中的程序、证据、财产、抚养等问题。你依据《中华人民共和国民法典》（婚姻家庭编及司法解释）、《中华人民共和国民事诉讼法》等现行有效的中国法律提供法律信息与流程指引，而非正式法律意见。",
+"你是「律衡」，一位中立、专业、务实的法律顾问。你基于现行有效的中国法律法规提供法律信息、程序指引与风险分析，帮助普通人把复杂的法律问题理清楚、知道下一步该做什么。你擅长婚姻家事（离婚、抚养、财产分割、继承），同时覆盖劳动争议、合同纠纷、民间借贷、侵权赔偿、房产物业、消费者权益、行政处罚、刑事自诉与控告、行政诉讼等常见领域。你不是执业律师，你的回答是法律信息参考，不构成正式法律意见。",
 "",
 "【核心能力】",
-"1. 诉讼全流程指引：协议离婚 vs 诉讼离婚选择、管辖法院、立案、应诉答辩、调解、开庭、判决、上诉、执行，逐阶段说明程序要点、法定期限（一审普通程序6个月、简易程序3个月、上诉期15日、判决不准离婚后6个月内不得再次起诉等）与常见误区。",
-"2. 证据体系梳理：按「感情破裂、财产、债务、过错、抚养能力」五大类定制证据清单，说明证据三性（真实性、合法性、关联性）要求和合法取证边界。",
-"3. 财产分割分析：夫妻共同财产与个人财产界定（婚前财产、婚后所得、父母出资购房等），分割原则（照顾子女、女方和无过错方权益），彩礼返还、房产加名、股权分割等高频争议点。",
-"4. 抚养权与抚养费准备：不满2周岁原则上随母、8周岁以上尊重子女意愿、2-8周岁按最有利于未成年子女原则；抚养费一般为月收入20%-30%；探望权安排。",
-"5. 文书思路与谈判辅助：起诉状、答辩状、证据目录、财产申报的结构框架（提供模板思路，不代替律师出具正式文书），调解谈判要点与预期管理。",
+"1. 法律问题分析：先判断问题属于哪个法律领域（民事/劳动/行政/刑事），找出争点，讲清适用的法律规则与判断标准。",
+"2. 程序与期限指引：立案、管辖、举证、开庭、上诉、申请执行的流程要点和法定期限（诉讼时效、上诉期、举证期限、仲裁时效等），按时间线讲清每个阶段该做什么。",
+"3. 证据指引：针对具体纠纷列出证据清单，说明每类证据怎么收集、证明什么、注意哪些合法边界。",
+"4. 金额与标准测算：赔偿标准、抚养费、工资基数、利息、违约金、诉讼费等可计算的，给出算法和大致区间，并说明各地标准差异。",
+"5. 文书思路：起诉状、答辩状、仲裁申请、投诉举报信、协议文本的结构框架与关键条款要点（提供思路模板，不代替律师出具正式文书）。",
+"6. 协商与救济路径：能协商的先讲协商要点；讲清行政投诉、仲裁、诉讼、信访等路径的适用场景和先后顺序。",
 "",
 "【工作流程】",
-"1. 先简要回应用户情绪（一句话共情），再用2-3个澄清问题确认关键事实：婚龄、子女及年龄、财产概况、当前阶段、起诉方还是应诉方。",
-"2. 定位用户所处流程节点，给出「必须知道的事+必须做的事+常见错误」。",
-"3. 结构化输出：程序类用阶段时间线；证据类用分类清单；财产类用财产清单表+分割逻辑。引用法条注明出处（如《民法典》第1079条），并说明这是现行规定的一般规则，个案可能不同。",
-"4. 每次回答结尾固定包含三块：【下一步行动】（≤3条，按优先级）、【法律依据清单】（见引用规范）和【风险与边界提示】（含：本回答为法律信息参考，不构成正式法律意见，重要决策请咨询执业律师）。",
+"1. 先一句话共情或确认问题，再用最少的澄清问题补关键事实（如金额、时间、证据、对方态度、所在地）。",
+"2. 定位问题类型与所处阶段，给出「结论先说 + 法律依据 + 行动步骤 + 风险点」。",
+"3. 结构化输出：程序类用时间线；证据类用分类清单；金额类列公式与区间。引用法条注明出处（如《民法典》第1079条），并说明这是一般规则，个案可能不同。",
+"4. 每次回答结尾固定三块：【下一步行动】（≤3条，按优先级）、【法律依据清单】（本次引用的法律名称+条号；未引用则写「本次回答未引用具体法条」）和【风险与边界提示】（含：本回答为法律信息参考，不构成正式法律意见；重要决策请咨询执业律师）。",
 "",
 "【咨询方身份与视角（自己判断）】",
-"- 你要自己从对话中判断提问者是谁（男方/女方/未成年子女一方/代理律师/其他第三方），依据是用户的自称与表述（如「我丈夫」「我老婆」「孩子今年5岁」「我是代理律师」「我妈妈要离婚」等）。",
-"- 判断不出且问题涉及立场相关建议时：先用一个澄清问题确认其身份，再展开分析；确认前按中立视角回答。",
-"- 明确身份后：在保持中立、客观与合规底线的前提下，从该方的立场、风险与利益角度组织分析和建议（如其举证责任、程序权利、谈判要点、常见不利因素）；不得为迎合该方而隐瞒对其不利的法律规定，不得替任何一方策划违法违规方案；涉及未成年子女一律以子女最佳利益为优先。",
-"- 身份为「孩子方」时：以未成年人权益保护为核心组织回答（抚养、探望、监护、财产代管等），并提示应由监护人或法律援助机构代为行权。",
-"- 身份为「代理律师」时：可使用更专业的表述，侧重程序策略、证据组织与裁判规则，省略基础科普。",
-"- 对话中身份明确后，后续回答沿用该身份视角，无需反复确认；若发现提问人更换（如换成另一方来问），及时调整视角。",
+"- 从对话中自己判断提问者的身份（纠纷一方当事人/律师或法务/第三方旁观者等），依据是自称与表述（如「我丈夫」「我公司」「我是律师」「别人欠我钱」）。",
+"- 判断不出且涉及立场相关建议时：先用一个澄清问题确认身份，再展开分析；确认前按中立视角回答。",
+"- 明确身份后：在保持中立、客观与合规底线的前提下，从该方的立场、风险与利益角度组织分析（举证责任、程序权利、谈判要点、常见不利因素）；不得为迎合该方而隐瞒对其不利的法律规定，不得策划违法违规方案；涉及未成年人一律以子女最佳利益为优先。",
+"- 身份为律师/法务时：可使用更专业的表述，侧重程序策略、证据组织与裁判规则，省略基础科普。",
+"- 对话中身份明确后，后续回答沿用该视角，无需反复确认；若发现提问人更换，及时调整视角。",
 "",
 "【引用规范（强制）】",
 "- 凡涉及法律规则、程序期限、金额标准、裁判规则的表述，必须注明出处：法律全称+条号，如《中华人民共和国民法典》第1079条。",
 "- 系统注入的【法律依据】块中的条文摘自官方发布的现行有效文本，是唯一可信来源，应优先引用并保持条号、内容与原文一致。",
+"- 系统注入的【长期记忆】块是从历史对话中脱敏记录的当事人情况，回答时结合这些情况；若与当事人最新表述冲突，以最新表述为准。",
 "- 确需引用注入块之外的条文时，须注明「该条未经本地法律库核验，建议核对官方文本」。",
-"- 每次回答结尾的【法律依据清单】逐项列出本次引用的法律名称+条号；本次未引用法条时写「本次回答未引用具体法条」。",
 "- 严禁虚构法律名称、条号或条文内容；没有明确法律依据的问题，明说「该问题暂无明确法律规定」，再讲实务通行做法。",
+"- 涉及已废止法律（如《婚姻法》《合同法》《物权法》《侵权责任法》）时，说明其已被《民法典》取代并给出对应现行条文。",
 "",
 "【表达规范】",
-"- 使用简体中文，语言克制专业，不评判婚姻对错，不做道德说教。用户情绪激动时先共情一句话再进入分析，不催促做决定。",
-"- 回答用清晰的结构化文本：分点用数字编号（1. 2. 3.），段落之间空一行，小标题直接写中文（如「结论」「程序」「风险提示」）。",
-"- 关键内容必须用双星号加粗（一对 ** 包裹，前后不要留空格），把最重要的结论、金额、期限、风险点突出出来。例如：**第一次起诉通常判不离**、**抚养费一般为月总收入的20%至30%**、**诉讼时效为三年**、**离婚案件受理费为50至300元**。",
+"- 使用简体中文，语言克制专业，不评判当事人对错，不做道德说教。用户情绪激动时先共情一句话再进入分析，不催促做决定。",
+"- 回答用清晰的结构化文本：分点用数字编号（1. 2. 3.），段落之间空一行，小标题直接写中文（如「结论」「程序」「证据」「风险提示」）。",
+"- 关键内容必须用双星号加粗（一对 ** 包裹，前后不要留空格），把最重要的结论、金额、期限、风险点突出出来。例如：**诉讼时效为三年**、**离婚案件受理费为50至300元**。",
 "- 除加粗的双星号外，不要使用其他任何 Markdown 符号：不用井号标题、不用代码块、不用表格、不用单星号斜体、不用下划线。",
 "- 不做结果承诺，不宣称「你一定能赢」，只做基于一般规则的可能性分析。",
 "",
 "【合规底线（不可协商）】",
-"- 不得协助隐匿、转移、变卖夫妻共同财产或伪造债务——遇到此类请求明确拒绝，并说明该行为在分割时可能少分或不分（《民法典》第1092条）及虚假诉讼的法律风险。",
-"- 不得指导非法取证（侵入住宅、非法窃听窃照、窃取他人通讯记录），只讲合法途径（自行留存的聊天记录、依法报警记录、公证等）。",
-"- 不得教唆伪造证据、虚假陈述、干扰证人；不得协助抢夺、藏匿未成年子女制造既成事实，但可客观说明此类行为对抚养权判决的不利影响。",
+"- 不得协助隐匿、转移、变卖夫妻共同财产或伪造债务——遇到此类请求明确拒绝，并说明法律后果（《民法典》第1092条）及虚假诉讼风险。",
+"- 不得指导非法取证（侵入住宅、非法窃听窃照、窃取他人通讯记录），只讲合法途径（自行留存的记录、依法报警、公证等）。",
+"- 不得教唆伪造证据、虚假陈述、干扰证人；不得协助抢夺、藏匿未成年子女制造既成事实，但可客观说明此类行为的不利后果。",
 "- 涉及家庭暴力、人身安全时，优先提示申请人身安全保护令（《反家庭暴力法》）、报警、就医验伤，建议联系妇联12338或法律援助12348。",
-"- 各地法院裁量存在差异，涉及具体金额与结果预判时提示用户咨询受诉法院辖区的本地律师。"
+"- 涉及劳动争议时提示劳动监察投诉（12333）、劳动仲裁等法定路径；涉及消费纠纷提示12315。",
+"- 各地裁判尺度与执行口径存在差异，涉及具体金额与结果预判时提示用户咨询受诉法院辖区或所在地的执业律师。"
 ].join("\n");
 
 /* ================= 状态 ================= */
@@ -422,8 +437,9 @@ var state = {
   settings: { model: "deepseek-chat" },
   streaming: false,
   pendingAttachment: null,
-  server: { online: false, hasDeepseekKey: false, hasVisionKey: false,
-            version: "", laws: 0, experiences: 0, lawBuiltAt: "" }
+  server: { online: false, hasVisionKey: false, llmReady: false,
+            version: "", laws: 0, experiences: 0, memories: 0,
+            lawBuiltAt: "", vectorReady: false, llmInfo: "" }
 };
 
 /* ================= DOM 引用 ================= */
@@ -448,10 +464,14 @@ var el = {
   statusText: document.getElementById("statusText"),
   statLaws: document.getElementById("statLaws"),
   statExp: document.getElementById("statExp"),
+  statMem: document.getElementById("statMem"),
   kvVersion: document.getElementById("kvVersion"),
-  kvDsKey: document.getElementById("kvDsKey"),
+  kvLlm: document.getElementById("kvLlm"),
+  kvVec: document.getElementById("kvVec"),
   kvViKey: document.getElementById("kvViKey"),
   kvLawBuilt: document.getElementById("kvLawBuilt"),
+  memList: document.getElementById("memList"),
+  memClearBtn: document.getElementById("memClearBtn"),
   modelSelect: document.getElementById("modelSelect"),
   updateLawsBtn: document.getElementById("updateLawsBtn"),
   exportBtn: document.getElementById("exportBtn"),
@@ -551,16 +571,19 @@ function apiPost(path, body){
     });
   });
 }
-/* 拉取服务状态（连接、Key 配置、法律库/经验库统计） */
+/* 拉取服务状态（连接、模型配置、法律库/记忆库统计） */
 function refreshServerStatus(){
   return apiGet("/api/ping").then(function(p){
     state.server.online = true;
     state.server.version = p.version || "";
     state.server.laws = p.laws || 0;
     state.server.experiences = p.experiences || 0;
+    state.server.memories = p.memories || 0;
+    state.server.vectorReady = !!p.vector_ready;
     return apiGet("/api/config");
   }).then(function(c){
-    state.server.hasDeepseekKey = !!c.has_deepseek_key;
+    state.server.llmReady = !!c.llm_ready;
+    state.server.llmInfo = (c.llm_base_url ? c.llm_base_url + " · " : "") + (c.model || "未配置");
     state.server.hasVisionKey = !!c.has_vision_key;
     return apiGet("/api/laws");
   }).then(function(l){
@@ -724,14 +747,14 @@ function renderWelcome(){
   wh.className = "w-head";
   var wa = document.createElement("img");
   wa.src = "/assets/avatar-lawyer.svg";
-  wa.alt = "婚讼管家";
+  wa.alt = "律衡";
   var h = document.createElement("h2");
-  h.textContent = "你好，我是婚讼管家";
+  h.textContent = "你好，我是律衡";
   wh.appendChild(wa); wh.appendChild(h);
   var p1 = document.createElement("p");
-  p1.textContent = "我可以帮你梳理离婚诉讼流程、整理证据清单、分析财产分割逻辑、准备抚养权争议要点、起草文书框架。本版本内置多部现行婚姻家庭相关法律官方文本（点击右上角书本图标可浏览），回答时自动检索引用。";
+  p1.textContent = "我可以帮你分析劳动争议、合同纠纷、民间借贷、侵权赔偿、房产物业、消费维权等各类法律问题，也擅长婚姻家事（离婚、抚养、财产分割、继承）。本版本内置全部现行有效法律、行政法规和司法解释的官方文本（点击右上角书本图标可浏览），回答时自动检索引用。";
   var p2 = document.createElement("p");
-  p2.textContent = "为了给出更贴合的建议，可以直接告诉我：婚龄、有无子女及年龄、大致财产情况（房产/存款/债务）、目前是考虑离婚、已起诉还是已开庭。";
+  p2.textContent = "为了给出更贴合的建议，可以直接告诉我：事情经过、发生时间、涉及金额、手里有哪些证据、对方目前的态度，以及你所在的城市。";
   w.appendChild(wh); w.appendChild(p1); w.appendChild(p2);
   el.messages.appendChild(w);
 }
@@ -790,13 +813,36 @@ function renderStatusChip(){
 function renderSettingsPanel(){
   el.statLaws.textContent = state.server.laws;
   el.statExp.textContent = state.server.experiences;
+  el.statMem.textContent = state.server.memories;
   el.kvVersion.textContent = state.server.version || "-";
-  el.kvDsKey.textContent = state.server.hasDeepseekKey ? "已配置" : "未配置";
-  el.kvDsKey.className = "v " + (state.server.hasDeepseekKey ? "ok" : "bad");
+  el.kvLlm.textContent = state.server.llmReady ? (state.server.llmInfo || "已配置") : "未配置";
+  el.kvLlm.className = "v " + (state.server.llmReady ? "ok" : "bad");
+  el.kvVec.textContent = state.server.vectorReady ? "已启用（本地嵌入模型）" : "准备中/未启用（回退关键词检索）";
+  el.kvVec.className = "v " + (state.server.vectorReady ? "ok" : "bad");
   el.kvViKey.textContent = state.server.hasVisionKey ? "已配置" : "未配置";
   el.kvViKey.className = "v " + (state.server.hasVisionKey ? "ok" : "bad");
   el.kvLawBuilt.textContent = state.server.lawBuiltAt || "-";
   el.modelSelect.value = state.settings.model;
+  // 长期记忆列表
+  apiGet("/api/memory").then(function(d){
+    var list = d.semantic || [];
+    el.memList.innerHTML = "";
+    if (!list.length){
+      el.memList.innerHTML = "<p style='color:var(--muted);font-size:13px'>还没有记住任何情况。多聊几轮，我会自动提取你的案件事实（脱敏后仅存本机）。</p>";
+      return;
+    }
+    list.forEach(function(f){
+      var div = document.createElement("div");
+      div.className = "mem-item";
+      var t = document.createElement("span");
+      t.className = "mem-type";
+      t.textContent = f.type;
+      var c = document.createElement("span");
+      c.textContent = f.content;
+      div.appendChild(t); div.appendChild(c);
+      el.memList.appendChild(div);
+    });
+  }).catch(function(){});
 }
 function updateSendState(){
   el.sendBtn.disabled = state.streaming;
@@ -816,7 +862,7 @@ function appendMessageBubble(role, content, attachment, legalRefs){
   av.className = "avatar";
   var avi = document.createElement("img");
   avi.src = role === "user" ? "/assets/avatar-user.svg" : "/assets/avatar-lawyer.svg";
-  avi.alt = role === "user" ? "我" : "婚讼管家";
+  avi.alt = role === "user" ? "我" : "律衡";
   av.appendChild(avi);
   var bubble = document.createElement("div");
   bubble.className = "bubble";
@@ -922,25 +968,65 @@ function renderLawList(){
   el.lawContent.innerHTML = "<p style='color:var(--muted);font-size:14px'>加载中…</p>";
   apiGet("/api/laws").then(function(d){
     el.lawContent.innerHTML = "";
-    (d.laws || []).forEach(function(l){
-      var item = document.createElement("div");
-      item.className = "law-item";
-      var nm = document.createElement("div");
-      nm.className = "lname";
-      nm.textContent = l.name;
-      var meta = document.createElement("div");
-      meta.className = "lmeta";
-      meta.textContent = "共 " + l.article_count + " 条" +
-        (l.effective ? " · 施行 " + l.effective : "") +
-        (l.source_name ? " · 来源：" + l.source_name : "");
-      item.appendChild(nm); item.appendChild(meta);
-      item.addEventListener("click", function(){ renderLawDetail(l.id); });
-      el.lawContent.appendChild(item);
-    });
+    var laws = d.laws || [];
+    // 法律名筛选框
+    var filter = document.createElement("input");
+    filter.id = "lawNameFilter";
+    filter.placeholder = "筛选法律名称，如：民法典 / 劳动合同 / 司法解释";
+    filter.style.cssText = "width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:15px;margin-bottom:10px";
+    el.lawContent.appendChild(filter);
+    var listBox = document.createElement("div");
+    el.lawContent.appendChild(listBox);
+
+    var catOrder = ["宪法","法律","法律解释","行政法规","监察法规","司法解释"];
+    function draw(){
+      listBox.innerHTML = "";
+      var kw = (filter.value || "").trim();
+      var groups = {};
+      laws.forEach(function(l){
+        if (kw && l.name.indexOf(kw) < 0 && (l.short || "").indexOf(kw) < 0) return;
+        var cat = l.category || "其他";
+        (groups[cat] = groups[cat] || []).push(l);
+      });
+      var cats = Object.keys(groups).sort(function(a,b){
+        var ia = catOrder.indexOf(a), ib = catOrder.indexOf(b);
+        if (ia < 0) ia = 99; if (ib < 0) ib = 99;
+        return ia - ib || a.localeCompare(b, "zh");
+      });
+      var total = 0;
+      cats.forEach(function(cat){
+        var arr = groups[cat];
+        total += arr.length;
+        var head = document.createElement("div");
+        head.className = "law-group-head";
+        head.textContent = cat + "（" + arr.length + " 部）";
+        listBox.appendChild(head);
+        arr.forEach(function(l){
+          var item = document.createElement("div");
+          item.className = "law-item";
+          var nm = document.createElement("div");
+          nm.className = "lname";
+          nm.textContent = l.name;
+          var meta = document.createElement("div");
+          meta.className = "lmeta";
+          meta.textContent = "共 " + l.article_count + " 条" +
+            (l.effective ? " · 施行 " + l.effective : "") +
+            (l.source_name ? " · 来源：" + l.source_name : "");
+          item.appendChild(nm); item.appendChild(meta);
+          item.addEventListener("click", function(){ renderLawDetail(l.id); });
+          listBox.appendChild(item);
+        });
+      });
+      if (!total){
+        listBox.innerHTML = "<p style='color:var(--muted);font-size:14px'>没有匹配的法律。</p>";
+      }
+    }
+    filter.addEventListener("input", draw);
+    draw();
     if (d.built_at){
       var bt = document.createElement("p");
       bt.style.cssText = "font-size:12px;color:var(--muted);margin-top:6px";
-      bt.textContent = "法律库构建时间：" + d.built_at + "（超过 7 天自动更新）";
+      bt.textContent = "法律库构建时间：" + d.built_at + "（超过 30 天自动更新）";
       el.lawContent.appendChild(bt);
     }
   }).catch(function(e){
@@ -1109,8 +1195,8 @@ function onSend(text){
     showError("本地服务未连接，请确认 python main.py 已启动。");
     return;
   }
-  if (!state.server.hasDeepseekKey){
-    showError("服务端未配置 DeepSeek Key：请编辑 python_app/config.json 后重启服务。");
+  if (!state.server.llmReady){
+    showError("模型服务未配置：请编辑 python_app/config.json（llm_provider / llm_base_url，支持 DeepSeek、Ollama、vLLM 等）后重启服务。");
     openPanel(el.settingsPanel);
     return;
   }
@@ -1245,9 +1331,9 @@ function onNewSession(){
 function onExportCurrent(){
   var s = getCurrentSession();
   if (!s || s.messages.length === 0){ showError("当前没有可导出的会话内容。"); return; }
-  var lines = ["# 婚讼管家 · 会话导出", "导出时间：" + new Date().toLocaleString(), ""];
+  var lines = ["# 律衡 · 会话导出", "导出时间：" + new Date().toLocaleString(), ""];
   s.messages.forEach(function(m){
-    lines.push(m.role === "user" ? "## 我" : "## 婚讼管家");
+    lines.push(m.role === "user" ? "## 我" : "## 律衡");
     lines.push(m.content);
     lines.push("");
   });
@@ -1354,6 +1440,13 @@ el.modelSelect.addEventListener("change", function(){
   saveSettings();
 });
 el.updateLawsBtn.addEventListener("click", onUpdateLaws);
+el.memClearBtn.addEventListener("click", function(){
+  if (!confirm("确定清空长期记忆吗？清空后历史对话中记住的当事人情况将被删除（仅本机数据）。")) return;
+  apiPost("/api/memory/clear", {type: "semantic"}).then(function(){
+    state.server.memories = 0;
+    renderSettingsPanel();
+  });
+});
 el.attachBtn.addEventListener("click", function(){ el.fileInput.click(); });
 el.fileInput.addEventListener("change", function(){
   var f = el.fileInput.files && el.fileInput.files[0];

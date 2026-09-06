@@ -1,5 +1,7 @@
 {
-  "deepseek_key": "sk-在这里填入你的DeepSeek密钥",
+  "llm_provider": "deepseek",
+  "llm_base_url": "https://api.deepseek.com",
+  "llm_key": "sk-在这里填入你的密钥（本地模型可留空）",
   "model": "deepseek-chat",
   "vision_provider": "glm",
   "vision_key": "在这里填入视觉模型密钥（智谱GLM或阿里DashScope）",

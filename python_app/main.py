@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-婚讼管家
+律衡
 本地服务端：法律检索 + 经验学习 + 智能问答 + 文件解析 + 桌面窗口。
 
 运行：
@@ -26,9 +26,18 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UI_FILE = os.path.join(BASE_DIR, "ui", "index.html")
 CONFIG_FILE = os.path.join(BASE_DIR, "config.json")
-VERSION = "2.2.2"
+VERSION = "2.3.0"
 
-DEEPSEEK_URL = "https://api.deepseek.com/chat/completions"
+# LLM 接入预设：llm_provider 选 preset 名，或用 custom 填 llm_base_url。
+# 本地自主部署：Ollama（http://127.0.0.1:11434/v1）、vLLM（http://127.0.0.1:8000/v1）
+# 均兼容 OpenAI chat/completions 协议，密钥可为空。
+LLM_PRESETS = {
+    "deepseek": {"base_url": "https://api.deepseek.com", "model": "deepseek-chat"},
+    "ollama":   {"base_url": "http://127.0.0.1:11434/v1", "model": "qwen2.5:7b"},
+    "vllm":     {"base_url": "http://127.0.0.1:8000/v1", "model": ""},
+    "openai":   {"base_url": "https://api.openai.com", "model": "gpt-4o-mini"},
+    "custom":   {"base_url": "", "model": ""},
+}
 VISION_PRESETS = {
     "glm": {"base_url": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
             "model": "glm-4v-flash"},
@@ -38,11 +47,13 @@ VISION_PRESETS = {
 OCR_PROMPT = ("请完整识别并转写这张图片中的所有文字内容（可能是合同、法律文书、聊天记录、票据、证件等）。"
               "要求：1) 保持原有结构和条款顺序；2) 不得遗漏金额、日期、姓名、证件号、账号等关键信息；"
               "3) 对非文字的重要信息（如签字、手印、盖章位置）简要说明；4) 只输出识别结果，不要评论分析。")
-LAW_DB_MAX_AGE_DAYS = 7  # 法律库超过 7 天自动后台更新
+LAW_DB_MAX_AGE_DAYS = 30  # 法律库超过 30 天自动后台更新（全量刷新，跟踪法律修订）
 
 sys.path.insert(0, BASE_DIR)
 import legal_db
 import learning
+import agent_memory
+import vector_rag
 
 # ---------------------------------------------------------------- 配置
 _config = {}
@@ -68,21 +79,43 @@ def _requests():
     return requests
 
 
+def llm_endpoint():
+    """解析对话模型的 base_url / model / key（支持自主部署，无需代理）。"""
+    provider = cfg("llm_provider", "deepseek") or "deepseek"
+    preset = LLM_PRESETS.get(provider, LLM_PRESETS["custom"])
+    base_url = (cfg("llm_base_url") or preset["base_url"]).rstrip("/")
+    if not base_url and provider == "custom":
+        raise RuntimeError("config.json 未配置 llm_base_url（自主部署时填写，如 http://127.0.0.1:11434/v1）")
+    model = cfg("model") or preset["model"] or "deepseek-chat"
+    key = cfg("llm_key") or cfg("deepseek_key")  # 兼容旧配置字段
+    return base_url + "/chat/completions", model, key
+
+
+def has_llm():
+    """是否已配置可用的对话模型（本地部署无 key 也算可用）。"""
+    try:
+        url, model, key = llm_endpoint()
+        return bool(url)
+    except Exception:
+        return False
+
+
 def llm_complete(messages, max_tokens=800, temperature=0.3, model=None):
-    """非流式调用 DeepSeek（用于经验蒸馏等后台任务）。"""
-    if not cfg("deepseek_key"):
-        return None
-    r = _requests().post(DEEPSEEK_URL, json={
-        "model": model or cfg("model", "deepseek-chat"),
+    """非流式调用（用于经验蒸馏/记忆提取等后台任务）。"""
+    url, default_model, key = llm_endpoint()
+    headers = {"Content-Type": "application/json"}
+    if key:
+        headers["Authorization"] = "Bearer " + key
+    r = _requests().post(url, json={
+        "model": model or default_model,
         "messages": messages,
         "max_tokens": max_tokens,
         "temperature": temperature,
         "stream": False,
-    }, headers={"Authorization": "Bearer " + cfg("deepseek_key"),
-                "Content-Type": "application/json"}, timeout=120)
+    }, headers=headers, timeout=300)
     data = r.json()
     if r.status_code != 200:
-        raise RuntimeError("DeepSeek 错误 %s: %s" % (r.status_code, str(data)[:200]))
+        raise RuntimeError("模型服务错误 %s: %s" % (r.status_code, str(data)[:200]))
     return data["choices"][0]["message"]["content"]
 
 
@@ -91,17 +124,18 @@ def _now_line():
     weekdays = "一二三四五六日"
     now = datetime.now()
     return ("【当前时间】今天是 %d年%d月%d日 星期%s %02d:%02d。"
-            "回答涉及期限、时效、日期推算（如冷静期、上诉期、起诉间隔）的问题时，"
+            "回答涉及期限、时效、日期推算（如诉讼时效、上诉期、仲裁时效、离婚冷静期等）的问题时，"
             "以此刻日期为基准计算。" % (now.year, now.month, now.day,
                                         weekdays[now.weekday()], now.hour, now.minute))
 
 
 def build_chat_messages(client_messages, user_query):
-    """在客户端消息基础上注入当前时间 + 法律检索结果 + 历史经验。"""
+    """在客户端消息基础上注入当前时间 + 法律检索结果 + 历史经验 + 长期记忆。"""
     msgs = [dict(m) for m in client_messages]
     law_block = legal_db.format_context(user_query)
     exp_block = learning.format_context(user_query)
-    inject = "\n\n".join(b for b in (_now_line(), law_block, exp_block) if b)
+    mem_block = agent_memory.format_memory_context(user_query)
+    inject = "\n\n".join(b for b in (_now_line(), mem_block, law_block, exp_block) if b)
     if inject:
         if msgs and msgs[0].get("role") == "system":
             msgs[0]["content"] = msgs[0]["content"] + "\n\n" + inject
@@ -162,9 +196,9 @@ def maybe_update_legal_db(force=False):
     def _worker():
         try:
             import subprocess
-            script = os.path.join(BASE_DIR, "tools", "build_legal_db.py")
-            r = subprocess.run([sys.executable, script], capture_output=True,
-                               text=True, timeout=1800)
+            script = os.path.join(BASE_DIR, "tools", "build_all_laws.py")
+            r = subprocess.run([sys.executable, script, "--refresh"],
+                               capture_output=True, text=True, timeout=7200)
             print("[法律库更新]", r.stdout[-500:] if r.returncode == 0 else r.stderr[-500:])
             legal_db.reload()
         except Exception as e:
@@ -221,12 +255,21 @@ class Handler(BaseHTTPRequestHandler):
         elif path == "/api/ping":
             self._send_json({"ok": True, "mode": "python", "version": VERSION,
                              "laws": len(legal_db.manifest()),
-                             "experiences": learning.count()})
+                             "experiences": learning.count(),
+                             "memories": agent_memory.semantic_count(),
+                             "vector_ready": vector_rag.is_ready()})
         elif path == "/api/config":
+            try:
+                url, model, key = llm_endpoint()
+            except Exception:
+                url, model, key = "", "", ""
             self._send_json({
-                "has_deepseek_key": bool(cfg("deepseek_key")),
+                "llm_ready": bool(url),
+                "llm_provider": cfg("llm_provider", "deepseek") or "deepseek",
+                "llm_base_url": (cfg("llm_base_url") or "").rstrip("/"),
+                "has_llm_key": bool(key),
+                "model": model,
                 "has_vision_key": bool(cfg("vision_key")),
-                "model": cfg("model", "deepseek-chat"),
                 "vision_provider": cfg("vision_provider", "glm"),
             })
         elif path == "/api/laws":
@@ -263,6 +306,12 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json({"refs": refs})
         elif path == "/api/learn/stats":
             self._send_json({"experiences": learning.count()})
+        elif path == "/api/memory":
+            self._send_json({
+                "semantic": agent_memory.list_semantic(),
+                "episodic_count": learning.count(),
+                "sessions": agent_memory.list_sessions(),
+            })
         else:
             self._send_error("Not Found", 404)
 
@@ -325,12 +374,22 @@ class Handler(BaseHTTPRequestHandler):
         elif path == "/api/laws/update":
             started = maybe_update_legal_db(force=True)
             self._send_json({"started": started})
+        elif path == "/api/memory/clear":
+            body = self._json_body()
+            target = body.get("type") or "semantic"
+            if target in ("semantic", "all"):
+                agent_memory.clear_semantic()
+            if target in ("episodic", "all"):
+                agent_memory.clear_episodic()
+            self._send_json({"cleared": target})
         else:
             self._send_error("Not Found", 404)
 
     def _handle_chat(self):
-        if not cfg("deepseek_key"):
-            self._send_error("服务端未配置 DeepSeek Key（python_app/config.json）", 500)
+        try:
+            url, default_model, key = llm_endpoint()
+        except Exception as e:
+            self._send_error("未配置模型服务：%s" % e, 500)
             return
         body = self._json_body()
         client_messages = body.get("messages") or []
@@ -342,17 +401,19 @@ class Handler(BaseHTTPRequestHandler):
                 break
         messages = build_chat_messages(client_messages, user_query)
 
+        headers = {"Content-Type": "application/json"}
+        if key:
+            headers["Authorization"] = "Bearer " + key
         # SSE 转发
         try:
-            r = _requests().post(DEEPSEEK_URL, json={
-                "model": body.get("model") or cfg("model", "deepseek-chat"),
+            r = _requests().post(url, json={
+                "model": body.get("model") or default_model,
                 "messages": messages,
                 "stream": True,
-            }, headers={"Authorization": "Bearer " + cfg("deepseek_key"),
-                        "Content-Type": "application/json"},
+            }, headers=headers,
                 timeout=(15, 300), stream=True)
         except Exception as e:
-            self._send_error("无法连接 DeepSeek：%s" % e, 502)
+            self._send_error("无法连接模型服务：%s" % e, 502)
             return
 
         self.send_response(200)
@@ -364,7 +425,7 @@ class Handler(BaseHTTPRequestHandler):
             if r.status_code != 200:
                 err = r.text[:300]
                 self.wfile.write(("data: " + json.dumps(
-                    {"error": "DeepSeek 错误 %s: %s" % (r.status_code, err)},
+                    {"error": "模型服务错误 %s: %s" % (r.status_code, err)},
                     ensure_ascii=False) + "\n\n").encode("utf-8"))
             else:
                 for line in r.iter_lines(decode_unicode=True):
@@ -412,11 +473,11 @@ class Handler(BaseHTTPRequestHandler):
             self._send_error(str(e), 500)
 
     def _handle_learn(self):
-        """会话沉淀：前端在完成一轮回答后上报会话，服务端节流并蒸馏经验。"""
+        """会话沉淀：前端在完成一轮回答后上报会话，服务端节流并沉淀经验与记忆。"""
         body = self._json_body()
         session_id = str(body.get("session_id") or "default")
         messages = body.get("messages") or []
-        if not cfg("deepseek_key"):
+        if not has_llm():
             self._send_json({"learned": False, "reason": "no_key"})
             return
         if not learning.should_learn(session_id, messages):
@@ -424,11 +485,22 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         def _worker():
+            # 1) 情节记忆：蒸馏经验（带质量护栏）
             exp = learning.distill(messages, llm_complete)
             if exp:
                 learning.add_experience(exp)
                 learning.mark_learned(session_id, messages)
                 print("[学习] 新经验：", exp["topics"], exp["situation"][:40])
+            # 2) 语义记忆：提取当事人事实（脱敏 + 去重）
+            try:
+                facts = agent_memory.extract_facts(messages, llm_complete)
+                n = agent_memory.add_semantic(session_id, facts)
+                if n:
+                    print("[记忆] 新记事实 %d 条。" % n)
+            except Exception as e:
+                print("[记忆] 事实提取失败：", e)
+            # 3) 会话记忆：更新时间与摘要
+            agent_memory.touch_session(session_id, messages)
 
         threading.Thread(target=_worker, daemon=True).start()
         self._send_json({"learned": True})
@@ -469,7 +541,7 @@ def auto_init():
     else:
         print("[初始化] config.json 已存在。", flush=True)
 
-    # 3) 构建法律库（首次构建约 1-2 分钟）
+    # 3) 构建法律库（程序一般随附完整法律库；为空时才联网构建，全量收录约 30-60 分钟）
     manifest_path = os.path.join(BASE_DIR, "legal_db", "manifest.json")
     laws_ready = False
     try:
@@ -480,10 +552,11 @@ def auto_init():
     if laws_ready:
         print("[初始化] 法律库已就绪。", flush=True)
         return
-    print("[初始化] 法律库为空，开始首次构建（从政府/法院官网抓取官方文本，约 1-2 分钟）…", flush=True)
+    print("[初始化] 法律库为空，开始首次构建（从国家法律法规数据库收录全部现行有效法律，"
+          "耗时约 30-60 分钟，期间可正常使用但部分条文暂不可检索）…", flush=True)
     try:
-        script = os.path.join(BASE_DIR, "tools", "build_legal_db.py")
-        r = subprocess.run([sys.executable, script], capture_output=True, text=True, timeout=1800)
+        script = os.path.join(BASE_DIR, "tools", "build_all_laws.py")
+        r = subprocess.run([sys.executable, script], capture_output=True, text=True, timeout=7200)
         tail = (r.stdout or "")[-600:]
         print("[初始化] 法律库构建%s。%s" % ("完成" if r.returncode == 0 else "失败", tail), flush=True)
     except Exception as e:
@@ -533,6 +606,7 @@ def main():
     if not legal_db.is_loaded():
         print("[提示] 法律库为空，可在启动时加 --auto-init 自动构建。")
     maybe_update_legal_db()  # 过旧自动更新（自主学习能力）
+    vector_rag.start_build()  # 后台建立向量索引（语义检索，首次几分钟，之后走缓存）
 
     server, port = start_server(opts["port"])
     if opts["port_file"]:
@@ -542,13 +616,17 @@ def main():
         except OSError as e:
             print("[警告] 无法写端口文件：%s" % e)
     url = "http://127.0.0.1:%d/" % port
+    try:
+        _llm_url, _llm_model, _llm_key = llm_endpoint()
+    except Exception:
+        _llm_url, _llm_model, _llm_key = "", "", ""
     print("=" * 56)
-    print("  婚讼管家 v%s" % VERSION)
+    print("  律衡 v%s" % VERSION)
     print("  本地服务：%s" % url)
-    print("  法律库：%d 部 | 经验库：%d 条" % (len(legal_db.manifest()),
+    print("  法律库：%d 部 | 记忆库：%d 条经验" % (len(legal_db.manifest()),
                                                   learning.count()))
-    print("  DeepSeek Key：%s | 视觉 Key：%s" % (
-        "已配置" if cfg("deepseek_key") else "未配置（请在 config.json 填写）",
+    print("  模型服务：%s | 视觉 Key：%s" % (
+        (_llm_url or "未配置（请填写 config.json 的 llm_base_url）"),
         "已配置" if cfg("vision_key") else "未配置"))
     print("=" * 56)
 
@@ -576,7 +654,7 @@ def main():
 
     try:
         import webview  # pywebview
-        webview.create_window("婚讼管家", url, width=1200, height=800,
+        webview.create_window("律衡", url, width=1200, height=800,
                               min_size=(800, 600))
         webview.start()
     except ImportError:

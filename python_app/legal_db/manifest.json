@@ -1,19 +1,19 @@
 {
- "built_at": "2026-09-06 02:06:47",
+ "built_at": "2026-09-06 11:54:22",
  "laws": [
   {
-   "id": "minfadian-hunyin",
-   "name": "中华人民共和国民法典·婚姻家庭编（第五编）",
-   "short": "民法典·婚姻家庭编",
+   "id": "minfadian",
+   "name": "中华人民共和国民法典",
+   "short": "民法典",
    "source_name": "湖南省人民政府门户网站（转载全国人大通过文本）",
    "source_url": "https://www.hunan.gov.cn/zqt/zcsd/202005/t20200528_13751405.html",
    "publish": "2020-05-28",
    "effective": "2021-01-01",
    "article_range": [
-    1040,
-    1118
+    1,
+    1260
    ],
-   "article_count": 79
+   "article_count": 1260
   },
   {
    "id": "jieshi-1",
@@ -104,20 +104,6 @@
    "article_count": 306
   },
   {
-   "id": "minfadian-jicheng",
-   "name": "中华人民共和国民法典·继承编（第六编）",
-   "short": "民法典·继承编",
-   "source_name": "湖南省人民政府门户网站（转载全国人大通过文本）",
-   "source_url": "https://www.hunan.gov.cn/zqt/zcsd/202005/t20200528_13751405.html",
-   "publish": "2020-05-28",
-   "effective": "2021-01-01",
-   "article_range": [
-    1119,
-    1163
-   ],
-   "article_count": 45
-  },
-  {
    "id": "jicheng-jieshi-1",
    "name": "最高人民法院关于适用《中华人民共和国民法典》继承编的解释（一）",
    "short": "继承编司法解释（一）",
@@ -149,20 +135,6 @@
    "effective": "2022-08-01",
    "article_range": null,
    "article_count": 13
-  },
-  {
-   "id": "xingfa-hunyin",
-   "name": "中华人民共和国刑法·婚姻家庭相关条文（第257-262条节选）",
-   "short": "刑法·婚姻家庭条文",
-   "source_name": "司法部普法平台（12348陕西法网，转载刑法全文，节选）",
-   "source_url": "http://ya.sn.12348.gov.cn/zixundayi/578.html",
-   "publish": "2020-12-26",
-   "effective": "2021-03-01",
-   "article_range": [
-    257,
-    262
-   ],
-   "article_count": 9
   },
   {
    "id": "susongfei-banfa",

@@ -25,15 +25,15 @@ DB_DIR = os.path.join(BASE_DIR, "legal_db")
 # start_after: 从该字符串首次出现之后开始扫描条文（跳过新闻导语/目录等）
 SOURCES = [
     {
-        "id": "minfadian-hunyin",
-        "name": "中华人民共和国民法典·婚姻家庭编（第五编）",
-        "short": "民法典·婚姻家庭编",
+        "id": "minfadian",
+        "name": "中华人民共和国民法典",
+        "short": "民法典",
         "source_name": "湖南省人民政府门户网站（转载全国人大通过文本）",
         "source_url": "https://www.hunan.gov.cn/zqt/zcsd/202005/t20200528_13751405.html",
         "publish": "2020-05-28",
         "effective": "2021-01-01",
-        "start_after": "第一千零四十条",
-        "article_range": [1040, 1118],
+        "start_after": "第一条",
+        "article_range": [1, 1260],
     },
     {
         "id": "jieshi-1",
@@ -124,17 +124,6 @@ SOURCES = [
         "article_range": None,
     },
     # ================= 新增：更多婚姻家庭相关法律 =================
-    {
-        "id": "minfadian-jicheng",
-        "name": "中华人民共和国民法典·继承编（第六编）",
-        "short": "民法典·继承编",
-        "source_name": "湖南省人民政府门户网站（转载全国人大通过文本）",
-        "source_url": "https://www.hunan.gov.cn/zqt/zcsd/202005/t20200528_13751405.html",
-        "publish": "2020-05-28",
-        "effective": "2021-01-01",
-        "start_after": "第一千一百一十九条",
-        "article_range": [1119, 1163],
-    },
     {
         "id": "jicheng-jieshi-1",
         "name": "最高人民法院关于适用《中华人民共和国民法典》继承编的解释（一）",
