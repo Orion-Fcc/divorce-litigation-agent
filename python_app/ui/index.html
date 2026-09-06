@@ -402,7 +402,9 @@ var SYSTEM_PROMPT = [
 "",
 "【表达规范】",
 "- 使用简体中文，语言克制专业，不评判婚姻对错，不做道德说教。用户情绪激动时先共情一句话再进入分析，不催促做决定。",
-"- 禁止使用任何 Markdown 符号（星号、井号、下划线等）。回答一律用纯文本：段落之间空一行，分点用数字编号（1. 2. 3.），需要强调时用【】括起来，小标题直接写中文文字。",
+"- 回答用清晰的结构化文本：分点用数字编号（1. 2. 3.），段落之间空一行，小标题直接写中文（如「结论」「程序」「风险提示」）。",
+"- 关键内容必须用双星号加粗（一对 ** 包裹，前后不要留空格），把最重要的结论、金额、期限、风险点突出出来。例如：**第一次起诉通常判不离**、**抚养费一般为月总收入的20%至30%**、**诉讼时效为三年**、**离婚案件受理费为50至300元**。",
+"- 除加粗的双星号外，不要使用其他任何 Markdown 符号：不用井号标题、不用代码块、不用表格、不用单星号斜体、不用下划线。",
 "- 不做结果承诺，不宣称「你一定能赢」，只做基于一般规则的可能性分析。",
 "",
 "【合规底线（不可协商）】",
@@ -570,14 +572,28 @@ function refreshServerStatus(){
     renderStatusChip();
   });
 }
-/* SSE 流式聊天 */
+/* SSE 流式聊天（带总时长与无数据超时保护，服务中断时自动恢复界面） */
 function streamChat(apiMessages, onDelta){
+  var ctrl = new AbortController();
+  var stallTimer = null, totalTimer = null;
+  function clearTimers(){
+    if (stallTimer){ clearTimeout(stallTimer); stallTimer = null; }
+    if (totalTimer){ clearTimeout(totalTimer); totalTimer = null; }
+  }
+  function armStall(){
+    if (stallTimer) clearTimeout(stallTimer);
+    stallTimer = setTimeout(function(){ ctrl.abort(); }, 120000); // 120 秒无数据视为中断
+  }
+  totalTimer = setTimeout(function(){ ctrl.abort(); }, 600000);   // 单次回答总时长上限 10 分钟
+  armStall();
   return fetch("/api/chat", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({ model: state.settings.model, messages: apiMessages })
+    body: JSON.stringify({ model: state.settings.model, messages: apiMessages }),
+    signal: ctrl.signal
   }).then(function(resp){
     if (!resp.ok){
+      clearTimers();
       return resp.json().then(function(d){
         throw new Error(d.error || ("服务错误 " + resp.status));
       }, function(){
@@ -588,8 +604,9 @@ function streamChat(apiMessages, onDelta){
     var decoder = new TextDecoder("utf-8");
     var buffer = "";
     function pump(){
+      armStall();
       return reader.read().then(function(result){
-        if (result.done) return;
+        if (result.done){ clearTimers(); return; }
         buffer += decoder.decode(result.value, {stream:true});
         var lines = buffer.split("\n");
         buffer = lines.pop();
@@ -610,9 +627,22 @@ function streamChat(apiMessages, onDelta){
           }
         }
         return pump();
+      }, function(err){
+        clearTimers();
+        if (err && err.name === "AbortError"){
+          throw new Error("回答超时或连接中断，请重新发送（已生成的部分内容会保留）");
+        }
+        if (err && err.message){ throw err; }   // DeepSeek/服务端错误原样上抛
+        throw new Error("连接中断：" + String(err));
       });
     }
     return pump();
+  }, function(err){
+    clearTimers();
+    if (err && err.name === "AbortError"){
+      throw new Error("请求超时，请稍后重试");
+    }
+    throw new Error("无法连接本地服务：请确认程序已启动");
   });
 }
 /* 视觉识别图片文字 */
@@ -803,8 +833,11 @@ function appendMessageBubble(role, content, attachment, legalRefs){
     bubble.appendChild(nm);
   }
   if (content){
-    var text = role === "assistant" ? stripMarkdown(content) : content;
-    bubble.appendChild(document.createTextNode(text));
+    var body = document.createElement("div");
+    body.className = "bubble-text";
+    if (role === "assistant"){ body.innerHTML = renderMarkdown(content); }
+    else { body.textContent = content; }
+    bubble.appendChild(body);
   }
   if (legalRefs && legalRefs.length){
     bubble.appendChild(buildLegalRefsBlock(legalRefs));
@@ -814,14 +847,15 @@ function appendMessageBubble(role, content, attachment, legalRefs){
   el.messages.appendChild(wrap);
   return bubble;
 }
-/* 纯文本化：去掉星号/井号等 Markdown 符号（回答不显示任何星星号） */
-function stripMarkdown(t){
+/* 回答渲染：先转义 HTML 防注入，再把 **关键内容** 渲染成真正加粗，剥掉其余 Markdown 符号 */
+function renderMarkdown(t){
   t = String(t || "");
-  t = t.replace(/\*\*(.+?)\*\*/g, "$1");          // **加粗** → 加粗
-  t = t.replace(/\*(.+?)\*/g, "$1");              // *斜体* → 斜体
-  t = t.replace(/^#{1,6}\s+/gm, "");              // 标题井号
-  t = t.replace(/`(.+?)`/g, "$1");                // 行内代码
-  t = t.replace(/^\s*[-*]\s+/gm, "");             // 无序列表符号
+  t = t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  t = t.replace(/\*\*([^*\n]+)\*\*/g, "<b>$1</b>");      // **加粗** → 加粗
+  t = t.replace(/\*([^*\n]+)\*/g, "$1");                // *斜体* → 普通
+  t = t.replace(/^#{1,6}\s+/gm, "");                    // 井号标题 → 普通
+  t = t.replace(/`([^`\n]+)`/g, "$1");                  // 行内代码 → 普通
+  t = t.replace(/^\s*[-*]\s+/gm, "• ");                 // 无序列表 → 圆点
   return t;
 }
 /* 法律依据卡片（折叠展示，条文+官方来源） */
@@ -1135,19 +1169,22 @@ function onSend(text){
 }
 function runAssistantStream(s){
   var bubble = appendMessageBubble("assistant", "");
+  var body = document.createElement("div");
+  body.className = "bubble-text";
+  bubble.appendChild(body);
   var cursor = document.createElement("span");
   cursor.className = "cursor";
   bubble.appendChild(cursor);
   var full = "";
   streamChat(buildApiMessages(s), function(delta){
     full += delta;
-    bubble.textContent = full;
+    body.innerHTML = renderMarkdown(full);
     bubble.appendChild(cursor);
     scrollToBottom();
   }).then(function(){
     finishAssistantMessage(s, full);
   }).catch(function(err){
-    finishAssistantMessage(s, "");
+    finishAssistantMessage(s, full);   // 中断时保留已生成的部分内容
     showError(err.message || "请求失败，请检查网络或服务日志。");
   });
 }

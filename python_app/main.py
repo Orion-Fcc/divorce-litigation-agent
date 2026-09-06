@@ -26,7 +26,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UI_FILE = os.path.join(BASE_DIR, "ui", "index.html")
 CONFIG_FILE = os.path.join(BASE_DIR, "config.json")
-VERSION = "2.2.1"
+VERSION = "2.2.2"
 
 DEEPSEEK_URL = "https://api.deepseek.com/chat/completions"
 VISION_PRESETS = {
@@ -374,6 +374,15 @@ class Handler(BaseHTTPRequestHandler):
                     self.wfile.flush()
         except (BrokenPipeError, ConnectionResetError):
             pass
+        except Exception as e:
+            # DeepSeek 流中断/读超时：尽力把原因以 SSE 事件发给前端，避免界面卡在“思考中”
+            try:
+                self.wfile.write(("data: " + json.dumps(
+                    {"error": "服务端回答中断：%s" % str(e)[:150]},
+                    ensure_ascii=False) + "\n\n").encode("utf-8"))
+                self.wfile.flush()
+            except Exception:
+                pass
         finally:
             r.close()
 
