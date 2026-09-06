@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-婚讼管家 · Python 版
-本地服务端：法律检索 + 经验学习 + LLM 代理 + 文件解析 + 桌面窗口。
+婚讼管家
+本地服务端：法律检索 + 经验学习 + 智能问答 + 文件解析 + 桌面窗口。
 
 运行：
     python main.py            # 启动本地服务并打开窗口（无 pywebview 时自动用浏览器）
@@ -543,7 +543,7 @@ def main():
             print("[警告] 无法写端口文件：%s" % e)
     url = "http://127.0.0.1:%d/" % port
     print("=" * 56)
-    print("  婚讼管家 · Python 版 v%s" % VERSION)
+    print("  婚讼管家 v%s" % VERSION)
     print("  本地服务：%s" % url)
     print("  法律库：%d 部 | 经验库：%d 条" % (len(legal_db.manifest()),
                                                   learning.count()))
