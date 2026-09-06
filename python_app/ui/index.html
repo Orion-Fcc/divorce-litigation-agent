@@ -605,7 +605,7 @@ function streamChat(apiMessages, onDelta){
   }
   function armStall(){
     if (stallTimer) clearTimeout(stallTimer);
-    stallTimer = setTimeout(function(){ ctrl.abort(); }, 120000); // 120 秒无数据视为中断
+    stallTimer = setTimeout(function(){ ctrl.abort(); }, 60000); // 60 秒无数据视为中断
   }
   totalTimer = setTimeout(function(){ ctrl.abort(); }, 600000);   // 单次回答总时长上限 10 分钟
   armStall();
@@ -1262,14 +1262,22 @@ function runAssistantStream(s){
   cursor.className = "cursor";
   bubble.appendChild(cursor);
   var full = "";
+  var slowTimer = setTimeout(function(){
+    if (!full){
+      body.innerHTML = "<i style='color:var(--muted);font-size:13px'>模型响应较慢，请稍候（本地部署的模型首次加载可能需要一两分钟，期间请不要关闭窗口）…</i>";
+    }
+  }, 10000);
   streamChat(buildApiMessages(s), function(delta){
+    if (slowTimer){ clearTimeout(slowTimer); slowTimer = null; }
     full += delta;
     body.innerHTML = renderMarkdown(full);
     bubble.appendChild(cursor);
     scrollToBottom();
   }).then(function(){
+    if (slowTimer){ clearTimeout(slowTimer); slowTimer = null; }
     finishAssistantMessage(s, full);
   }).catch(function(err){
+    if (slowTimer){ clearTimeout(slowTimer); slowTimer = null; }
     finishAssistantMessage(s, full);   // 中断时保留已生成的部分内容
     showError(err.message || "请求失败，请检查网络或服务日志。");
   });

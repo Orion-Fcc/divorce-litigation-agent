@@ -421,6 +421,17 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Cache-Control", "no-cache")
         self.send_header("Connection", "keep-alive")
         self.end_headers()
+        # 首包守卫：45 秒内模型服务没有任何数据就主动断开并告知，避免界面一直「思考中」
+        got_data = {"v": False}
+        def _guard():
+            if not got_data["v"]:
+                try:
+                    r.close()
+                except Exception:
+                    pass
+        guard = threading.Timer(45, _guard)
+        guard.daemon = True
+        guard.start()
         try:
             if r.status_code != 200:
                 err = r.text[:300]
@@ -431,12 +442,20 @@ class Handler(BaseHTTPRequestHandler):
                 for line in r.iter_lines(decode_unicode=True):
                     if not line:
                         continue
+                    if not got_data["v"]:
+                        got_data["v"] = True
+                        guard.cancel()
                     self.wfile.write((line + "\n\n").encode("utf-8"))
                     self.wfile.flush()
+                if not got_data["v"]:
+                    # 流正常结束但没有任何数据（模型返回空）
+                    self.wfile.write(("data: " + json.dumps(
+                        {"error": "模型服务未返回内容，请检查模型名称或服务状态。"},
+                        ensure_ascii=False) + "\n\n").encode("utf-8"))
         except (BrokenPipeError, ConnectionResetError):
             pass
         except Exception as e:
-            # DeepSeek 流中断/读超时：尽力把原因以 SSE 事件发给前端，避免界面卡在“思考中”
+            # 模型流中断/读超时：尽力把原因以 SSE 事件发给前端，避免界面卡在“思考中”
             try:
                 self.wfile.write(("data: " + json.dumps(
                     {"error": "服务端回答中断：%s" % str(e)[:150]},
@@ -445,6 +464,7 @@ class Handler(BaseHTTPRequestHandler):
             except Exception:
                 pass
         finally:
+            guard.cancel()
             r.close()
 
     def _handle_vision(self):

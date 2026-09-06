@@ -478,7 +478,14 @@ def main():
 
         def _pass_b(item):
             urls = state["urls"].get(item["bbbs"])
-            return build_one(item, urls=urls or None)
+            try:
+                return build_one(item, urls=urls or None)
+            except Exception:
+                # 断点续传的旧签名链接可能已过期：重新解析后重试一次
+                urls = resolve_urls(item["bbbs"])
+                with lock:
+                    state["urls"][item["bbbs"]] = urls
+                return build_one(item, urls=urls or None)
 
         if dl_workers > 1 and len(todo_b) > 1:
             with ThreadPoolExecutor(max_workers=dl_workers) as pool:

@@ -13,6 +13,7 @@ import json
 import os
 import re
 import threading
+import time
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_DIR = os.path.join(BASE_DIR, "models", "bge-small-zh")
@@ -77,7 +78,11 @@ def _load_model():
         return False
     try:
         model_path = os.path.join(MODEL_DIR, "model_quantized.onnx")
-        _sess = onnxruntime.InferenceSession(model_path,
+        import onnxruntime
+        so = onnxruntime.SessionOptions()
+        so.intra_op_num_threads = 2  # 限制线程，避免建索引时占满 CPU 影响对话
+        so.inter_op_num_threads = 1
+        _sess = onnxruntime.InferenceSession(model_path, so,
                                              providers=["CPUExecutionProvider"])
         _vocab = {}
         with open(os.path.join(MODEL_DIR, "vocab.txt"), encoding="utf-8") as f:
@@ -200,8 +205,12 @@ def build_index(laws, force=False, progress_cb=None):
         _build_lock.release()
 
 
-def start_build(laws=None):
-    threading.Thread(target=build_index, args=(laws,), daemon=True).start()
+def start_build(laws=None, delay=90):
+    """后台建立向量索引（延迟启动，避免与应用启动抢 CPU 影响首条对话）。"""
+    def _run():
+        time.sleep(delay)
+        build_index(laws)
+    threading.Thread(target=_run, daemon=True).start()
 
 
 def is_ready():
