@@ -1,5 +1,5 @@
 {
- "built_at": "2026-09-06 11:54:22",
+ "built_at": "2026-09-06 12:46:41",
  "laws": [
   {
    "id": "minfadian",
@@ -135,6 +135,20 @@
    "effective": "2022-08-01",
    "article_range": null,
    "article_count": 13
+  },
+  {
+   "id": "xingfa-hunyin",
+   "name": "中华人民共和国刑法·婚姻家庭相关条文（第257-262条节选）",
+   "short": "刑法·婚姻家庭条文",
+   "source_name": "司法部普法平台（12348陕西法网，转载刑法全文，节选）",
+   "source_url": "http://ya.sn.12348.gov.cn/zixundayi/578.html",
+   "publish": "2020-12-26",
+   "effective": "2021-03-01",
+   "article_range": [
+    257,
+    262
+   ],
+   "article_count": 9
   },
   {
    "id": "susongfei-banfa",

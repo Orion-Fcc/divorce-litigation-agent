@@ -159,11 +159,19 @@ def fetch_catalog():
 
 
 def fetch_detail(bbbs):
-    r = _get(BASE + "/law-search/search/flfgDetails", params={"bbbs": bbbs})
-    d = r.json()
-    if d.get("code") != 200:
-        raise RuntimeError("详情接口异常: %s" % d.get("msg"))
-    return d.get("data") or {}
+    """详情接口（服务器偶发返回非 JSON，重试最多 3 次）。"""
+    last = None
+    for attempt in range(3):
+        try:
+            r = _get(BASE + "/law-search/search/flfgDetails", params={"bbbs": bbbs})
+            d = r.json()
+            if d.get("code") != 200:
+                raise RuntimeError("详情接口异常: %s" % d.get("msg"))
+            return d.get("data") or {}
+        except (ValueError, RuntimeError) as e:
+            last = e
+            time.sleep(1 + attempt * 1.5)
+    raise last
 
 
 def fetch_full_text(bbbs, detail):
@@ -386,6 +394,7 @@ def main():
         with lock:
             if doc is not None:
                 state["done"][item["bbbs"]] = True
+                state["failed"].pop(item["bbbs"], None)
                 ok += 1
                 print("[%d/%d] 《%s》 %d 条" % (ok + fail, len(todo), doc["name"],
                                                 len(doc["articles"])), flush=True)
