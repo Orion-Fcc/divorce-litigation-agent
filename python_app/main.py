@@ -26,7 +26,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UI_FILE = os.path.join(BASE_DIR, "ui", "index.html")
 CONFIG_FILE = os.path.join(BASE_DIR, "config.json")
-VERSION = "2.2.0"
+VERSION = "2.2.1"
 
 DEEPSEEK_URL = "https://api.deepseek.com/chat/completions"
 VISION_PRESETS = {
@@ -216,6 +216,8 @@ class Handler(BaseHTTPRequestHandler):
         path = self.path.split("?")[0]
         if path in ("/", "/index.html"):
             self._serve_ui()
+        elif path.startswith("/assets/"):
+            self._serve_asset(path)
         elif path == "/api/ping":
             self._send_json({"ok": True, "mode": "python", "version": VERSION,
                              "laws": len(legal_db.manifest()),
@@ -282,6 +284,30 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    _ASSET_TYPES = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
+                    ".webp": "image/webp", ".svg": "image/svg+xml", ".ico": "image/x-icon"}
+
+    def _serve_asset(self, path):
+        """服务 ui/assets/ 下的静态资源（仅允许单层文件名，防路径穿越）。"""
+        rel = path[len("/assets/"):]
+        if not rel or rel != os.path.basename(rel) or ".." in rel:
+            self._send_error("Bad Request", 400)
+            return
+        fp = os.path.join(BASE_DIR, "ui", "assets", rel)
+        try:
+            with open(fp, "rb") as f:
+                body = f.read()
+        except OSError:
+            self._send_error("Not Found", 404)
+            return
+        ext = os.path.splitext(rel)[1].lower()
+        self.send_response(200)
+        self.send_header("Content-Type", self._ASSET_TYPES.get(ext, "application/octet-stream"))
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "public, max-age=86400")
         self.end_headers()
         self.wfile.write(body)
 

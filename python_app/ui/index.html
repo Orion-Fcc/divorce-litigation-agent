@@ -77,7 +77,9 @@
   .msg .avatar{
     width:34px;height:34px;border-radius:50%;flex-shrink:0;
     display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;
+    overflow:hidden;
   }
+  .msg .avatar img{width:100%;height:100%;object-fit:cover;display:block}
   .msg.user .avatar{background:var(--primary)}
   .msg.assistant .avatar{background:#0f766e}
   .msg .bubble{
@@ -101,6 +103,9 @@
   }
   .welcome h2{font-size:18px;margin-bottom:8px}
   .welcome p{font-size:14px;color:var(--muted);margin-bottom:6px}
+  .welcome .w-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .welcome .w-head img{width:42px;height:42px;border-radius:50%;object-fit:cover;background:#0f766e;flex-shrink:0}
+  .welcome .w-head h2{margin-bottom:0}
   .disclaimer{
     background:var(--danger-soft);border:1px solid #fecaca;color:#991b1b;
     border-radius:var(--radius);padding:10px 14px;font-size:13px;margin:12px 16px 0;
@@ -685,13 +690,19 @@ function renderMessages(){
 function renderWelcome(){
   var w = document.createElement("div");
   w.className = "welcome";
+  var wh = document.createElement("div");
+  wh.className = "w-head";
+  var wa = document.createElement("img");
+  wa.src = "/assets/avatar-lawyer.svg";
+  wa.alt = "婚讼管家";
   var h = document.createElement("h2");
   h.textContent = "你好，我是婚讼管家";
+  wh.appendChild(wa); wh.appendChild(h);
   var p1 = document.createElement("p");
   p1.textContent = "我可以帮你梳理离婚诉讼流程、整理证据清单、分析财产分割逻辑、准备抚养权争议要点、起草文书框架。本版本内置多部现行婚姻家庭相关法律官方文本（点击右上角书本图标可浏览），回答时自动检索引用。";
   var p2 = document.createElement("p");
   p2.textContent = "为了给出更贴合的建议，可以直接告诉我：婚龄、有无子女及年龄、大致财产情况（房产/存款/债务）、目前是考虑离婚、已起诉还是已开庭。";
-  w.appendChild(h); w.appendChild(p1); w.appendChild(p2);
+  w.appendChild(wh); w.appendChild(p1); w.appendChild(p2);
   el.messages.appendChild(w);
 }
 function renderQuickPrompts(){
@@ -773,7 +784,10 @@ function appendMessageBubble(role, content, attachment, legalRefs){
   wrap.className = "msg " + role;
   var av = document.createElement("div");
   av.className = "avatar";
-  av.textContent = role === "user" ? "我" : "讼";
+  var avi = document.createElement("img");
+  avi.src = role === "user" ? "/assets/avatar-user.svg" : "/assets/avatar-lawyer.svg";
+  avi.alt = role === "user" ? "我" : "婚讼管家";
+  av.appendChild(avi);
   var bubble = document.createElement("div");
   bubble.className = "bubble";
   if (attachment){

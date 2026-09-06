@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <clipPath id="c"><circle cx="128" cy="128" r="128"/></clipPath>
+    <linearGradient id="bgU" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4c8cf5"/>
+      <stop offset="1" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="skinU" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f7d2a6"/>
+      <stop offset="1" stop-color="#ecb586"/>
+    </linearGradient>
+  </defs>
+  <g clip-path="url(#c)">
+    <rect width="256" height="256" fill="url(#bgU)"/>
+    <circle cx="128" cy="140" r="96" fill="#ffffff" opacity="0.10"/>
+    <circle cx="204" cy="52" r="64" fill="#ffffff" opacity="0.08"/>
+    <path d="M34 256 C34 204 58 174 96 166 C110 162 146 162 160 166 C198 174 222 204 222 256 Z" fill="#ffffff"/>
+    <path d="M114 168 L128 184 L142 168 L148 196 L128 186 L108 196 Z" fill="#bfdbfe"/>
+    <ellipse cx="128" cy="122" rx="46" ry="50" fill="url(#skinU)"/>
+    <circle cx="83" cy="126" r="9" fill="#e8b183"/>
+    <circle cx="173" cy="126" r="9" fill="#e8b183"/>
+    <path d="M82 124 C78 78 102 64 128 64 C154 64 178 78 174 124 C174 112 170 106 160 100 C150 93 106 93 96 100 C86 106 82 112 82 124 Z" fill="#3c4356"/>
+    <path d="M103 112 Q112 107 121 112" fill="none" stroke="#5a6270" stroke-width="3" stroke-linecap="round"/>
+    <path d="M135 112 Q144 107 153 112" fill="none" stroke="#5a6270" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="112" cy="126" r="4.5" fill="#384052"/>
+    <circle cx="144" cy="126" r="4.5" fill="#384052"/>
+    <path d="M120 152 Q128 159 136 152" fill="none" stroke="#b5754e" stroke-width="3.5" stroke-linecap="round"/>
+  </g>
+</svg>
