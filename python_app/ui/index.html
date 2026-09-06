@@ -436,6 +436,8 @@ var state = {
   currentId: null,
   settings: { model: "deepseek-chat" },
   streaming: false,
+  abortCtrl: null,
+  stoppedByUser: false,
   pendingAttachment: null,
   server: { online: false, hasVisionKey: false, llmReady: false,
             version: "", laws: 0, experiences: 0, memories: 0,
@@ -595,9 +597,10 @@ function refreshServerStatus(){
     renderStatusChip();
   });
 }
-/* SSE 流式聊天（带总时长与无数据超时保护，服务中断时自动恢复界面） */
+/* SSE 流式聊天（带总时长与无数据超时保护，可手动停止，服务中断时自动恢复界面） */
 function streamChat(apiMessages, onDelta){
   var ctrl = new AbortController();
+  state.abortCtrl = ctrl;
   var stallTimer = null, totalTimer = null;
   function clearTimers(){
     if (stallTimer){ clearTimeout(stallTimer); stallTimer = null; }
@@ -653,9 +656,11 @@ function streamChat(apiMessages, onDelta){
       }, function(err){
         clearTimers();
         if (err && err.name === "AbortError"){
-          throw new Error("回答超时或连接中断，请重新发送（已生成的部分内容会保留）");
+          var stopped = state.stoppedByUser;
+          state.stoppedByUser = false;
+          throw new Error(stopped ? "已停止生成（已生成的内容会保留）" : "回答超时或连接中断，请重新发送（已生成的部分内容会保留）");
         }
-        if (err && err.message){ throw err; }   // DeepSeek/服务端错误原样上抛
+        if (err && err.message){ throw err; }   // 模型服务端错误原样上抛
         throw new Error("连接中断：" + String(err));
       });
     }
@@ -663,7 +668,9 @@ function streamChat(apiMessages, onDelta){
   }, function(err){
     clearTimers();
     if (err && err.name === "AbortError"){
-      throw new Error("请求超时，请稍后重试");
+      var stopped = state.stoppedByUser;
+      state.stoppedByUser = false;
+      throw new Error(stopped ? "已停止生成" : "请求超时，请稍后重试");
     }
     throw new Error("无法连接本地服务：请确认程序已启动");
   });
@@ -845,8 +852,10 @@ function renderSettingsPanel(){
   }).catch(function(){});
 }
 function updateSendState(){
-  el.sendBtn.disabled = state.streaming;
-  el.sendBtn.textContent = state.streaming ? "思考中…" : "发送";
+  // 生成中按钮保持可点，文案变为「停止生成」，可随时手动中断
+  el.sendBtn.disabled = false;
+  el.sendBtn.textContent = state.streaming ? "停止生成" : "发送";
+  el.sendBtn.className = "btn " + (state.streaming ? "danger" : "primary");
 }
 function refreshAll(){
   renderSidebar();
@@ -1187,10 +1196,21 @@ function onFileSelected(file){
 }
 
 /* ================= 事件处理（改数据 → refreshAll） ================= */
+function stopGeneration(){
+  // 手动中断当前回答（停止生成）
+  if (state.abortCtrl){
+    state.stoppedByUser = true;
+    try { state.abortCtrl.abort(); } catch(e){}
+  }
+}
 function onSend(text){
   text = (text || "").trim();
   var att = state.pendingAttachment;
-  if ((!text && !att) || state.streaming) return;
+  if (state.streaming){   // 生成中再点发送键 = 停止生成
+    stopGeneration();
+    return;
+  }
+  if (!text && !att) return;
   if (!state.server.online){
     showError("本地服务未连接，请确认 python main.py 已启动。");
     return;

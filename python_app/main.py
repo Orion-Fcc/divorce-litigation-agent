@@ -409,6 +409,7 @@ class Handler(BaseHTTPRequestHandler):
             r = _requests().post(url, json={
                 "model": body.get("model") or default_model,
                 "messages": messages,
+                "max_tokens": int(cfg("max_tokens", 4000) or 4000),  # 回答长度上限，防止无限输出
                 "stream": True,
             }, headers=headers,
                 timeout=(15, 300), stream=True)
