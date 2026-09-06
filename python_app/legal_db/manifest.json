@@ -1,5 +1,5 @@
 {
- "built_at": "2026-09-06 13:23:10",
+ "built_at": "2026-09-06 17:13:03",
  "laws": [
   {
    "id": "flk-2c909fdd678bf17901678bf594240005",
@@ -3632,6 +3632,17 @@
    "article_count": 64
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f4086cb9f03c4",
+   "name": "中华人民共和国乡村集体所有制企业条例",
+   "short": "乡村集体所有制企业条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4086cb9f03c4",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 45
+  },
+  {
    "id": "flk-ff8080816f3cbb3c016f410bf79f1377",
    "name": "中华人民共和国人民币管理条例",
    "short": "人民币管理条例",
@@ -3687,6 +3698,17 @@
    "article_count": 95
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f40927caf049c",
+   "name": "中华人民共和国劳动合同法实施条例",
+   "short": "劳动合同法实施条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40927caf049c",
+   "publish": "2008-09-18",
+   "effective": "",
+   "article_count": 38
+  },
+  {
    "id": "flk-ff8081819cf9f396019d89be423b53a2",
    "name": "中华人民共和国反外国不当域外管辖条例",
    "short": "反外国不当域外管辖条例",
@@ -3731,6 +3753,17 @@
    "article_count": 29
   },
   {
+   "id": "flk-ff8080816f3e9784016f424ff3ad04e9",
+   "name": "中华人民共和国商标法实施条例",
+   "short": "商标法实施条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e9784016f424ff3ad04e9",
+   "publish": "2014-04-29",
+   "effective": "",
+   "article_count": 98
+  },
+  {
    "id": "flk-ff8080816f3cbb3c016f415bd1da233f",
    "name": "中华人民共和国国境卫生检疫法实施细则",
    "short": "国境卫生检疫法实施细则",
@@ -3764,6 +3797,17 @@
    "article_count": 23
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f40e3c9570960",
+   "name": "中华人民共和国国库券条例",
+   "short": "国库券条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40e3c9570960",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 14
+  },
+  {
    "id": "flk-ff808181999a5e270199db1c68bd6953",
    "name": "中华人民共和国国际海运条例",
    "short": "国际海运条例",
@@ -3773,6 +3817,17 @@
    "publish": "2025-09-28",
    "effective": "2025-09-28",
    "article_count": 50
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f411bd9e317a0",
+   "name": "中华人民共和国土地增值税暂行条例",
+   "short": "土地增值税暂行条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f411bd9e317a0",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 15
   },
   {
    "id": "flk-ff8081817b63b895017b7b071b6843c0",
@@ -3852,6 +3907,17 @@
    "article_count": 39
   },
   {
+   "id": "flk-ff8080816f3e9784016f424c052b0498",
+   "name": "中华人民共和国外国常驻新闻机构和外国记者采访条例",
+   "short": "外国常驻新闻机构和外国记者采访条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e9784016f424c052b0498",
+   "publish": "2008-10-17",
+   "effective": "",
+   "article_count": 23
+  },
+  {
    "id": "flk-ff8080816f3cbb3c016f40eaa60f0b03",
    "name": "中华人民共和国外国籍船舶航行长江水域管理规定",
    "short": "外国籍船舶航行长江水域管理规定",
@@ -3861,6 +3927,17 @@
    "publish": "2019-03-02",
    "effective": "",
    "article_count": 20
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f4041596b01f1",
+   "name": "中华人民共和国外汇管理条例",
+   "short": "外汇管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4041596b01f1",
+   "publish": "2008-08-05",
+   "effective": "",
+   "article_count": 54
   },
   {
    "id": "flk-ff808081777d07c50177bea5241140d6",
@@ -3885,6 +3962,39 @@
    "article_count": 73
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f40d64b350674",
+   "name": "中华人民共和国审计法实施条例",
+   "short": "审计法实施条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40d64b350674",
+   "publish": "2010-02-11",
+   "effective": "",
+   "article_count": 58
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40d03c4005e7",
+   "name": "中华人民共和国对外合作开采海洋石油资源条例",
+   "short": "对外合作开采海洋石油资源条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40d03c4005e7",
+   "publish": "2013-07-18",
+   "effective": "",
+   "article_count": 27
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f4114881a15d2",
+   "name": "中华人民共和国对外合作开采陆上石油资源条例",
+   "short": "对外合作开采陆上石油资源条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4114881a15d2",
+   "publish": "2013-07-18",
+   "effective": "",
+   "article_count": 31
+  },
+  {
    "id": "flk-ff8081818a22132f018a6e367561230c",
    "name": "中华人民共和国工业产品生产许可证管理条例",
    "short": "工业产品生产许可证管理条例",
@@ -3907,6 +4017,17 @@
    "article_count": 55
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f4130e3f91bfc",
+   "name": "中华人民共和国房产税暂行条例",
+   "short": "房产税暂行条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4130e3f91bfc",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 11
+  },
+  {
    "id": "flk-ff808081777d07c50177b8c87de4382b",
    "name": "中华人民共和国技术进出口管理条例",
    "short": "技术进出口管理条例",
@@ -3916,6 +4037,17 @@
    "publish": "2020-11-29",
    "effective": "2020-11-29",
    "article_count": 52
+  },
+  {
+   "id": "flk-ff8080816f3e98bd016f4251197404e8",
+   "name": "中华人民共和国抗旱条例",
+   "short": "抗旱条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e98bd016f4251197404e8",
+   "publish": "2009-02-26",
+   "effective": "",
+   "article_count": 65
   },
   {
    "id": "flk-ff8080816f3cbb3c016f410aac441307",
@@ -3940,6 +4072,17 @@
    "article_count": 56
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f41290bbc1a76",
+   "name": "中华人民共和国政府采购法实施条例",
+   "short": "政府采购法实施条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f41290bbc1a76",
+   "publish": "2015-01-30",
+   "effective": "",
+   "article_count": 79
+  },
+  {
    "id": "flk-ff8080816f3cbb3c016f40d8289506e6",
    "name": "中华人民共和国文物保护法实施条例",
    "short": "文物保护法实施条例",
@@ -3949,6 +4092,17 @@
    "publish": "2017-10-07",
    "effective": "",
    "article_count": 64
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40f290a30d5c",
+   "name": "中华人民共和国无线电管制规定",
+   "short": "无线电管制规定",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40f290a30d5c",
+   "publish": "2010-08-31",
+   "effective": "",
+   "article_count": 13
   },
   {
    "id": "flk-ff8080816f3cbb3c016f410b18b01324",
@@ -4039,6 +4193,17 @@
    "article_count": 22
   },
   {
+   "id": "flk-ff8080816f3e98bd016f42096fb0034b",
+   "name": "中华人民共和国民用航空安全保卫条例",
+   "short": "民用航空安全保卫条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e98bd016f42096fb0034b",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 40
+  },
+  {
    "id": "flk-ff8081817fd9834101805a41c57c7214",
    "name": "中华人民共和国水下文物保护管理条例",
    "short": "水下文物保护管理条例",
@@ -4059,6 +4224,17 @@
    "publish": "2017-03-01",
    "effective": "",
    "article_count": 46
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f41106c8f14a3",
+   "name": "中华人民共和国水生野生动物保护实施条例",
+   "short": "水生野生动物保护实施条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f41106c8f14a3",
+   "publish": "2013-12-07",
+   "effective": "",
+   "article_count": 35
   },
   {
    "id": "flk-ff8080816f3cbb3c016f414ac3bc2078",
@@ -4083,6 +4259,17 @@
    "article_count": 37
   },
   {
+   "id": "flk-ff8080816f3e9784016f420ad7e00315",
+   "name": "中华人民共和国测量标志保护条例",
+   "short": "测量标志保护条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e9784016f420ad7e00315",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 26
+  },
+  {
    "id": "flk-ff8080816f3cbb3c016f40f3a7fa0db0",
    "name": "中华人民共和国海关事务担保条例",
    "short": "海关事务担保条例",
@@ -4092,6 +4279,28 @@
    "publish": "2018-03-19",
    "effective": "",
    "article_count": 26
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f41124ba91528",
+   "name": "中华人民共和国海关对出口加工区监管的暂行办法",
+   "short": "海关对出口加工区监管的暂行办法",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f41124ba91528",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 44
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f41393c2f1db0",
+   "name": "中华人民共和国海关总署关于外国驻中国使馆和使馆人员进出境物品的规定",
+   "short": "海关总署关于外国驻中国使馆和使馆人员进出境物品的规定",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f41393c2f1db0",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 12
   },
   {
    "id": "flk-ff80818180e0a61301811e3c59d51f3e",
@@ -4136,6 +4345,17 @@
    "publish": "2017-03-01",
    "effective": "",
    "article_count": 24
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f411aeff91764",
+   "name": "中华人民共和国消费税暂行条例",
+   "short": "消费税暂行条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f411aeff91764",
+   "publish": "2008-11-10",
+   "effective": "",
+   "article_count": 17
   },
   {
    "id": "flk-ff808181927f09310192c2f4cd777281",
@@ -4226,6 +4446,28 @@
    "article_count": 80
   },
   {
+   "id": "flk-ff8080816f3e9784016f4247417c0454",
+   "name": "中华人民共和国畜禽遗传资源进出境和对外合作研究利用审批办法",
+   "short": "畜禽遗传资源进出境和对外合作研究利用审批办法",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e9784016f4247417c0454",
+   "publish": "2008-08-28",
+   "effective": "",
+   "article_count": 28
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40374f830192",
+   "name": "中华人民共和国监控化学品管理条例",
+   "short": "监控化学品管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40374f830192",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 27
+  },
+  {
    "id": "flk-ff8080816f3cbb3c016f40ec81900b87",
    "name": "中华人民共和国知识产权海关保护条例",
    "short": "知识产权海关保护条例",
@@ -4292,6 +4534,28 @@
    "article_count": 48
   },
   {
+   "id": "flk-ff8080816f3e98bd016f41efa7ae01f2",
+   "name": "中华人民共和国航标条例",
+   "short": "航标条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e98bd016f41efa7ae01f2",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 25
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f414ae4182081",
+   "name": "中华人民共和国航道管理条例",
+   "short": "航道管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f414ae4182081",
+   "publish": "2008-12-27",
+   "effective": "",
+   "article_count": 32
+  },
+  {
    "id": "flk-ff8081818a22132f018a6e3598eb2301",
    "name": "中华人民共和国船员条例",
    "short": "船员条例",
@@ -4336,6 +4600,17 @@
    "article_count": 89
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f4098806604fc",
+   "name": "中华人民共和国著作权法实施条例",
+   "short": "著作权法实施条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4098806604fc",
+   "publish": "2013-01-30",
+   "effective": "",
+   "article_count": 38
+  },
+  {
    "id": "flk-ff8081819dfcb526019e0ac7ce234ece",
    "name": "中华人民共和国行政复议法实施条例",
    "short": "行政复议法实施条例",
@@ -4345,6 +4620,17 @@
    "publish": "2026-04-29",
    "effective": "2026-07-01",
    "article_count": 77
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f4128dea41a5b",
+   "name": "中华人民共和国计算机信息系统安全保护条例",
+   "short": "计算机信息系统安全保护条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4128dea41a5b",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 31
   },
   {
    "id": "flk-ff8081819c46f9bb019cd191fb1f6d05",
@@ -4468,6 +4754,28 @@
    "article_count": 32
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f40ed05e60ba2",
+   "name": "中华人民共和国金银管理条例",
+   "short": "金银管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40ed05e60ba2",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 35
+  },
+  {
+   "id": "flk-ff8080816f3e9784016f425d72570545",
+   "name": "中华人民共和国防汛条例",
+   "short": "防汛条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e9784016f425d72570545",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 49
+  },
+  {
    "id": "flk-ff8080816f3cbb3c016f40e1456008e8",
    "name": "中华人民共和国陆生野生动物保护实施条例",
    "short": "陆生野生动物保护实施条例",
@@ -4477,6 +4785,17 @@
    "publish": "2016-02-06",
    "effective": "",
    "article_count": 45
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40e624ce09f0",
+   "name": "中华人民共和国集会游行示威法实施条例",
+   "short": "集会游行示威法实施条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40e624ce09f0",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 33
   },
   {
    "id": "flk-ff80808176d5cbce0176d73e21ac03db",
@@ -4501,6 +4820,17 @@
    "article_count": 27
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f41151b9315fb",
+   "name": "中华人民共和国飞行基本规则",
+   "short": "飞行基本规则",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f41151b9315fb",
+   "publish": "2007-10-18",
+   "effective": "",
+   "article_count": 5
+  },
+  {
    "id": "flk-ff8080816f3cbb3c016f40db64700798",
    "name": "中华人民共和国食品安全法实施条例",
    "short": "食品安全法实施条例",
@@ -4510,6 +4840,17 @@
    "publish": "2019-10-11",
    "effective": "2019-12-01",
    "article_count": 86
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f415440e22252",
+   "name": "中国人民武装警察部队实行警官警衔制度的具体办法",
+   "short": "中国人民武装警察部队实行警官警衔制度的具体办法",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f415440e22252",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 1
   },
   {
    "id": "flk-ff808181927f1276019643173f20705f",
@@ -4532,6 +4873,17 @@
    "publish": "2022-12-10",
    "effective": "2023-01-01",
    "article_count": 76
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f414eda7e2148",
+   "name": "中国人民解放军现役士兵服役条例",
+   "short": "中国人民解放军现役士兵服役条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f414eda7e2148",
+   "publish": "2010-07-26",
+   "effective": "",
+   "article_count": 51
   },
   {
    "id": "flk-ff8081819c46fcc5019cd1685de03b50",
@@ -4600,6 +4952,28 @@
    "article_count": 26
   },
   {
+   "id": "flk-ff8080816f3e9784016f424995cc0482",
+   "name": "乳品质量安全监督管理条例",
+   "short": "乳品质量安全监督管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e9784016f424995cc0482",
+   "publish": "2008-10-09",
+   "effective": "",
+   "article_count": 64
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f4125dd7719de",
+   "name": "事业单位人事管理条例",
+   "short": "事业单位人事管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4125dd7719de",
+   "publish": "2014-04-25",
+   "effective": "",
+   "article_count": 44
+  },
+  {
    "id": "flk-ff8081819c230ed9019c2d0fca2e4c1e",
    "name": "互联网上网服务营业场所管理条例",
    "short": "互联网上网服务营业场所管理条例",
@@ -4666,6 +5040,17 @@
    "article_count": 22
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f4103cde6117b",
+   "name": "价格违法行为行政处罚规定",
+   "short": "价格违法行为行政处罚规定",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4103cde6117b",
+   "publish": "2010-12-04",
+   "effective": "",
+   "article_count": 25
+  },
+  {
    "id": "flk-ff8081819c46fcc5019cd18fc6e9557d",
    "name": "企业信息公示暂行条例",
    "short": "企业信息公示暂行条例",
@@ -4675,6 +5060,17 @@
    "publish": "2024-03-10",
    "effective": "2024-05-01",
    "article_count": 27
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f4106f07d1215",
+   "name": "企业债券管理条例",
+   "short": "企业债券管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4106f07d1215",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 39
   },
   {
    "id": "flk-ff808081777d0c94017784da4aa50a73",
@@ -4719,6 +5115,17 @@
    "publish": "2019-10-22",
    "effective": "2020-01-01",
    "article_count": 72
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f4095dc1d04d1",
+   "name": "传统工艺美术保护条例",
+   "short": "传统工艺美术保护条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4095dc1d04d1",
+   "publish": "2013-07-18",
+   "effective": "",
+   "article_count": 20
   },
   {
    "id": "flk-ff8080816f3cbb3c016f40fc7b680ff2",
@@ -4787,6 +5194,17 @@
    "article_count": 52
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f40a4d55d05a8",
+   "name": "保税区海关监管办法",
+   "short": "保税区海关监管办法",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40a4d55d05a8",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 30
+  },
+  {
    "id": "flk-ff808181927f1276019610f4dde60a27",
    "name": "保障中小企业款项支付条例",
    "short": "保障中小企业款项支付条例",
@@ -4807,6 +5225,39 @@
    "publish": "2019-12-30",
    "effective": "2020-05-01",
    "article_count": 64
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f413992b21db9",
+   "name": "信息网络传播权保护条例",
+   "short": "信息网络传播权保护条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f413992b21db9",
+   "publish": "2013-01-30",
+   "effective": "",
+   "article_count": 27
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40f2cb480d6e",
+   "name": "储蓄管理条例",
+   "short": "储蓄管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40f2cb480d6e",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 40
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40ef0c4e0c2b",
+   "name": "全国人口普查条例",
+   "short": "全国人口普查条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40ef0c4e0c2b",
+   "publish": "2010-05-24",
+   "effective": "",
+   "article_count": 41
   },
   {
    "id": "flk-ff8081819cf9f396019d2d4364a20646",
@@ -4919,6 +5370,17 @@
    "article_count": 43
   },
   {
+   "id": "flk-ff8080816f3e9784016f424ddf8404c9",
+   "name": "公安机关督察条例",
+   "short": "公安机关督察条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e9784016f424ddf8404c9",
+   "publish": "2011-08-31",
+   "effective": "",
+   "article_count": 18
+  },
+  {
    "id": "flk-ff8081819014e99a019025b8cdd249fd",
    "name": "公平竞争审查条例",
    "short": "公平竞争审查条例",
@@ -4930,6 +5392,17 @@
    "article_count": 27
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f40fc74e50fe9",
+   "name": "公路安全保护条例",
+   "short": "公路安全保护条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40fc74e50fe9",
+   "publish": "2011-03-07",
+   "effective": "",
+   "article_count": 77
+  },
+  {
    "id": "flk-ff808081777d07c50177b8dc9dfa38f0",
    "name": "关于外商参与打捞中国沿海水域沉船沉物管理办法",
    "short": "关于外商参与打捞中国沿海水域沉船沉物管理办法",
@@ -4939,6 +5412,17 @@
    "publish": "2020-11-29",
    "effective": "2020-11-29",
    "article_count": 19
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40fa6d000f62",
+   "name": "关于骗购外汇、非法套汇、逃汇、非法买卖外汇等违反外汇管理规定行为的行政处分或者纪律处分暂行规定",
+   "short": "关于骗购外汇、非法套汇、逃汇、非法买卖外汇等违反外汇管理规定行为的行政处分或者纪律处分暂行规定",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40fa6d000f62",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 16
   },
   {
    "id": "flk-ff8081817b63b935017b7bcc49877e0b",
@@ -4972,6 +5456,28 @@
    "publish": "2024-08-05",
    "effective": "2024-10-01",
    "article_count": 64
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f41016ad810f5",
+   "name": "军工关键设备设施管理条例",
+   "short": "军工关键设备设施管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f41016ad810f5",
+   "publish": "2011-06-24",
+   "effective": "",
+   "article_count": 25
+  },
+  {
+   "id": "flk-ff8080816f3e98bd016f424db73c049c",
+   "name": "军服管理条例",
+   "short": "军服管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e98bd016f424db73c049c",
+   "publish": "2009-01-13",
+   "effective": "",
+   "article_count": 20
   },
   {
    "id": "flk-ff80818199855c3201998efc275f0f98",
@@ -5095,6 +5601,17 @@
    "article_count": 73
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f413c856b1e35",
+   "name": "制止牟取暴利的暂行规定",
+   "short": "制止牟取暴利的暂行规定",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f413c856b1e35",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 18
+  },
+  {
    "id": "flk-ff80808176d5cbce0176d73cd2ea03ce",
    "name": "化妆品监督管理条例",
    "short": "化妆品监督管理条例",
@@ -5128,6 +5645,17 @@
    "article_count": 107
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f40dea19f087a",
+   "name": "医疗废物管理条例",
+   "short": "医疗废物管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40dea19f087a",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 57
+  },
+  {
    "id": "flk-ff80818180e0a61301811e33ace71ef2",
    "name": "医疗机构管理条例",
    "short": "医疗机构管理条例",
@@ -5146,6 +5674,17 @@
    "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
    "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f414140691ef9",
    "publish": "2018-07-31",
+   "effective": "",
+   "article_count": 56
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f41239251196c",
+   "name": "南水北调工程供用水管理条例",
+   "short": "南水北调工程供用水管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f41239251196c",
+   "publish": "2014-02-16",
    "effective": "",
    "article_count": 56
   },
@@ -5203,6 +5742,17 @@
    "publish": "2024-12-06",
    "effective": "2025-01-20",
    "article_count": 10
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f4087cdcc03d9",
+   "name": "危险化学品安全管理条例",
+   "short": "危险化学品安全管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4087cdcc03d9",
+   "publish": "2013-12-07",
+   "effective": "",
+   "article_count": 102
   },
   {
    "id": "flk-ff8080816f3cbb3c016f40f93dba0f16",
@@ -5315,6 +5865,17 @@
    "article_count": 18
   },
   {
+   "id": "flk-ff8080816f3e9784016f4204796f02aa",
+   "name": "国务院关于加强食品等产品安全监督管理的特别规定",
+   "short": "国务院关于加强食品等产品安全监督管理的特别规定",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e9784016f4204796f02aa",
+   "publish": "2007-07-26",
+   "effective": "",
+   "article_count": 20
+  },
+  {
    "id": "flk-ff8080816f3cbb3c016f41468ce81fb8",
    "name": "国务院关于在线政务服务的若干规定",
    "short": "国务院关于在线政务服务的若干规定",
@@ -5357,6 +5918,17 @@
    "publish": "2025-03-13",
    "effective": "2025-05-01",
    "article_count": 18
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f412203161921",
+   "name": "国务院关于禁止在市场经济活动中实行地区封锁的规定",
+   "short": "国务院关于禁止在市场经济活动中实行地区封锁的规定",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f412203161921",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 28
   },
   {
    "id": "flk-ff8081818d736e08018dcf8f960f054d",
@@ -5414,6 +5986,28 @@
    "article_count": 45
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f40f952c30f20",
+   "name": "国家赔偿费用管理条例",
+   "short": "国家赔偿费用管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40f952c30f20",
+   "publish": "2011-01-17",
+   "effective": "",
+   "article_count": 14
+  },
+  {
+   "id": "flk-ff8080816f3e98bd016f4205c511030c",
+   "name": "国家重点建设项目管理办法",
+   "short": "国家重点建设项目管理办法",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e98bd016f4205c511030c",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 26
+  },
+  {
    "id": "flk-ff8081818fe2c502019010c856d73c47",
    "name": "国有企业管理人员处分条例",
    "short": "国有企业管理人员处分条例",
@@ -5425,6 +6019,17 @@
    "article_count": 52
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f40fa642a0f58",
+   "name": "国有土地上房屋征收与补偿条例",
+   "short": "国有土地上房屋征收与补偿条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40fa642a0f58",
+   "publish": "2011-01-21",
+   "effective": "",
+   "article_count": 35
+  },
+  {
    "id": "flk-ff808081777d07c50177b8e6c12d3942",
    "name": "国有资产评估管理办法",
    "short": "国有资产评估管理办法",
@@ -5434,6 +6039,28 @@
    "publish": "2020-11-29",
    "effective": "2020-11-29",
    "article_count": 39
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f413e55291e98",
+   "name": "国防交通条例",
+   "short": "国防交通条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f413e55291e98",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 55
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f414b0c30208a",
+   "name": "国际收支统计申报办法",
+   "short": "国际收支统计申报办法",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f414b0c30208a",
+   "publish": "2013-11-09",
+   "effective": "",
+   "article_count": 20
   },
   {
    "id": "flk-ff8080816f3cbb3c016f413f5fa91eb8",
@@ -5456,6 +6083,17 @@
    "publish": "2024-04-22",
    "effective": "2024-06-01",
    "article_count": 16
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40fb7e520f9f",
+   "name": "土地复垦条例",
+   "short": "土地复垦条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40fb7e520f9f",
+   "publish": "2011-03-05",
+   "effective": "",
+   "article_count": 44
   },
   {
    "id": "flk-ff8080816f3e98bd016f423bf73d03a1",
@@ -5590,6 +6228,17 @@
    "article_count": 45
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f411f06171886",
+   "name": "城镇排水与污水处理条例",
+   "short": "城镇排水与污水处理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f411f06171886",
+   "publish": "2013-10-02",
+   "effective": "",
+   "article_count": 59
+  },
+  {
    "id": "flk-ff8080816f3cbb3c016f40f59ddc0e2f",
    "name": "城镇燃气管理条例",
    "short": "城镇燃气管理条例",
@@ -5599,6 +6248,28 @@
    "publish": "2016-02-06",
    "effective": "",
    "article_count": 55
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40f6b8170e88",
+   "name": "基本农田保护条例",
+   "short": "基本农田保护条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40f6b8170e88",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 36
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40d9238f070c",
+   "name": "基础测绘条例",
+   "short": "基础测绘条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40d9238f070c",
+   "publish": "2009-05-12",
+   "effective": "",
+   "article_count": 35
   },
   {
    "id": "flk-ff808081777d07c50177b849720f2c70",
@@ -5645,6 +6316,17 @@
    "article_count": 45
   },
   {
+   "id": "flk-ff8080816f3e9784016f41e044630103",
+   "name": "外国商会管理暂行规定",
+   "short": "外国商会管理暂行规定",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e9784016f41e044630103",
+   "publish": "2013-12-07",
+   "effective": "",
+   "article_count": 14
+  },
+  {
    "id": "flk-ff8081819c230ff2019c2d0fccc8642f",
    "name": "外国律师事务所驻华代表机构管理条例",
    "short": "外国律师事务所驻华代表机构管理条例",
@@ -5689,6 +6371,28 @@
    "article_count": 63
   },
   {
+   "id": "flk-ff8080816f3e9784016f4206274a02c4",
+   "name": "大型群众性活动安全管理条例",
+   "short": "大型群众性活动安全管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e9784016f4206274a02c4",
+   "publish": "2007-09-14",
+   "effective": "",
+   "article_count": 26
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f4105e23c11d3",
+   "name": "太湖流域管理条例",
+   "short": "太湖流域管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4105e23c11d3",
+   "publish": "2011-09-07",
+   "effective": "",
+   "article_count": 70
+  },
+  {
    "id": "flk-ff8080816f3e98bd016f423fc6ee03e1",
    "name": "奥林匹克标志保护条例",
    "short": "奥林匹克标志保护条例",
@@ -5698,6 +6402,17 @@
    "publish": "2018-06-28",
    "effective": "2018-07-31",
    "article_count": 18
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f410f1ed51451",
+   "name": "女职工劳动保护特别规定",
+   "short": "女职工劳动保护特别规定",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f410f1ed51451",
+   "publish": "2012-04-28",
+   "effective": "",
+   "article_count": 16
   },
   {
    "id": "flk-ff808081777d07c50177b8bcef5c37d5",
@@ -5810,6 +6525,17 @@
    "article_count": 29
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f4105bea511c9",
+   "name": "对储蓄存款利息所得征收个人所得税的实施办法",
+   "short": "对储蓄存款利息所得征收个人所得税的实施办法",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4105bea511c9",
+   "publish": "2007-07-20",
+   "effective": "",
+   "article_count": 15
+  },
+  {
    "id": "flk-ff8081819a7c996b019a9b424b9a6b92",
    "name": "对外使用国徽图案的办法",
    "short": "对外使用国徽图案的办法",
@@ -5819,6 +6545,17 @@
    "publish": "2025-11-09",
    "effective": "2025-11-09",
    "article_count": 14
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f41103e211490",
+   "name": "对外劳务合作管理条例",
+   "short": "对外劳务合作管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f41103e211490",
+   "publish": "2012-06-04",
+   "effective": "",
+   "article_count": 53
   },
   {
    "id": "flk-ff8080816f3e9784016f4242ccee0409",
@@ -5852,6 +6589,28 @@
    "publish": "2015-11-26",
    "effective": "",
    "article_count": 23
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40d5bc0f0659",
+   "name": "工伤保险条例",
+   "short": "工伤保险条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40d5bc0f0659",
+   "publish": "2010-12-20",
+   "effective": "2011-01-01",
+   "article_count": 67
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40e87aa90a70",
+   "name": "广播电台电视台播放录音制品支付报酬暂行办法",
+   "short": "广播电台电视台播放录音制品支付报酬暂行办法",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40e87aa90a70",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 17
   },
   {
    "id": "flk-ff8081819c230fa1019c2d0fc9164af9",
@@ -5920,6 +6679,39 @@
    "article_count": 82
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f40f37ba30da7",
+   "name": "建设项目环境保护管理条例",
+   "short": "建设项目环境保护管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40f37ba30da7",
+   "publish": "2017-07-16",
+   "effective": "",
+   "article_count": 30
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40d68014068e",
+   "name": "彩票管理条例",
+   "short": "彩票管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40d68014068e",
+   "publish": "2009-05-04",
+   "effective": "",
+   "article_count": 45
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f41197132170f",
+   "name": "征信业管理条例",
+   "short": "征信业管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f41197132170f",
+   "publish": "2013-01-21",
+   "effective": "",
+   "article_count": 47
+  },
+  {
    "id": "flk-ff80818187c29b5001882d6f1b1a4508",
    "name": "征兵工作条例",
    "short": "征兵工作条例",
@@ -5929,6 +6721,17 @@
    "publish": "2023-04-01",
    "effective": "2023-05-01",
    "article_count": 74
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f412396fc1973",
+   "name": "征收教育费附加的暂行规定",
+   "short": "征收教育费附加的暂行规定",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f412396fc1973",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 13
   },
   {
    "id": "flk-ff8080816f3cbb3c016f41323ebe1c5c",
@@ -5951,6 +6754,17 @@
    "publish": "2025-04-13",
    "effective": "2025-06-01",
    "article_count": 59
+  },
+  {
+   "id": "flk-ff8080816f3e98bd016f4256565b0528",
+   "name": "总会计师条例",
+   "short": "总会计师条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e98bd016f4256565b0528",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 23
   },
   {
    "id": "flk-ff8080816f3cbb3c016f410282291133",
@@ -5986,6 +6800,17 @@
    "article_count": 28
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f410bdd5f136c",
+   "name": "拘留所条例",
+   "short": "拘留所条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f410bdd5f136c",
+   "publish": "2012-02-23",
+   "effective": "",
+   "article_count": 35
+  },
+  {
    "id": "flk-ff808081777d07c50177b8ffc4f43a66",
    "name": "排污许可管理条例",
    "short": "排污许可管理条例",
@@ -6008,6 +6833,28 @@
    "article_count": 69
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f41099ee712ca",
+   "name": "放射性废物安全管理条例",
+   "short": "放射性废物安全管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f41099ee712ca",
+   "publish": "2011-12-20",
+   "effective": "",
+   "article_count": 46
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40e063d508c7",
+   "name": "放射性物品运输安全管理条例",
+   "short": "放射性物品运输安全管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40e063d508c7",
+   "publish": "2009-09-14",
+   "effective": "",
+   "article_count": 68
+  },
+  {
    "id": "flk-ff8081819c230ff2019c2d0fca056411",
    "name": "放射性药品管理办法",
    "short": "放射性药品管理办法",
@@ -6028,6 +6875,17 @@
    "publish": "2025-05-28",
    "effective": "2025-08-01",
    "article_count": 44
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40e5c1d509d0",
+   "name": "政府参事工作条例",
+   "short": "政府参事工作条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40e5c1d509d0",
+   "publish": "2009-11-02",
+   "effective": "",
+   "article_count": 20
   },
   {
    "id": "flk-ff8080816f3cbb3c016f414441141f6a",
@@ -6061,6 +6919,17 @@
    "publish": "2024-03-10",
    "effective": "2024-05-01",
    "article_count": 16
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f4114dabd15de",
+   "name": "教育督导条例",
+   "short": "教育督导条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4114dabd15de",
+   "publish": "2012-09-09",
+   "effective": "",
+   "article_count": 27
   },
   {
    "id": "flk-ff808081777d07c50177b8f4d125399e",
@@ -6105,6 +6974,17 @@
    "publish": "2017-08-06",
    "effective": "",
    "article_count": 19
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f41114f6314e8",
+   "name": "无障碍环境建设条例",
+   "short": "无障碍环境建设条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f41114f6314e8",
+   "publish": "2012-06-28",
+   "effective": "",
+   "article_count": 35
   },
   {
    "id": "flk-ff8080816f3cbb3c016f4127f5f31a36",
@@ -6173,6 +7053,17 @@
    "article_count": 60
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f4112b3e51541",
+   "name": "机关事务管理条例",
+   "short": "机关事务管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4112b3e51541",
+   "publish": "2012-06-28",
+   "effective": "",
+   "article_count": 35
+  },
+  {
    "id": "flk-ff8080816f3cbb3c016f41331d0f1c9a",
    "name": "机关团体建设楼堂馆所管理条例",
    "short": "机关团体建设楼堂馆所管理条例",
@@ -6193,6 +7084,28 @@
    "publish": "2019-03-02",
    "effective": "",
    "article_count": 46
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f410de77e1403",
+   "name": "校车安全管理条例",
+   "short": "校车安全管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f410de77e1403",
+   "publish": "2012-04-05",
+   "effective": "",
+   "article_count": 62
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f41084f651278",
+   "name": "核电厂核事故应急管理条例",
+   "short": "核电厂核事故应急管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f41084f651278",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 42
   },
   {
    "id": "flk-ff8080816f3cbb3c016f412a7ed91aca",
@@ -6217,6 +7130,17 @@
    "article_count": 63
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f414d6b7620fb",
+   "name": "森林采伐更新管理办法",
+   "short": "森林采伐更新管理办法",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f414d6b7620fb",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 27
+  },
+  {
    "id": "flk-ff8080816f3cbb3c016f40e4004b0973",
    "name": "植物检疫条例",
    "short": "植物检疫条例",
@@ -6226,6 +7150,39 @@
    "publish": "2017-10-07",
    "effective": "",
    "article_count": 24
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40869ec403b8",
+   "name": "武器装备科研生产许可管理条例",
+   "short": "武器装备科研生产许可管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40869ec403b8",
+   "publish": "2008-03-06",
+   "effective": "",
+   "article_count": 43
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40f491e90ded",
+   "name": "武器装备质量管理条例",
+   "short": "武器装备质量管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40f491e90ded",
+   "publish": "2010-09-30",
+   "effective": "",
+   "article_count": 61
+  },
+  {
+   "id": "flk-ff8080816f3e98bd016f41eb2b4a01cc",
+   "name": "残疾人就业条例",
+   "short": "残疾人就业条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e98bd016f41eb2b4a01cc",
+   "publish": "2007-02-25",
+   "effective": "",
+   "article_count": 30
   },
   {
    "id": "flk-ff8080816f3cbb3c016f4137eaa21d7b",
@@ -6259,6 +7216,39 @@
    "publish": "2025-12-12",
    "effective": "2026-03-30",
    "article_count": 73
+  },
+  {
+   "id": "flk-ff8080816f3e9784016f4253f35d051a",
+   "name": "民兵工作条例",
+   "short": "民兵工作条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e9784016f4253f35d051a",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 46
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f414022981ed6",
+   "name": "民兵武器装备管理条例",
+   "short": "民兵武器装备管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f414022981ed6",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 46
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f408e3f16043d",
+   "name": "民用建筑节能条例",
+   "short": "民用建筑节能条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f408e3f16043d",
+   "publish": "2008-08-01",
+   "effective": "",
+   "article_count": 45
   },
   {
    "id": "flk-ff8080816f3cbb3c016f409bcdcb0552",
@@ -6349,6 +7339,17 @@
    "article_count": 34
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f408b60e10403",
+   "name": "汶川地震灾后恢复重建条例",
+   "short": "汶川地震灾后恢复重建条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f408b60e10403",
+   "publish": "2008-06-08",
+   "effective": "",
+   "article_count": 80
+  },
+  {
    "id": "flk-ff8080816f3e98bd016f424614cf0439",
    "name": "法规汇编编辑出版管理规定",
    "short": "法规汇编编辑出版管理规定",
@@ -6371,6 +7372,17 @@
    "article_count": 26
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f4030eb5e014c",
+   "name": "海关工作人员使用武器和警械的规定",
+   "short": "海关工作人员使用武器和警械的规定",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4030eb5e014c",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 8
+  },
+  {
    "id": "flk-ff8081818a1cb546018a6e3495ce6d4a",
    "name": "海洋观测预报管理条例",
    "short": "海洋观测预报管理条例",
@@ -6391,6 +7403,17 @@
    "publish": "2023-12-29",
    "effective": "2024-03-01",
    "article_count": 42
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f4151b6f121d7",
+   "name": "渔业资源增殖保护费征收使用办法",
+   "short": "渔业资源增殖保护费征收使用办法",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4151b6f121d7",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 18
   },
   {
    "id": "flk-ff808181927f0e7b0192949ff642357d",
@@ -6437,6 +7460,28 @@
    "article_count": 67
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f40d306b705f3",
+   "name": "特种设备安全监察条例",
+   "short": "特种设备安全监察条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40d306b705f3",
+   "publish": "2009-01-24",
+   "effective": "",
+   "article_count": 103
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f4052ddb0031e",
+   "name": "现役军人和人民武装警察居民身份证申领发放办法",
+   "short": "现役军人和人民武装警察居民身份证申领发放办法",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4052ddb0031e",
+   "publish": "2007-10-21",
+   "effective": "",
+   "article_count": 18
+  },
+  {
    "id": "flk-ff8080816f3cbb3c016f4143a1591f56",
    "name": "生产安全事故应急条例",
    "short": "生产安全事故应急条例",
@@ -6446,6 +7491,17 @@
    "publish": "2019-02-17",
    "effective": "2019-04-01",
    "article_count": 35
+  },
+  {
+   "id": "flk-ff8080816f3e98bd016f41f5b268023f",
+   "name": "生产安全事故报告和调查处理条例",
+   "short": "生产安全事故报告和调查处理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e98bd016f41f5b268023f",
+   "publish": "2007-04-09",
+   "effective": "",
+   "article_count": 46
   },
   {
    "id": "flk-ff808181900f8e94019010b54dbe0865",
@@ -6503,6 +7559,50 @@
    "article_count": 45
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f41037d6c116b",
+   "name": "电力安全事故应急处置和调查处理条例",
+   "short": "电力安全事故应急处置和调查处理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f41037d6c116b",
+   "publish": "2011-07-07",
+   "effective": "",
+   "article_count": 37
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f414f25b32152",
+   "name": "电力设施保护条例",
+   "short": "电力设施保护条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f414f25b32152",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 32
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f4100376a10b8",
+   "name": "电网调度管理条例",
+   "short": "电网调度管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4100376a10b8",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 33
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f41202fec18bf",
+   "name": "畜禽规模养殖污染防治条例",
+   "short": "畜禽规模养殖污染防治条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f41202fec18bf",
+   "publish": "2013-11-11",
+   "effective": "",
+   "article_count": 44
+  },
+  {
    "id": "flk-ff8081819c230fa1019c2d0fc8ac4af7",
    "name": "病原微生物实验室生物安全管理条例",
    "short": "病原微生物实验室生物安全管理条例",
@@ -6523,6 +7623,17 @@
    "publish": "2017-03-01",
    "effective": "",
    "article_count": 55
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f413d64691e61",
+   "name": "破坏性地震应急条例",
+   "short": "破坏性地震应急条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f413d64691e61",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 39
   },
   {
    "id": "flk-ff8081818d736ac1018dcfae95612eae",
@@ -6580,6 +7691,17 @@
    "article_count": 70
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f40d3cbfc05fe",
+   "name": "票据管理实施办法",
+   "short": "票据管理实施办法",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40d3cbfc05fe",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 36
+  },
+  {
    "id": "flk-ff80818188c8b06b01898afbf07b6a96",
    "name": "私募投资基金监督管理条例",
    "short": "私募投资基金监督管理条例",
@@ -6600,6 +7722,17 @@
    "publish": "2024-06-22",
    "effective": "2024-10-01",
    "article_count": 32
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40d6fd3c06a0",
+   "name": "突发公共卫生事件应急条例",
+   "short": "突发公共卫生事件应急条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40d6fd3c06a0",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 54
   },
   {
    "id": "flk-ff8081817b63b935017b7adce91678cf",
@@ -6646,6 +7779,17 @@
    "article_count": 64
   },
   {
+   "id": "flk-ff8080816f3e98bd016f420b9b460371",
+   "name": "职工带薪年休假条例",
+   "short": "职工带薪年休假条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3e98bd016f420b9b460371",
+   "publish": "2007-12-14",
+   "effective": "",
+   "article_count": 10
+  },
+  {
    "id": "flk-ff8080816f3cbb3c016f40f024b00c7e",
    "name": "自然灾害救助条例",
    "short": "自然灾害救助条例",
@@ -6688,6 +7832,17 @@
    "publish": "2020-11-29",
    "effective": "2020-11-29",
    "article_count": 57
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f411849b516c7",
+   "name": "著作权集体管理条例",
+   "short": "著作权集体管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f411849b516c7",
+   "publish": "2013-12-07",
+   "effective": "",
+   "article_count": 48
   },
   {
    "id": "flk-ff808181971b86bf0197ca572e8d3696",
@@ -6789,6 +7944,17 @@
    "article_count": 48
   },
   {
+   "id": "flk-ff8080816f3cbb3c016f40dd0536080e",
+   "name": "规划环境影响评价条例",
+   "short": "规划环境影响评价条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40dd0536080e",
+   "publish": "2009-08-17",
+   "effective": "",
+   "article_count": 36
+  },
+  {
    "id": "flk-ff8080816f3e98bd016f41dca9b10118",
    "name": "规章制定程序条例",
    "short": "规章制定程序条例",
@@ -6798,6 +7964,28 @@
    "publish": "2017-12-22",
    "effective": "",
    "article_count": 41
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f40dda3dd082f",
+   "name": "计算机信息网络国际联网安全保护管理办法",
+   "short": "计算机信息网络国际联网安全保护管理办法",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f40dda3dd082f",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 25
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f404be4af02ad",
+   "name": "计算机软件保护条例",
+   "short": "计算机软件保护条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f404be4af02ad",
+   "publish": "2013-01-30",
+   "effective": "",
+   "article_count": 33
   },
   {
    "id": "flk-ff8080816f3cbb3c016f4111395614d7",
@@ -6853,6 +8041,17 @@
    "publish": "2006-12-19",
    "effective": "2007-04-01",
    "article_count": 56
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f4115a6ee1622",
+   "name": "财政违法行为处罚处分条例",
+   "short": "财政违法行为处罚处分条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f4115a6ee1622",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 35
   },
   {
    "id": "flk-ff8081819150458d019172e46a6e57be",
@@ -6919,6 +8118,50 @@
    "publish": "2025-05-19",
    "effective": "2025-09-15",
    "article_count": 51
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f404c818f02be",
+   "name": "铁路交通事故应急救援和调查处理条例",
+   "short": "铁路交通事故应急救援和调查处理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f404c818f02be",
+   "publish": "2012-11-09",
+   "effective": "",
+   "article_count": 41
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f411c7c0b17cd",
+   "name": "铁路安全管理条例",
+   "short": "铁路安全管理条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f411c7c0b17cd",
+   "publish": "2013-08-17",
+   "effective": "",
+   "article_count": 108
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f411e99ab1864",
+   "name": "长江三峡工程建设移民条例",
+   "short": "长江三峡工程建设移民条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f411e99ab1864",
+   "publish": "2011-01-08",
+   "effective": "",
+   "article_count": 64
+  },
+  {
+   "id": "flk-ff8080816f3cbb3c016f411d9724181e",
+   "name": "长江三峡水利枢纽安全保卫条例",
+   "short": "长江三峡水利枢纽安全保卫条例",
+   "category": "行政法规",
+   "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
+   "source_url": "https://flk.npc.gov.cn/detail2.html?ff8080816f3cbb3c016f411d9724181e",
+   "publish": "2013-09-09",
+   "effective": "",
+   "article_count": 41
   },
   {
    "id": "flk-ff8081818a22132f018a6e34c3f922f4",
