@@ -174,50 +174,60 @@ def fetch_detail(bbbs):
     raise last
 
 
-def fetch_full_text(bbbs, detail):
-    """下载 Word（兜底 PDF）并提取全文文本。"""
-    # 1) 详情自带正文（部分文件直接返回 content；content 可能是 str/dict/list）
-    content = detail.get("content")
-    if isinstance(content, dict):
-        content = content.get("text") or content.get("content") or ""
-    elif isinstance(content, list):
-        content = "".join(str(c) for c in content)
-    content = (content or "").strip()
-    if content and len(content) > 200:
-        return content
-    # 2) 下载 docx
-    try:
-        r = _get(BASE + "/law-search/download/pc",
-                 params={"format": "docx", "bbbs": bbbs, "fileId": ""})
-        d = r.json()
-        if d.get("code") == 200 and (d.get("data") or {}).get("url"):
-            url = d["data"]["url"]
-            req = _requests()
-            fr = req.get(url, headers={"User-Agent": UA}, timeout=180, verify=False)
-            if fr.status_code == 200 and len(fr.content) > 1000:
-                import io
-                import docx
-                doc = docx.Document(io.BytesIO(fr.content))
-                text = "\n".join(p.text for p in doc.paragraphs).strip()
-                if len(text) > 200:
-                    return text
-    except Exception:
-        pass
-    # 3) 兜底 PDF
-    try:
-        r = _get(BASE + "/law-search/download/pc",
-                 params={"format": "pdf", "bbbs": bbbs, "fileId": ""})
-        d = r.json()
-        if d.get("code") == 200 and (d.get("data") or {}).get("url"):
-            url = d["data"]["url"]
-            req = _requests()
-            fr = req.get(url, headers={"User-Agent": UA}, timeout=180, verify=False)
-            if fr.status_code == 200 and len(fr.content) > 1000:
-                text = build_legal_db._pdf_to_text(fr.content)
-                if len(text.strip()) > 200:
-                    return text.strip()
-    except Exception:
-        pass
+def resolve_urls(bbbs):
+    """获取 docx/pdf 签名下载链接（不依赖详情接口，避开 WAF 挑战）。"""
+    urls = {}
+    for fmt, key in (("docx", "docx_url"), ("pdf", "pdf_url")):
+        try:
+            r = _get(BASE + "/law-search/download/pc",
+                     params={"format": fmt, "bbbs": bbbs, "fileId": ""})
+            d = r.json()
+            if d.get("code") == 200 and (d.get("data") or {}).get("url"):
+                urls[key] = d["data"]["url"]
+        except Exception:
+            continue
+    return urls
+
+
+def _download_docx(url):
+    import io
+    import docx
+    req = _requests()
+    fr = req.get(url, headers={"User-Agent": UA}, timeout=180, verify=False)
+    if fr.status_code != 200 or len(fr.content) <= 1000:
+        raise RuntimeError("docx 下载失败 HTTP %s" % fr.status_code)
+    doc = docx.Document(io.BytesIO(fr.content))
+    text = "\n".join(p.text for p in doc.paragraphs).strip()
+    if len(text) <= 200:
+        raise RuntimeError("docx 正文过短")
+    return text
+
+
+def _download_pdf(url):
+    req = _requests()
+    fr = req.get(url, headers={"User-Agent": UA}, timeout=180, verify=False)
+    if fr.status_code != 200 or len(fr.content) <= 1000:
+        raise RuntimeError("pdf 下载失败 HTTP %s" % fr.status_code)
+    text = build_legal_db._pdf_to_text(fr.content)
+    if len(text.strip()) <= 200:
+        raise RuntimeError("pdf 正文过短")
+    return text.strip()
+
+
+def fetch_full_text(bbbs, urls=None):
+    """提取全文：优先已解析好的下载链接（两阶段），兜底现场解析。"""
+    if urls is None:
+        urls = resolve_urls(bbbs)
+    if urls.get("docx_url"):
+        try:
+            return _download_docx(urls["docx_url"])
+        except Exception:
+            pass
+    if urls.get("pdf_url"):
+        try:
+            return _download_pdf(urls["pdf_url"])
+        except Exception:
+            pass
     raise RuntimeError("无法获取全文（docx/pdf 均失败）")
 
 
@@ -232,10 +242,10 @@ def _short_name(title):
     return s.strip() or title
 
 
-def build_one(item):
+def build_one(item, urls=None):
+    """下载全文并入库（元数据直接用清单行，不依赖详情接口）。"""
     bbbs = item["bbbs"]
-    detail = fetch_detail(bbbs)
-    text = fetch_full_text(bbbs, detail)
+    text = fetch_full_text(bbbs, urls)
     articles = parse_articles(text, inline=False)
     if not articles:
         # 无条文结构的文件（极少数决定类）：整篇作为一条
@@ -244,14 +254,14 @@ def build_one(item):
     law_id = "flk-" + bbbs
     doc = {
         "id": law_id,
-        "name": detail.get("title") or item["title"],
-        "short": _short_name(detail.get("title") or item["title"]),
+        "name": item["title"],
+        "short": _short_name(item["title"]),
         "category": item["category"],
         "source_name": "国家法律法规数据库（全国人大常委会办公厅）",
         "source_url": BASE + "/detail2.html?" + bbbs,
-        "publish": detail.get("gbrq") or item.get("gbrq") or "",
-        "effective": detail.get("sxrq") or item.get("sxrq") or "",
-        "office": detail.get("zdjgName") or item.get("zdjgName") or "",
+        "publish": item.get("gbrq") or "",
+        "effective": item.get("sxrq") or "",
+        "office": item.get("zdjgName") or "",
         "sxx": "有效",
         "articles": articles,
     }
@@ -263,9 +273,13 @@ def build_one(item):
 def load_state():
     try:
         with open(STATE_FILE, encoding="utf-8") as f:
-            return json.load(f)
+            st = json.load(f)
     except Exception:
-        return {"done": {}, "failed": {}}
+        st = {}
+    st.setdefault("done", {})
+    st.setdefault("failed", {})
+    st.setdefault("urls", {})
+    return st
 
 
 def save_state(st):
@@ -358,7 +372,7 @@ def main():
         return
 
     # 1) 精编库（民法典全本 + 婚姻家事相关；供合并与兜底）
-    if not only_list:
+    if not only_list and "--skip-curated" not in argv:
         print("== 第 1 步：构建精编库 ==", flush=True)
         try:
             build_legal_db.main()
@@ -366,26 +380,39 @@ def main():
             pass
 
     # 2) 清单元数据
-    print("== 第 2 步：拉取官方库清单 ==", flush=True)
-    catalog = fetch_catalog()
-    with open(CATALOG_FILE, "w", encoding="utf-8") as f:
-        json.dump(catalog, f, ensure_ascii=False, indent=1)
+    if "--skip-curated" in argv and os.path.exists(CATALOG_FILE):
+        print("== 第 2 步：复用已有清单 ==", flush=True)
+        with open(CATALOG_FILE, encoding="utf-8") as f:
+            catalog = json.load(f)
+    else:
+        print("== 第 2 步：拉取官方库清单 ==", flush=True)
+        catalog = fetch_catalog()
+        with open(CATALOG_FILE, "w", encoding="utf-8") as f:
+            json.dump(catalog, f, ensure_ascii=False, indent=1)
     print("清单元数据：%d 部。" % len(catalog), flush=True)
     if only_list:
         return
 
-    # 3) 逐部下载全文
+    # 3) 两阶段下载：
+    #    阶段 A（官方接口，低并发）：详情 + 解析下载链接；带正文的直接入库
+    #    阶段 B（CDN 下载，高并发）：按已解析链接并行下载 docx/pdf 并入库
     state = load_state()
     if refresh:
         state["done"] = {}
+        state["urls"] = {}
     todo = [c for c in catalog if c["bbbs"] not in state["done"]]
     if max_n is not None:
         todo = todo[:max_n]
-    workers = 1
+    api_workers = 2
     if "--workers" in argv:
-        workers = max(1, min(8, int(argv[argv.index("--workers") + 1])))
-    print("== 第 3 步：下载全文（共 %d 部待处理，%d 并发）==" % (len(todo), workers),
-          flush=True)
+        api_workers = max(1, min(6, int(argv[argv.index("--workers") + 1])))
+    dl_workers = 6
+    if "--dl-workers" in argv:
+        dl_workers = max(1, min(12, int(argv[argv.index("--dl-workers") + 1])))
+    polite = "--polite" in argv  # 慢速模式：降低触发官网反爬的概率
+    print("== 第 3 步：两阶段下载（共 %d 部待处理；官方接口 %d 并发，CDN 下载 %d 并发）=="
+          % (len(todo), api_workers, dl_workers), flush=True)
+    from concurrent.futures import ThreadPoolExecutor, as_completed
     ok = fail = 0
     lock = threading.Lock()
 
@@ -406,23 +433,69 @@ def main():
             if (ok + fail) % 10 == 0:
                 save_state(state)
 
-    if workers > 1 and len(todo) > 1:
-        from concurrent.futures import ThreadPoolExecutor, as_completed
-        with ThreadPoolExecutor(max_workers=workers) as pool:
-            futures = {pool.submit(build_one, item): item for item in todo}
-            for fut in as_completed(futures):
-                item = futures[fut]
+    def _pass_a(item):
+        """阶段 A：官方接口解析下载链接（绕过详情接口，避开 WAF）。"""
+        urls = resolve_urls(item["bbbs"])
+        with lock:
+            state["urls"][item["bbbs"]] = urls
+            if len(state["urls"]) % 20 == 0:
+                save_state(state)
+        if polite:
+            time.sleep(3)
+        return None
+
+    # ---- 阶段 A ----
+    need_a = [c for c in todo if c["bbbs"] not in state["urls"]]
+    if need_a:
+        print("[阶段A] 解析详情与下载链接：%d 部…" % len(need_a), flush=True)
+        if api_workers > 1 and len(need_a) > 1:
+            with ThreadPoolExecutor(max_workers=api_workers) as pool:
+                futures = {pool.submit(_pass_a, item): item for item in need_a}
+                for fut in as_completed(futures):
+                    item = futures[fut]
+                    try:
+                        doc = fut.result()
+                        if doc is not None:
+                            _finish(item, doc=doc)
+                    except Exception as e:
+                        _finish(item, err=e)
+        else:
+            for item in need_a:
                 try:
-                    _finish(item, doc=fut.result())
+                    doc = _pass_a(item)
+                    if doc is not None:
+                        _finish(item, doc=doc)
                 except Exception as e:
                     _finish(item, err=e)
-    else:
-        for item in todo:
-            try:
-                _finish(item, doc=build_one(item))
-            except Exception as e:
-                _finish(item, err=e)
-            time.sleep(0.25)
+                time.sleep(0.2)
+        with lock:
+            save_state(state)
+
+    # ---- 阶段 B ----
+    todo_b = [c for c in todo if c["bbbs"] not in state["done"]]
+    if todo_b:
+        print("[阶段B] 并行下载全文：%d 部…" % len(todo_b), flush=True)
+
+        def _pass_b(item):
+            urls = state["urls"].get(item["bbbs"])
+            return build_one(item, urls=urls or None)
+
+        if dl_workers > 1 and len(todo_b) > 1:
+            with ThreadPoolExecutor(max_workers=dl_workers) as pool:
+                futures = {pool.submit(_pass_b, item): item for item in todo_b}
+                for fut in as_completed(futures):
+                    item = futures[fut]
+                    try:
+                        _finish(item, doc=fut.result())
+                    except Exception as e:
+                        _finish(item, err=e)
+        else:
+            for item in todo_b:
+                try:
+                    _finish(item, doc=_pass_b(item))
+                except Exception as e:
+                    _finish(item, err=e)
+                time.sleep(0.1)
     with lock:
         save_state(state)
     print("下载完成：成功 %d，失败 %d。" % (ok, fail), flush=True)

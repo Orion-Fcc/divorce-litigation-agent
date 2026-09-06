@@ -11,3 +11,5 @@ python_app/data/
 
 # 本地嵌入模型（首次运行自动下载）
 python_app/models/
+python_app/legal_db/_flk_state.json
+python_app/legal_db/flk_catalog.json
